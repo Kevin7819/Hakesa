@@ -36,6 +36,7 @@ class Cart extends Model
 
     public static function getOrCreateForUser(User $user): static
     {
-        return $user->cart ?? static::create(['user_id' => $user->id]);
+        // Use firstOrCreate to prevent race conditions
+        return static::firstOrCreate(['user_id' => $user->id]);
     }
 }
