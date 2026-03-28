@@ -66,9 +66,16 @@ class CheckoutController extends Controller
                     // Lock the row to prevent race conditions on stock
                     $product = Product::lockForUpdate()->find($item->product_id);
 
+                    // Check if product still exists
+                    if (! $product) {
+                        throw new \Exception("El producto '{$item->product->name}' ya no está disponible.");
+                    }
+
                     if ($product->stock < $item->quantity) {
                         throw new \Exception("Stock insuficiente para {$product->name}. Disponible: {$product->stock}");
                     }
+
+                    $itemSubtotal = $product->price * $item->quantity;
 
                     // Create order item with denormalized data
                     $order->items()->create([
@@ -76,7 +83,7 @@ class CheckoutController extends Controller
                         'product_name' => $product->name,
                         'price' => $product->price,
                         'quantity' => $item->quantity,
-                        'subtotal' => $item->subtotal,
+                        'subtotal' => $itemSubtotal,
                         'customization' => $item->customization,
                     ]);
 
