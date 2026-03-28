@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════
+   HAKESA - Custom Styles
+   ═══════════════════════════════════════════════════════════ */
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply font-sans text-gray-800 antialiased;
+    }
+}
+
+@layer components {
+    /* ── Buttons ── */
+    .btn-hakesa {
+        @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
+               text-white bg-hakesa-pink hover:bg-hakesa-pink-dark
+               transition-all duration-300 shadow-lg shadow-hakesa-pink/25
+               hover:shadow-xl hover:shadow-hakesa-pink/30 hover:-translate-y-0.5;
+    }
+
+    .btn-hakesa-outline {
+        @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
+               text-hakesa-pink border-2 border-hakesa-pink
+               hover:bg-hakesa-pink hover:text-white
+               transition-all duration-300;
+    }
+
+    .btn-teal {
+        @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
+               text-white bg-hakesa-teal hover:bg-hakesa-teal-dark
+               transition-all duration-300 shadow-lg shadow-hakesa-teal/25;
+    }
+
+    .btn-dark {
+        @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
+               text-white bg-gray-900 hover:bg-gray-800
+               transition-all duration-300;
+    }
+
+    /* ── Cards ── */
+    .card-hakesa {
+        @apply bg-white rounded-2xl shadow-md hover:shadow-xl
+               transition-all duration-300 hover:-translate-y-1;
+    }
+
+    .card-dark {
+        @apply bg-gray-800 rounded-2xl border border-gray-700;
+    }
+
+    /* ── Section ── */
+    .section-padding {
+        @apply py-20 lg:py-28;
+    }
+
+    .section-title {
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4;
+    }
+
+    .section-subtitle {
+        @apply text-gray-500 text-lg max-w-2xl mx-auto;
+    }
+
+    /* ── Admin ── */
+    .admin-sidebar-link {
+        @apply flex items-center gap-3 px-4 py-3 rounded-lg
+               text-gray-300 hover:bg-gray-700/50 hover:text-white
+               transition-colors duration-200;
+    }
+
+    .admin-sidebar-link-active {
+        @apply flex items-center gap-3 px-4 py-3 rounded-lg
+               bg-hakesa-pink text-white shadow-lg shadow-hakesa-pink/20;
+    }
+
+    .admin-input {
+        @apply w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg
+               text-white placeholder-gray-400
+               focus:outline-none focus:ring-2 focus:ring-hakesa-pink focus:border-transparent
+               transition-all duration-200;
+    }
+
+    .admin-badge {
+        @apply px-2.5 py-1 text-xs font-semibold rounded-full;
+    }
+}
+
+@layer utilities {
+    /* ── Gradients ── */
+    .gradient-hakesa {
+        background: linear-gradient(135deg, #F26BB5 0%, #04BFBF 100%);
+    }
+
+    .gradient-hakesa-warm {
+        background: linear-gradient(135deg, #F26BB5 0%, #F2B705 100%);
+    }
+
+    .gradient-hakesa-cool {
+        background: linear-gradient(135deg, #04BFBF 0%, #F2CB05 100%);
+    }
+
+    .gradient-hero {
+        background: linear-gradient(135deg, #F26BB5 0%, #D94E9B 40%, #04BFBF 100%);
+    }
+
+    /* ── Text gradients ── */
+    .text-gradient {
+        @apply bg-clip-text text-transparent;
+        background-image: linear-gradient(135deg, #F26BB5, #04BFBF);
+    }
+}
+
+/* ── Carousel ── */
+.carousel-container {
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-slide {
+    min-width: 100%;
+    flex-shrink: 0;
+}
+
+/* ── Animations ── */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* ── Scrollbar custom ── */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F2F2F2;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #F26BB5;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #D94E9B;
+}
