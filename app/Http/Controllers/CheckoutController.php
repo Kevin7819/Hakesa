@@ -13,7 +13,7 @@ use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
-    public function index(): View
+    public function index(): RedirectResponse|View
     {
         $cart = Cart::getOrCreateForUser(Auth::user());
         $cart->load('items.product');
