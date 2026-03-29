@@ -17,7 +17,7 @@
         >
             <!-- Logo -->
             <div class="h-20 flex items-center gap-3 px-6 border-b border-gray-100">
-                <div class="w-10 h-10 gradient-hakesa rounded-xl flex items-center justify-center text-white font-bold text-lg">H</div>
+                <img src="{{ asset('Hakesa_without_background.png') }}" alt="Hakesa" class="h-10 w-auto">
                 <div>
                     <span class="text-lg font-bold text-gray-900">Hakesa</span>
                     <span class="block text-xs text-gray-400">Panel de Administración</span>
@@ -48,6 +48,12 @@
                    class="{{ request()->routeIs('admin.orders.*') ? 'bg-hakesa-pink/10 text-hakesa-pink font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} flex items-center gap-3 px-4 py-3 rounded-xl transition-colors">
                     <i class="fas fa-shopping-bag w-5 text-center"></i>
                     <span>Pedidos</span>
+                </a>
+
+                <a href="{{ route('admin.comments.index') }}" 
+                   class="{{ request()->routeIs('admin.comments.*') ? 'bg-hakesa-pink/10 text-hakesa-pink font-semibold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }} flex items-center gap-3 px-4 py-3 rounded-xl transition-colors">
+                    <i class="fas fa-comments w-5 text-center"></i>
+                    <span>Comentarios</span>
                 </a>
 
                 <div class="pt-4 mt-4 border-t border-gray-100">

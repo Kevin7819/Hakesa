@@ -33,7 +33,6 @@ describe('Admin Products CRUD', function () {
             'name' => 'Taza Personalizada',
             'description' => 'Taza de cerámica con diseño personalizado',
             'price' => 5000,
-            'category' => 'sublimacion',
             'service_type' => 'sublimacion',
             'stock' => 10,
             'is_active' => true,
@@ -59,7 +58,9 @@ describe('Admin Products CRUD', function () {
 
         $response->assertRedirect('/admin/products');
         $this->assertDatabaseHas('products', ['name' => 'Taza con Imagen']);
-        Storage::disk('public')->assertExists('products/'.$image->hashName());
+        $product = Product::where('name', 'Taza con Imagen')->first();
+        expect($product->image)->not->toBeNull();
+        Storage::disk('public')->assertExists($product->image);
     });
 
     it('validates required fields when creating product', function () {

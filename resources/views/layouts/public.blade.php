@@ -16,8 +16,7 @@
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="/" class="flex items-center gap-3">
-                    <img src="{{ asset('logo.png') }}" alt="Hakesa" class="h-12 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="hidden items-center justify-center w-12 h-12 gradient-hakesa rounded-xl text-white font-bold text-lg">H</div>
+                    <img src="{{ asset('Hakesa_without_background.png') }}" alt="Hakesa" class="h-12 w-auto">
                     <span class="text-2xl font-bold text-gray-900">Hakesa</span>
                 </a>
 
@@ -100,8 +99,7 @@
                 <!-- Brand -->
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-3 mb-4">
-                        <img src="{{ asset('logo.png') }}" alt="Hakesa" class="h-10 w-auto brightness-0 invert" onerror="this.style.display='none';">
-                        <span class="text-2xl font-bold">Hakesa</span>
+                        <img src="{{ asset('Hakesa_without_background.png') }}" alt="Hakesa" class="h-10 w-auto brightness-0 invert">
                     </div>
                     <p class="text-gray-400 max-w-md mb-6">
                         Personalización que deja huella. Sublimación, corte láser, vinil y más.

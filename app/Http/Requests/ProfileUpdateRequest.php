@@ -10,6 +10,24 @@ use Illuminate\Validation\Rule;
 class ProfileUpdateRequest extends FormRequest
 {
     /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'El nombre es obligatorio.',
+            'name.max' => 'El nombre no puede tener más de 255 caracteres.',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'Ingresa un correo electrónico válido.',
+            'email.lowercase' => 'El correo debe estar en minúsculas.',
+            'email.unique' => 'Este correo ya está registrado.',
+            'email.max' => 'El correo no puede tener más de 255 caracteres.',
+        ];
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array<mixed>|string>

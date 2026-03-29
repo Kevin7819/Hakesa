@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             'name' => fake()->words(3, true),
             'description' => fake()->sentence(10),
             'price' => fake()->randomFloat(2, 1000, 50000),
-            'category' => fake()->randomElement($categories),
+            'category_id' => null,
             'service_type' => fake()->randomElement($serviceTypes),
             'is_active' => true,
             'stock' => fake()->numberBetween(0, 100),

@@ -45,14 +45,11 @@
                 <div class="hidden lg:flex justify-center items-center">
                     <div class="relative">
                         <div class="w-80 h-80 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center animate-float">
-                            <img src="{{ asset('logo.png') }}" alt="Hakesa Logo" class="w-64 h-64 object-contain" onerror="this.parentElement.innerHTML='<div class=\'text-white text-center\'><div class=\'text-8xl font-extrabold opacity-30\'>H</div><p class=\'text-xl mt-4 opacity-50\'>HAKESA</p></div>'">
+                            <img src="{{ asset('Hakesa_without_background.png') }}" alt="Hakesa Logo" class="w-64 h-64 object-contain">
                         </div>
                         <!-- Floating badges -->
                         <div class="absolute -top-4 -right-4 bg-hakesa-yellow text-gray-900 px-4 py-2 rounded-xl font-bold text-sm shadow-lg">
                             Costa Rica
-                        </div>
-                        <div class="absolute -bottom-4 -left-4 bg-white text-hakesa-pink px-4 py-2 rounded-xl font-bold text-sm shadow-lg">
-                            +500 clientes
                         </div>
                     </div>
                 </div>
@@ -147,7 +144,7 @@
                     <div class="carousel-slide px-4">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             @foreach($chunk as $product)
-                            <div class="card-hakesa overflow-hidden">
+                            <div class="card-hakesa overflow-hidden w-full flex flex-col">
                                 <div class="h-56 bg-gray-100 overflow-hidden">
                                     @if($product->image)
                                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
@@ -159,13 +156,13 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="p-6">
+                                <div class="p-6 flex flex-col flex-grow">
                                     @if($product->category)
                                         <span class="inline-block px-2.5 py-1 bg-hakesa-teal/10 text-hakesa-teal text-xs font-semibold rounded-full mb-3">{{ $product->category->name }}</span>
                                     @endif
                                     <h3 class="text-lg font-bold mb-2">{{ $product->name }}</h3>
-                                    <p class="text-gray-500 text-sm mb-4 line-clamp-2">{{ $product->description }}</p>
-                                    <div class="flex justify-between items-center">
+                                    <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">{{ $product->description }}</p>
+                                    <div class="flex justify-between items-center mt-auto">
                                         <span class="text-2xl font-bold text-hakesa-pink">₡{{ number_format($product->price, 0, ',', '.') }}</span>
                                         <a href="#contacto" class="btn-hakesa text-sm px-4 py-2">Consultar</a>
                                     </div>
@@ -257,68 +254,82 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     TESTIMONIOS SECTION
+     COMENTARIOS SECTION
      ═══════════════════════════════════════════════════════════════ -->
 <section id="testimonios" class="section-padding bg-hakesa-light">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <span class="inline-block px-4 py-1.5 bg-hakesa-pink/10 text-hakesa-pink rounded-full text-sm font-semibold mb-4">Testimonios</span>
             <h2 class="section-title">Lo que dicen nuestros clientes</h2>
-            <p class="section-subtitle">Miles de personas confían en Hakesa para sus proyectos de personalización</p>
+            <p class="section-subtitle">Comparte tu experiencia y lee lo que otros dicen sobre Hakesa</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Testimonio 1 -->
-            <div class="card-hakesa p-8">
-                <div class="flex items-center gap-1 mb-4">
-                    @for($i = 0; $i < 5; $i++)
-                    <svg class="w-5 h-5 text-hakesa-yellow" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    @endfor
-                </div>
-                <p class="text-gray-600 mb-6 italic">"Excelente calidad en las tazas sublimadas. El diseño quedó perfecto y el envío fue rapidísimo. ¡Totalmente recomendados!"</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-hakesa-pink/20 rounded-full flex items-center justify-center text-hakesa-pink font-bold">MR</div>
-                    <div>
-                        <p class="font-semibold">María Rodríguez</p>
-                        <p class="text-gray-400 text-sm">San José, CR</p>
-                    </div>
-                </div>
+        {{-- Success message --}}
+        @if(session('success'))
+            <div class="mb-8 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-center font-medium">
+                {{ session('success') }}
             </div>
+        @endif
 
-            <!-- Testimonio 2 -->
-            <div class="card-hakesa p-8">
-                <div class="flex items-center gap-1 mb-4">
-                    @for($i = 0; $i < 5; $i++)
-                    <svg class="w-5 h-5 text-hakesa-yellow" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    @endfor
-                </div>
-                <p class="text-gray-600 mb-6 italic">"Pedí stickers personalizados para mi negocio y quedaron increíbles. La calidad del vinil es premium. ¡Volveré a pedir!"</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-hakesa-teal/20 rounded-full flex items-center justify-center text-hakesa-teal font-bold">CL</div>
-                    <div>
-                        <p class="font-semibold">Carlos López</p>
-                        <p class="text-gray-400 text-sm">Heredia, CR</p>
+        {{-- Comment form --}}
+        @auth
+            <div class="card-hakesa p-8 mb-10 max-w-2xl mx-auto">
+                <h3 class="text-lg font-bold mb-4">Deja tu comentario</h3>
+                <form action="{{ route('comments.store') }}" method="POST">
+                    @csrf
+                    <textarea
+                        name="content"
+                        rows="3"
+                        placeholder="Escribe tu experiencia con Hakesa..."
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-hakesa-pink focus:border-transparent resize-none transition @error('content') border-red-400 @enderror"
+                        required
+                    >{{ old('content') }}</textarea>
+                    @error('content')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                    <div class="flex justify-end mt-3">
+                        <button type="submit" class="btn-hakesa">
+                            Publicar comentario
+                        </button>
                     </div>
-                </div>
+                </form>
             </div>
+        @else
+            <div class="text-center mb-10">
+                <p class="text-gray-600 mb-3">¿Quieres compartir tu experiencia?</p>
+                <a href="{{ route('login') }}" class="btn-hakesa">Inicia sesión para comentar</a>
+            </div>
+        @endauth
 
-            <!-- Testimonio 3 -->
-            <div class="card-hakesa p-8">
-                <div class="flex items-center gap-1 mb-4">
-                    @for($i = 0; $i < 5; $i++)
-                    <svg class="w-5 h-5 text-hakesa-yellow" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    @endfor
-                </div>
-                <p class="text-gray-600 mb-6 italic">"El corte láser en madera para mi proyecto de decoración quedó espectacular. Precisión y acabado perfecto. ¡Gracias Hakesa!"</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-hakesa-gold/20 rounded-full flex items-center justify-center text-hakesa-gold-dark font-bold">AV</div>
-                    <div>
-                        <p class="font-semibold">Ana Vargas</p>
-                        <p class="text-gray-400 text-sm">Alajuela, CR</p>
+        {{-- Comments list --}}
+        @if($comments->count() > 0)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($comments as $comment)
+                    <div class="card-hakesa p-8">
+                        <p class="text-gray-600 mb-6 italic">"{{ $comment->content }}"</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-hakesa-pink/20 rounded-full flex items-center justify-center text-hakesa-pink font-bold">
+                                {{ strtoupper(substr($comment->user?->name ?? 'XX', 0, 2)) }}
+                            </div>
+                            <div>
+                                <p class="font-semibold">{{ $comment->user?->name ?? 'Usuario' }}</p>
+                                <p class="text-gray-400 text-sm">{{ $comment->created_at->diffForHumans() }}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
-        </div>
+        @else
+            <div class="text-center py-12">
+                <div class="w-20 h-20 bg-hakesa-teal/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-hakesa-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Aún no hay comentarios</h3>
+                <p class="text-gray-500">¡Sé el primero en compartir tu experiencia con Hakesa!</p>
+            </div>
+        @endif
     </div>
 </section>
 

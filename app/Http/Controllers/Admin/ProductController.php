@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProductController extends Controller
@@ -39,7 +41,7 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
+            $path = $this->storeProductImage($request->file('image'), $validated);
             $validated['image'] = $path;
         }
 
@@ -78,7 +80,11 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
+            // Delete old image
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $path = $this->storeProductImage($request->file('image'), $validated);
             $validated['image'] = $path;
         }
 
@@ -90,9 +96,27 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
+        if ($product->image && Storage::disk('public')->exists($product->image)) {
+            Storage::disk('public')->delete($product->image);
+        }
+
         $product->delete();
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Producto eliminado exitosamente.');
+    }
+
+    /**
+     * Store product image with unique filename based on category and name.
+     */
+    private function storeProductImage($file, array $validated): string
+    {
+        $extension = $file->getClientOriginalExtension();
+        $categoryName = Category::find($validated['category_id'] ?? null)?->name ?? 'sin-categoria';
+        $productName = Str::slug($validated['name']);
+        $uniqueId = uniqid();
+        $filename = Str::slug($categoryName) . '-' . $productName . '-' . $uniqueId . '.' . $extension;
+
+        return $file->storeAs('products', $filename, 'public');
     }
 }
