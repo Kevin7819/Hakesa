@@ -24,6 +24,11 @@ Route::get('/', function () {
     return view('welcome', compact('products', 'comments'));
 })->name('welcome');
 
+// ── Dashboard redirect (Breeze default route) ──
+Route::get('/dashboard', function () {
+    return redirect('/');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 // ── Catálogo público ──
 Route::get('/productos', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/productos/{product}', [CatalogController::class, 'show'])->name('catalog.show');
