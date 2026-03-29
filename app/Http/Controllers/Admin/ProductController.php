@@ -115,7 +115,7 @@ class ProductController extends Controller
         $categoryName = Category::find($validated['category_id'] ?? null)?->name ?? 'sin-categoria';
         $productName = Str::slug($validated['name']);
         $uniqueId = uniqid();
-        $filename = Str::slug($categoryName) . '-' . $productName . '-' . $uniqueId . '.' . $extension;
+        $filename = Str::slug($categoryName).'-'.$productName.'-'.$uniqueId.'.'.$extension;
 
         return $file->storeAs('products', $filename, 'public');
     }
