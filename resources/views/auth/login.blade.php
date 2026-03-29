@@ -7,7 +7,7 @@
     <div class="w-full max-w-md px-4">
         <div class="card-hakesa p-8">
             <div class="text-center mb-8">
-                <div class="w-16 h-16 gradient-hakesa rounded-2xl flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl">H</div>
+                <img src="{{ asset('Hakesa_without_background.png') }}" alt="Hakesa" class="w-16 h-16 mx-auto mb-4 object-contain">
                 <h1 class="text-2xl font-bold text-gray-900">Iniciar Sesión</h1>
                 <p class="text-gray-500 mt-1">Bienvenido de vuelta</p>
             </div>

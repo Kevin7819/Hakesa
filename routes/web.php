@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentController as AdminCommentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -9,16 +10,19 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ClientOrderController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Comment;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 // ── Landing Page ──
 Route::get('/', function () {
     $products = Product::active()->with('category')->latest()->take(6)->get();
+    $comments = Comment::with('user')->approved()->latest()->take(5)->get();
 
-    return view('welcome', compact('products'));
-});
+    return view('welcome', compact('products', 'comments'));
+})->name('welcome');
 
 // ── Dashboard redirect (Breeze default route) ──
 Route::get('/dashboard', function () {
@@ -49,6 +53,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // ── Comentarios ──
+    Route::post('/comentarios', [CommentController::class, 'store'])->name('comments.store');
 });
 
 // ── Admin Panel ──
@@ -66,6 +73,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categories', CategoryController::class)->except(['show']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
         Route::patch('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
+
+        // ── Comentarios (moderación) ──
+        Route::get('comments', [AdminCommentController::class, 'index'])->name('comments.index');
+        Route::patch('comments/{comment}/approve', [AdminCommentController::class, 'approve'])->name('comments.approve');
+        Route::patch('comments/{comment}/reject', [AdminCommentController::class, 'reject'])->name('comments.reject');
+        Route::delete('comments/{comment}', [AdminCommentController::class, 'destroy'])->name('comments.destroy');
     });
 });
 

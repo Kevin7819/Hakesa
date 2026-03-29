@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CheckoutRequest;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -27,15 +27,8 @@ class CheckoutController extends Controller
         return view('checkout.index', compact('cart', 'user'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(CheckoutRequest $request): RedirectResponse
     {
-        $request->validate([
-            'customer_name' => ['required', 'string', 'max:255'],
-            'customer_email' => ['required', 'email'],
-            'customer_phone' => ['required', 'string', 'max:20'],
-            'customer_address' => ['nullable', 'string', 'max:500'],
-            'notes' => ['nullable', 'string', 'max:1000'],
-        ]);
 
         $cart = Cart::getOrCreateForUser(Auth::user());
         $cart->load('items.product');

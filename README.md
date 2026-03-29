@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Kevin7819/Hakesa/actions"><img src="https://github.com/Kevin7819/Hakesa/workflows/tests/badge.svg" alt="Build Status"></a>
+  <a href="https://github.com/Kevin7819/Hakesa/actions"><img src="https://github.com/Kevin7819/Hakesa/actions/workflows/tests.yml/badge.svg" alt="Build Status"></a>
   <a href="https://packagist.org/packages/hakesa/core"><img src="https://img.shields.io/packagist/dt/hakesa/core" alt="Total Downloads"></a>
   <a href="https://packagist.org/packages/hakesa/core"><img src="https://img.shields.io/packagist/v/hakesa/core" alt="Latest Stable Version"></a>
   <a href="https://packagist.org/packages/hakesa/core"><img src="https://img.shields.io/packagist/l/hakesa/core" alt="License"></a>
@@ -97,7 +97,7 @@ hakesa/
 ### Flujo del Cliente:
 1. El cliente se registra e inicia sesión
 2. Navega el catálogo, filtra por categoría/precio
-3. Agrega productos al carrito con personalización (color, tamaño,备注)
+3. Agrega productos al carrito con personalización (color, tamaño, texto)
 4. Completa el checkout con datos de entrega
 5. El pedido se registra con estado "pendiente"
 6. El cliente puede ver el historial de sus pedidos
