@@ -24,13 +24,13 @@ class CheckoutRequest extends FormRequest
     {
         return [
             'customer_name.required' => 'El nombre es obligatorio.',
-            'customer_name.max' => 'El nombre no puede tener m\u00e1s de 255 caracteres.',
-            'customer_email.required' => 'El correo electr\u00f3nico es obligatorio.',
-            'customer_email.email' => 'Ingresa un correo electr\u00f3nico v\u00e1lido.',
-            'customer_phone.required' => 'El tel\u00e9fono es obligatorio.',
-            'customer_phone.max' => 'El tel\u00e9fono no puede tener m\u00e1s de 20 caracteres.',
-            'notes.max' => 'Las notas no pueden tener m\u00e1s de 1000 caracteres.',
-            'customizations.*.max' => 'La personalizaci\u00f3n no puede tener m\u00e1s de 500 caracteres.',
+            'customer_name.max' => 'El nombre no puede tener más de 255 caracteres.',
+            'customer_email.required' => 'El correo electrónico es obligatorio.',
+            'customer_email.email' => 'Ingresa un correo electrónico válido.',
+            'customer_phone.required' => 'El teléfono es obligatorio.',
+            'customer_phone.max' => 'El teléfono no puede tener más de 20 caracteres.',
+            'notes.max' => 'Las notas no pueden tener más de 1000 caracteres.',
+            'customizations.*.max' => 'La personalización no puede tener más de 500 caracteres.',
         ];
     }
 

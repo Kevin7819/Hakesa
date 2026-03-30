@@ -20,59 +20,71 @@
         @endif
 
         <!-- Search & Filters (AJAX) -->
-        <form x-ref="filtrosForm" method="GET" action="{{ route('catalog.index') }}" id="filterForm" class="mb-8" x-data="catalogFilters">
+        <form x-ref="filtrosForm" method="GET" action="{{ route('catalog.index') }}" id="filterForm" class="mb-8" x-data="{ ...catalogFilters(), showFilters: false }">
             <div class="card-hakesa p-5">
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                    <!-- Search -->
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Buscar</label>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Nombre del producto..."
-                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm"
-                            @input="debounceSubmit()">
-                    </div>
-
-                    <!-- Category -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Categoría</label>
-                        <select name="category" @change="submit()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
-                            <option value="">Todas</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Price Range -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Precio (₡)</label>
-                        <div class="flex gap-2">
-                            <input type="number" name="price_min" value="{{ request('price_min') }}" placeholder="Mín"
-                                @change="submit()"
-                                class="w-1/2 px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
-                            <input type="number" name="price_max" value="{{ request('price_max') }}" placeholder="Máx"
-                                @change="submit()"
-                                class="w-1/2 px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
+                <!-- Search (always visible) -->
+                <div class="mb-4 md:mb-0">
+                    <div class="flex gap-3">
+                        <div class="flex-1">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar productos..."
+                                class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm"
+                                @input="debounceSubmit()">
                         </div>
-                    </div>
-
-                    <!-- Sort -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 mb-1">Ordenar</label>
-                        <select name="sort" @change="submit()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
-                            <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Más recientes</option>
-                            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Precio: menor a mayor</option>
-                            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Precio: mayor a menor</option>
-                            <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nombre A-Z</option>
-                        </select>
+                        <button type="button" @click="showFilters = !showFilters" class="md:hidden px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                            <span x-text="showFilters ? 'Ocultar' : 'Filtros'"></span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="mt-4 flex items-center gap-4">
-                    <button type="button" @click="clearFilters()" class="px-6 py-2 border border-gray-200 rounded-xl text-gray-500 hover:text-gray-700 hover:border-gray-300 text-sm font-medium transition-colors">
-                        Limpiar filtros
-                    </button>
+                <!-- Filters (collapsible on mobile, always visible on desktop) -->
+                <div x-show="showFilters || window.innerWidth >= 768" x-collapse class="mt-4 overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <!-- Category -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Categoría</label>
+                            <select name="category" @change="submit()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
+                                <option value="">Todas</option>
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Precio (₡)</label>
+                            <div class="flex gap-2">
+                                <input type="number" name="price_min" value="{{ request('price_min') }}" placeholder="Mín"
+                                    @change="submit()"
+                                    class="w-1/2 px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
+                                <input type="number" name="price_max" value="{{ request('price_max') }}" placeholder="Máx"
+                                    @change="submit()"
+                                    class="w-1/2 px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Sort -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Ordenar</label>
+                            <select name="sort" @change="submit()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
+                                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Más recientes</option>
+                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Precio: menor a mayor</option>
+                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Precio: mayor a menor</option>
+                                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nombre A-Z</option>
+                            </select>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex items-end">
+                            <button type="button" @click="clearFilters()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-gray-500 hover:text-gray-700 hover:border-gray-300 text-sm font-medium transition-colors">
+                                Limpiar filtros
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Loading indicator -->
-                    <div x-show="loading" x-cloak class="flex items-center gap-2 text-sm text-gray-500">
+                    <div x-show="loading" x-cloak class="flex items-center gap-2 text-sm text-gray-500 mt-3">
                         <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         Filtrando...
                     </div>
