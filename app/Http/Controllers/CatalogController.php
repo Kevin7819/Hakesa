@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CatalogController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|JsonResponse
     {
         $query = Product::active()->with('category');
 
@@ -42,6 +43,22 @@ class CatalogController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
         $categories = Category::active()->orderBy('sort_order')->get();
+
+        // AJAX: return JSON with rendered HTML
+        if ($request->header('X-Requested-With') === 'XMLHttpRequest') {
+            $gridHtml = view('catalog._products_grid', compact('products'))->render();
+            $paginationHtml = $products->appends($request->query())->links()->render();
+            $hasFilters = $request->hasAny(['search', 'category', 'price_min', 'price_max']);
+            $resultsInfo = $hasFilters
+                ? '<p class="text-sm text-gray-500 mb-4">'.$products->total().' resultado(s) encontrado(s)</p>'
+                : '';
+
+            return response()->json([
+                'html' => $gridHtml,
+                'pagination' => $paginationHtml,
+                'results_info' => $resultsInfo,
+            ]);
+        }
 
         return view('catalog.index', compact('products', 'categories'));
     }

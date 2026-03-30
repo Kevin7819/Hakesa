@@ -12,7 +12,12 @@
         </a>
 
         @if(session('success'))
-            <div class="bg-green-50 text-green-700 p-4 rounded-xl mb-6">{{ session('success') }}</div>
+            <div class="bg-green-50 border border-green-200 p-6 rounded-xl mb-6">
+                <div class="flex items-start gap-3">
+                    <svg class="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="text-green-700 whitespace-pre-line">{{ session('success') }}</div>
+                </div>
+            </div>
         @endif
 
         <div class="card-hakesa p-6 mb-6">

@@ -29,7 +29,6 @@ class CheckoutController extends Controller
 
     public function store(CheckoutRequest $request): RedirectResponse
     {
-
         $cart = Cart::getOrCreateForUser(Auth::user());
         $cart->load('items.product');
 
@@ -37,17 +36,31 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Tu carrito está vacío.');
         }
 
+        // Update customizations on cart items before creating order
+        $customizations = $request->input('customizations', []);
+        foreach ($customizations as $itemId => $text) {
+            $cartItem = $cart->items->firstWhere('id', $itemId);
+            if ($cartItem) {
+                $cartItem->update(['customization' => $text ?: null]);
+            }
+        }
+
+        // Reload items with updated customizations
+        $cart->load('items.product');
+
         $subtotal = $cart->total;
 
         try {
             $order = DB::transaction(function () use ($request, $cart, $subtotal) {
+                $user = Auth::user();
+
                 $order = Order::create([
                     'order_number' => Order::generateOrderNumber(),
-                    'user_id' => Auth::id(),
-                    'customer_name' => $request->customer_name,
-                    'customer_email' => $request->customer_email,
-                    'customer_phone' => $request->customer_phone,
-                    'customer_address' => $request->customer_address,
+                    'user_id' => $user->id,
+                    'customer_name' => $user->name,
+                    'customer_email' => $user->email,
+                    'customer_phone' => $user->phone ?? $request->customer_phone,
+                    'customer_address' => null,
                     'subtotal' => $subtotal,
                     'shipping_cost' => 0,
                     'total' => $subtotal,
@@ -61,7 +74,7 @@ class CheckoutController extends Controller
 
                     // Check if product still exists
                     if (! $product) {
-                        throw new \Exception("El producto '{$item->product->name}' ya no está disponible.");
+                        throw new \Exception("El producto '{$item->product->name}' ya no est\u00e1 disponible.");
                     }
 
                     if ($product->stock < $item->quantity) {
@@ -90,7 +103,7 @@ class CheckoutController extends Controller
             });
 
             return redirect()->route('orders.show', $order)
-                ->with('success', '¡Pedido realizado exitosamente! Número: '.$order->order_number);
+                ->with('success', "\u{1f389} \u00a1Pedido realizado exitosamente! N\u00famero: {$order->order_number}\n\nNos estaremos contactando v\u00eda WhatsApp al n\u00famero registrado para coordinar tu pedido y personalizaci\u00f3n.");
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
