@@ -30,8 +30,8 @@ class CartController extends Controller
 
         if (! $product->is_active) {
             return $request->wantsJson()
-                ? response()->json(['message' => 'Este producto no est\u00e1 disponible.'], 422)
-                : back()->with('error', 'Este producto no est\u00e1 disponible.');
+                ? response()->json(['message' => 'Este producto no está disponible.'], 422)
+                : back()->with('error', 'Este producto no está disponible.');
         }
 
         $cart = Cart::getOrCreateForUser(Auth::user());

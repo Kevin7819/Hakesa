@@ -7,17 +7,15 @@
                 @if($product->image)
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 @else
-                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/10 to-hakesa-teal/10">
-                        <svg class="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
+                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
+                        <span class="text-4xl font-bold text-hakesa-pink/40">H</span>
                     </div>
                 @endif
             </div>
         </a>
         <div class="p-5">
             @if($product->category)
-                <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full mb-2 bg-hakesa-teal/10 text-hakesa-teal">
+                <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full mb-2 bg-hakesa-teal-light/30 text-hakesa-teal">
                     {{ $product->category->name }}
                 </span>
             @endif
@@ -26,7 +24,7 @@
             </a>
             <p class="text-gray-500 text-sm mb-3 line-clamp-2">{{ $product->description }}</p>
             <div class="flex justify-between items-center">
-                <span class="text-xl font-bold text-hakesa-pink">₡{{ number_format($product->price, 0, ',', '.') }}</span>
+                <span class="text-xl font-bold text-hakesa-pink-dark">₡{{ number_format($product->price, 0, ',', '.') }}</span>
                 <form action="{{ route('cart.add', $product) }}" method="POST" x-data="addToCart('{{ route('cart.add', $product) }}')" @submit="submit($event)">
                     @csrf
                     <button type="submit" :disabled="loading" class="w-10 h-10 rounded-xl bg-hakesa-pink/10 text-hakesa-pink hover:bg-hakesa-pink hover:text-white flex items-center justify-center transition-colors disabled:opacity-50">

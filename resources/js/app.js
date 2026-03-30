@@ -1,8 +1,10 @@
 import './bootstrap';
 
 import Alpine from 'alpinejs';
+import collapse from '@alpinejs/collapse';
 
 window.Alpine = Alpine;
+Alpine.plugin(collapse);
 
 // ── Global Stores ──
 document.addEventListener('alpine:init', () => {
@@ -188,14 +190,13 @@ document.addEventListener('alpine:init', () => {
     }));
 
     // ── Cart page actions (AJAX) ──
-    Alpine.data('cartItem', (updateUrl, removeUrl) => ({
+    Alpine.data('cartItem', (updateUrl, removeUrl, initialQty) => ({
         updating: false,
         removing: false,
-        async updateQty(e) {
-            e.preventDefault();
+        quantity: initialQty,
+        async updateQty() {
+            if (this.updating) return;
             this.updating = true;
-            const form = this.$el;
-            const qty = form.querySelector('[name="quantity"]').value;
             try {
                 const res = await fetch(updateUrl, {
                     method: 'PATCH',
@@ -204,14 +205,17 @@ document.addEventListener('alpine:init', () => {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ quantity: qty }),
+                    body: JSON.stringify({ quantity: this.quantity }),
                 });
                 const data = await res.json();
                 if (res.ok) {
                     Alpine.store('cart').update(data.cart_count);
                     Alpine.store('toasts').success(data.message);
-                    // Reload page to update totals (simpler than partial DOM update)
-                    window.location.reload();
+                    // Update subtotal and total without full reload
+                    const subtotalEl = this.$el.closest('[data-cart-item]').querySelector('[data-subtotal]');
+                    if (subtotalEl && data.cart_total) {
+                        window.location.reload();
+                    }
                 } else {
                     Alpine.store('toasts').error(data.message || 'Error');
                 }

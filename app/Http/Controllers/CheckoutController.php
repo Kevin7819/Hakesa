@@ -74,7 +74,7 @@ class CheckoutController extends Controller
 
                     // Check if product still exists
                     if (! $product) {
-                        throw new \Exception("El producto '{$item->product->name}' ya no est\u00e1 disponible.");
+                        throw new \Exception("El producto '{$item->product->name}' ya no está disponible.");
                     }
 
                     if ($product->stock < $item->quantity) {
@@ -103,7 +103,7 @@ class CheckoutController extends Controller
             });
 
             return redirect()->route('orders.show', $order)
-                ->with('success', "\u{1f389} \u00a1Pedido realizado exitosamente! N\u00famero: {$order->order_number}\n\nNos estaremos contactando v\u00eda WhatsApp al n\u00famero registrado para coordinar tu pedido y personalizaci\u00f3n.");
+                ->with('success', "🎉 ¡Pedido realizado exitosamente! Número: {$order->order_number}\n\nNos estaremos contactando vía WhatsApp al número registrado para coordinar tu pedido y personalización.");
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

@@ -48,7 +48,7 @@
                     <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span class="text-gray-900">₡{{ number_format($order->subtotal, 0, ',', '.') }}</span></div>
                     <div class="flex justify-between"><span class="text-gray-500">Envío</span><span class="text-gray-900">{{ $order->shipping_cost > 0 ? '₡'.number_format($order->shipping_cost, 0, ',', '.') : 'Por definir' }}</span></div>
                     <hr>
-                    <div class="flex justify-between"><span class="font-bold text-gray-900">Total</span><span class="text-hakesa-pink font-bold text-xl">₡{{ number_format($order->total, 0, ',', '.') }}</span></div>
+                    <div class="flex justify-between"><span class="font-bold text-gray-900">Total</span><span class="text-hakesa-pink-dark font-bold text-xl">₡{{ number_format($order->total, 0, ',', '.') }}</span></div>
                 </div>
             </div>
         </div>

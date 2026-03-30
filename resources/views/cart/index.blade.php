@@ -18,8 +18,8 @@
                         @if($item->product->image)
                             <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover">
                         @else
-                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/10 to-hakesa-teal/10">
-                                <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
+                                <span class="text-lg font-bold text-hakesa-pink/40">H</span>
                             </div>
                         @endif
                     </div>
@@ -27,25 +27,22 @@
                     <!-- Info -->
                     <div class="flex-1">
                         <h3 class="font-bold text-gray-900">{{ $item->product->name }}</h3>
-                        <p class="text-hakesa-pink font-semibold">₡{{ number_format($item->product->price, 0, ',', '.') }}</p>
+                        <p class="text-hakesa-pink-dark font-semibold">₡{{ number_format($item->product->price, 0, ',', '.') }}</p>
                         @if($item->customization)
                             <p class="text-sm text-gray-500 mt-1">Personalización: {{ $item->customization }}</p>
                         @endif
                     </div>
 
-                    <!-- Quantity (AJAX) -->
+                    <!-- Quantity (auto-save) -->
                     <div class="flex items-center gap-3"
-                         x-data="cartItem('{{ route('cart.update', $item) }}', '{{ route('cart.remove', $item) }}')">
-                        <form @submit="updateQty($event)" class="flex items-center gap-2">
-                            @csrf
-                            <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="99"
+                         x-data="cartItem('{{ route('cart.update', $item) }}', '{{ route('cart.remove', $item) }}', {{ $item->quantity }})">
+                        <div class="flex items-center gap-2">
+                            <input type="number" x-model="quantity" min="1" max="99"
+                                @change.debounce.500ms="updateQty()"
                                 class="w-16 px-3 py-1.5 border border-gray-200 rounded-lg text-center text-sm focus:outline-none focus:ring-2 focus:ring-hakesa-pink">
-                            <button type="submit" :disabled="updating" class="text-sm text-hakesa-pink hover:text-hakesa-pink-dark font-medium disabled:opacity-50">
-                                <span x-show="!updating">Actualizar</span>
-                                <span x-show="updating" x-cloak>...</span>
-                            </button>
-                        </form>
-                        <button @click="remove()" :disabled="removing" class="text-sm text-red-500 hover:text-red-600 disabled:opacity-50">
+                            <span x-show="updating" x-cloak class="text-xs text-gray-400">...</span>
+                        </div>
+                        <button @click="remove()" :disabled="removing" class="text-sm text-red-400 hover:text-red-600 disabled:opacity-50">
                             <span x-show="!removing">Eliminar</span>
                             <span x-show="removing" x-cloak>...</span>
                         </button>
@@ -65,16 +62,16 @@
                     <span class="text-gray-500" id="cart-item-count">{{ $cart->item_count }} producto{{ $cart->item_count != 1 ? 's' : '' }}</span>
                     <span class="text-2xl font-bold text-gray-900" id="cart-total">₡{{ number_format($cart->total, 0, ',', '.') }}</span>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <a href="{{ route('checkout.index') }}" class="flex-1 btn-hakesa py-3 text-center justify-center">
-                        Proceder al Checkout
-                    </a>
+                <div class="flex flex-col sm:flex-row gap-3 items-center">
                     <div x-data="cartClear('{{ route('cart.clear') }}')">
-                        <button @click="clear()" :disabled="loading" class="px-6 py-3 border-2 border-gray-200 text-gray-500 rounded-xl hover:border-red-300 hover:text-red-500 transition-colors font-medium disabled:opacity-50">
-                            <span x-show="!loading">Vaciar Carrito</span>
+                        <button @click="clear()" :disabled="loading" class="text-sm text-red-400 hover:text-red-600 font-medium disabled:opacity-50 underline-offset-2 hover:underline">
+                            <span x-show="!loading">Vaciar carrito</span>
                             <span x-show="loading" x-cloak>Vaciando...</span>
                         </button>
                     </div>
+                    <a href="{{ route('checkout.index') }}" class="flex-1 btn-hakesa py-3 text-center justify-center">
+                        Proceder al Checkout
+                    </a>
                 </div>
             </div>
         </div>

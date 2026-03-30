@@ -24,7 +24,7 @@
                 <div class="hidden md:flex items-center gap-6">
                     <a href="/" class="text-gray-600 hover:text-hakesa-pink font-medium transition-colors">Inicio</a>
                     <a href="{{ route('catalog.index') }}" class="text-gray-600 hover:text-hakesa-pink font-medium transition-colors">Catálogo</a>
-                    <a href="#contacto" class="text-gray-600 hover:text-hakesa-pink font-medium transition-colors">Contacto</a>
+                    <a href="/#contacto" class="text-gray-600 hover:text-hakesa-pink font-medium transition-colors">Contacto</a>
 
                     @auth
                         <a href="{{ route('cart.index') }}" class="relative text-gray-600 hover:text-hakesa-pink transition-colors">
@@ -69,7 +69,7 @@
             <div class="px-4 py-4 space-y-2">
                 <a href="/" @click="open = false" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-hakesa-light hover:text-hakesa-pink font-medium">Inicio</a>
                 <a href="{{ route('catalog.index') }}" @click="open = false" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-hakesa-light hover:text-hakesa-pink font-medium">Catálogo</a>
-                <a href="#contacto" @click="open = false" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-hakesa-light hover:text-hakesa-pink font-medium">Contacto</a>
+                <a href="/#contacto" @click="open = false" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-hakesa-light hover:text-hakesa-pink font-medium">Contacto</a>
                 @auth
                     <a href="{{ route('cart.index') }}" @click="open = false" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-hakesa-light hover:text-hakesa-pink font-medium">Carrito</a>
                     <a href="{{ route('orders.index') }}" @click="open = false" class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-hakesa-light hover:text-hakesa-pink font-medium">Mis Pedidos</a>
