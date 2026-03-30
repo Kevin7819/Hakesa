@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse|RedirectResponse
     {
         $request->validate([
             'content' => ['required', 'string', 'min:2', 'max:1000'],
@@ -25,7 +26,20 @@ class CommentController extends Controller
             'status' => 'pendiente',
         ]);
 
+        $message = 'Tu comentario está pendiente de aprobación.';
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => $message,
+                'comment' => [
+                    'content' => $request->input('content'),
+                    'user_name' => Auth::user()->name,
+                    'created_at' => 'Ahora',
+                ],
+            ]);
+        }
+
         return redirect()->route('welcome')
-            ->with('success', '¡Gracias por tu comentario! Tu comentario está pendiente de aprobación.');
+            ->with('success', $message);
     }
 }

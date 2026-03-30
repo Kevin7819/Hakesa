@@ -140,12 +140,12 @@
         <div class="relative" x-data="carousel">
             <div class="carousel-container rounded-2xl">
                 <div class="carousel-track" :style="`transform: translateX(-${current * 100}%)`">
-                    @foreach($products->chunk(3) as $chunk)
+                    @foreach($products->chunk(4) as $chunk)
                     <div class="carousel-slide px-4">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
                             @foreach($chunk as $product)
-                            <div class="card-hakesa overflow-hidden w-full flex flex-col">
-                                <div class="h-56 bg-gray-100 overflow-hidden">
+                            <div class="card-hakesa overflow-hidden w-full max-w-sm flex flex-col">
+                                <div class="aspect-square bg-gray-100 overflow-hidden">
                                     @if($product->image)
                                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                                     @else
@@ -176,7 +176,7 @@
             </div>
 
             <!-- Navigation arrows -->
-            @if($products->count() > 3)
+            @if($products->count() > 4)
             <button @click="prev()" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
@@ -273,26 +273,25 @@
 
         {{-- Comment form --}}
         @auth
-            <div class="card-hakesa p-8 mb-10 max-w-2xl mx-auto">
+            <div class="card-hakesa p-8 mb-10 max-w-2xl mx-auto" x-data="commentForm('{{ route('comments.store') }}')">
                 <h3 class="text-lg font-bold mb-4">Deja tu comentario</h3>
-                <form action="{{ route('comments.store') }}" method="POST">
-                    @csrf
+                <div>
                     <textarea
-                        name="content"
+                        x-model="content"
                         rows="3"
                         placeholder="Escribe tu experiencia con Hakesa..."
-                        class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-hakesa-pink focus:border-transparent resize-none transition @error('content') border-red-400 @enderror"
-                        required
-                    >{{ old('content') }}</textarea>
-                    @error('content')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                        :class="error ? 'border-red-400' : 'border-gray-200'"
+                        class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-hakesa-pink focus:border-transparent resize-none transition"
+                    ></textarea>
+                    <p x-show="error" x-text="error" class="text-red-500 text-sm mt-1" x-cloak></p>
                     <div class="flex justify-end mt-3">
-                        <button type="submit" class="btn-hakesa">
-                            Publicar comentario
+                        <button type="button" @click="submit()" :disabled="loading || !content.trim()" class="btn-hakesa disabled:opacity-50">
+                            <svg x-show="loading" x-cloak class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <span x-show="!loading">Publicar comentario</span>
+                            <span x-show="loading" x-cloak>Enviando...</span>
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         @else
             <div class="text-center mb-10">
@@ -303,7 +302,7 @@
 
         {{-- Comments list --}}
         @if($comments->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div id="comments-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($comments as $comment)
                     <div class="card-hakesa p-8">
                         <p class="text-gray-600 mb-6 italic">"{{ $comment->content }}"</p>
@@ -320,7 +319,7 @@
                 @endforeach
             </div>
         @else
-            <div class="text-center py-12">
+            <div id="comments-empty" class="text-center py-12">
                 <div class="w-20 h-20 bg-hakesa-teal/10 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg class="w-10 h-10 text-hakesa-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
@@ -329,6 +328,7 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Aún no hay comentarios</h3>
                 <p class="text-gray-500">¡Sé el primero en compartir tu experiencia con Hakesa!</p>
             </div>
+            <div id="comments-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         @endif
     </div>
 </section>
