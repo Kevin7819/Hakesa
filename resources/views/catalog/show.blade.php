@@ -27,10 +27,8 @@
                 @if($product->image)
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
                 @else
-                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/10 to-hakesa-teal/10 min-h-[400px]">
-                        <svg class="w-24 h-24 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
+                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20 min-h-[400px]">
+                        <span class="text-8xl font-bold text-hakesa-pink/30">H</span>
                     </div>
                 @endif
             </div>
@@ -40,7 +38,7 @@
                 @if($product->service_type)
                     <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full mb-3
                         {{ $product->service_type === 'sublimacion' ? 'bg-hakesa-pink/10 text-hakesa-pink-dark' : '' }}
-                        {{ $product->service_type === 'laser' ? 'bg-hakesa-teal/10 text-teal-700' : '' }}
+                        {{ $product->service_type === 'laser' ? 'bg-hakesa-teal-light/30 text-teal-700' : '' }}
                         {{ $product->service_type === 'vinil' ? 'bg-hakesa-yellow/10 text-yellow-700' : '' }}">
                         {{ ucfirst($product->service_type) }}
                     </span>
@@ -98,14 +96,14 @@
                         @if($item->image)
                             <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         @else
-                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/10 to-hakesa-teal/10">
-                                <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
+                                <span class="text-2xl font-bold text-hakesa-pink/40">H</span>
                             </div>
                         @endif
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-gray-900 text-sm mb-1">{{ $item->name }}</h3>
-                        <p class="text-hakesa-pink font-bold">₡{{ number_format($item->price, 0, ',', '.') }}</p>
+                        <p class="text-hakesa-pink-dark font-bold">₡{{ number_format($item->price, 0, ',', '.') }}</p>
                     </div>
                 </a>
                 @endforeach

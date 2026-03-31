@@ -1,4 +1,4 @@
-# AGENTS.md - Developer Guidelines for Hakesa
+n# AGENTS.md - Developer Guidelines for Hakesa
 
 This file provides guidelines for AI agents working on this Laravel + React project.
 
@@ -162,3 +162,57 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate
 ```
+
+---
+
+# Code Review Rules (GGA)
+
+## Response Format
+FIRST LINE must be exactly:
+```
+STATUS: PASSED
+```
+or
+```
+STATUS: FAILED
+```
+
+If FAILED, list violations as: `file:line - rule violated - issue`
+
+## PHP/Laravel — REJECT if:
+- Hardcoded secrets, API keys, passwords, or DB credentials in code
+- `dd()` or `dump()` left in production code
+- Missing return type declarations on public methods
+- Raw SQL queries without parameter binding (SQL injection risk)
+- `$request->all()` without validation — always use `$request->validate()` or Form Requests
+- N+1 queries (looping relationships without eager loading)
+- Missing `$fillable` or `$guarded` on Eloquent models
+- Controllers with business logic — extract to Services/Actions
+- Routes defined outside `routes/web.php` or `routes/api.php`
+- Using `DB::raw()` without escaping
+- Missing authorization checks on sensitive endpoints
+
+## Blade Templates — REJECT if:
+- `{!! $variable !!}` with user-generated content (XSS risk)
+- Business logic in Blade — extract to Components or Controllers
+- Inline styles (`style="..."`) — use Tailwind utilities
+- Missing `@csrf` on forms
+- Missing `@method('DELETE')` on delete forms
+
+## JavaScript/Alpine.js — REJECT if:
+- `var` usage — use `const`/`let`
+- `console.log()` in production code
+- Inline event handlers (`onclick="..."`) — use Alpine.js directives
+- Missing error handling on fetch/axios calls
+
+## CSS/Tailwind — REJECT if:
+- Custom CSS when Tailwind utility exists
+- Missing responsive prefixes for mobile-first design
+- Hardcoded colors — use Tailwind config theme
+
+## Security — ALWAYS REJECT if:
+- Secrets in code or config files
+- SQL injection vectors
+- XSS vulnerabilities in Blade
+- Missing CSRF protection on forms
+- Missing authentication/authorization on routes
