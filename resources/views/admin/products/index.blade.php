@@ -32,7 +32,7 @@
                     <td class="px-6 py-4"><div class="flex items-center gap-2">
                         <a href="{{ route('admin.products.show', $product) }}" class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-500 hover:bg-blue-100"><i class="fas fa-eye text-sm"></i></a>
                         <a href="{{ route('admin.products.edit', $product) }}" class="w-8 h-8 rounded-lg bg-yellow-50 flex items-center justify-center text-yellow-600 hover:bg-yellow-100"><i class="fas fa-edit text-sm"></i></a>
-                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="inline">@csrf @method('DELETE')<button onclick="return confirm('¿Eliminar?')" class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100"><i class="fas fa-trash text-sm"></i></button></form>
+                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="inline">@csrf @method('DELETE')<button @click.prevent="confirm('¿Eliminar?') && $el.closest('form').submit()" class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100"><i class="fas fa-trash text-sm"></i></button></form>
                     </div></td>
                 </tr>
                 @empty<tr><td colspan="7" class="px-6 py-12 text-center text-gray-400">No hay productos</td></tr>@endforelse

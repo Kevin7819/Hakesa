@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="@yield('meta-description', 'Arte y Diseño Hakesa — Sublimación, corte láser y vinil personalizado en Costa Rica. Pedidos por WhatsApp. Envíos a todo el país.')">
+    <link rel="icon" type="image/png" href="/Hakesa.png">
+    <link rel="apple-touch-icon" href="/Hakesa.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@yield('title', 'Arte y Diseño Hakesa - Personalización en Costa Rica')">
+    <meta property="og:description" content="@yield('meta-description', 'Arte y Diseño Hakesa — Sublimación, corte láser y vinil personalizado en Costa Rica. Pedidos por WhatsApp. Envíos a todo el país.')">
+    <meta property="og:image" content="{{ asset('Hakesa_logo.webp') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="Hakesa">
+    <meta property="og:locale" content="es_CR">
     <title>@yield('title', 'Arte y Diseño Hakesa - Personalización en Costa Rica')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

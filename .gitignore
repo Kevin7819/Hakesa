@@ -26,3 +26,6 @@ tareas.txt
 
 # Video script (not for repo)
 video_script.txt
+
+# Skill registry (generated)
+.atl/

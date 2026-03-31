@@ -7,6 +7,14 @@
    ═══════════════════════════════════════════════════════════ */
 
 @layer base {
+    :root {
+        --hakesa-pink: #F26BB5;
+        --hakesa-pink-dark: #D94E9B;
+        --hakesa-teal: #04BFBF;
+        --hakesa-yellow: #F2CB05;
+        --hakesa-gold: #F2B705;
+    }
+
     html {
         scroll-behavior: smooth;
     }
@@ -94,25 +102,25 @@
 @layer utilities {
     /* ── Gradients ── */
     .gradient-hakesa {
-        background: linear-gradient(135deg, #F26BB5 0%, #04BFBF 100%);
+        background: linear-gradient(135deg, var(--hakesa-pink) 0%, var(--hakesa-teal) 100%);
     }
 
     .gradient-hakesa-warm {
-        background: linear-gradient(135deg, #F26BB5 0%, #F2B705 100%);
+        background: linear-gradient(135deg, var(--hakesa-pink) 0%, var(--hakesa-gold) 100%);
     }
 
     .gradient-hakesa-cool {
-        background: linear-gradient(135deg, #04BFBF 0%, #F2CB05 100%);
+        background: linear-gradient(135deg, var(--hakesa-teal) 0%, var(--hakesa-yellow) 100%);
     }
 
     .gradient-hero {
-        background: linear-gradient(135deg, #F26BB5 0%, #D94E9B 40%, #04BFBF 100%);
+        background: linear-gradient(135deg, var(--hakesa-pink) 0%, var(--hakesa-pink-dark) 40%, var(--hakesa-teal) 100%);
     }
 
     /* ── Text gradients ── */
     .text-gradient {
         @apply bg-clip-text text-transparent;
-        background-image: linear-gradient(135deg, #F26BB5, #04BFBF);
+        background-image: linear-gradient(135deg, var(--hakesa-pink), var(--hakesa-teal));
     }
 }
 

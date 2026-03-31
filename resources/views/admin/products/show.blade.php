@@ -23,7 +23,7 @@
                 </div>
                 <div class="flex gap-3">
                     <a href="{{ route('admin.products.edit', $product) }}" class="btn-hakesa text-sm"><i class="fas fa-edit mr-2"></i>Editar</a>
-                    <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="inline">@csrf @method('DELETE')<button onclick="return confirm('¿Eliminar?')" class="px-5 py-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 font-semibold text-sm"><i class="fas fa-trash mr-2"></i>Eliminar</button></form>
+                    <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="inline">@csrf @method('DELETE')<button @click.prevent="confirm('¿Eliminar?') && $el.closest('form').submit()" class="px-5 py-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 font-semibold text-sm"><i class="fas fa-trash mr-2"></i>Eliminar</button></form>
                 </div>
             </div>
         </div>
