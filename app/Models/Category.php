@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
+#[Fillable(['name', 'slug', 'description', 'is_active', 'sort_order'])]
 class Category extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['name', 'slug', 'description', 'is_active', 'sort_order'];
 
     protected function casts(): array
     {
@@ -34,7 +35,7 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
