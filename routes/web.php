@@ -61,9 +61,9 @@ Route::get('/productos/{product}', [CatalogController::class, 'show'])->name('ca
 // ── Carrito (requiere login) ──
 Route::middleware('auth')->group(function () {
     Route::get('/carrito', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/carrito/agregar/{product}', [CartController::class, 'add'])->name('cart.add');
-    Route::patch('/carrito/{item}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/carrito/{item}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/carrito/agregar/{product}', [CartController::class, 'add'])->name('cart.add')->middleware('throttle:30,1');
+    Route::patch('/carrito/{item}', [CartController::class, 'update'])->name('cart.update')->middleware('throttle:30,1');
+    Route::delete('/carrito/{item}', [CartController::class, 'remove'])->name('cart.remove')->middleware('throttle:30,1');
     Route::delete('/carrito', [CartController::class, 'clear'])->name('cart.clear');
 
     // ── Checkout ──
