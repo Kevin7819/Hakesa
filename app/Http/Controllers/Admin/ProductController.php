@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -27,18 +27,9 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(ProductRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'category_id' => ['nullable', 'exists:categories,id'],
-            'service_type' => ['nullable', 'string', 'max:100'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'is_active' => ['boolean'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             $path = $this->storeProductImage($request->file('image'), $validated);
@@ -66,18 +57,9 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(ProductRequest $request, Product $product): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'category_id' => ['nullable', 'exists:categories,id'],
-            'service_type' => ['nullable', 'string', 'max:100'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'is_active' => ['boolean'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             // Delete old image
