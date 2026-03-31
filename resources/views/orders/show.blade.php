@@ -26,27 +26,7 @@
                     <h1 class="text-2xl font-bold text-gray-900 font-mono">{{ $order->order_number }}</h1>
                     <p class="text-gray-500 mt-1">{{ $order->created_at->format('d/m/Y H:i') }}</p>
                 </div>
-                @php
-                    $statusColors = [
-                        'pending' => 'bg-hakesa-yellow/20 text-yellow-700',
-                        'confirmed' => 'bg-blue-100 text-blue-700',
-                        'in_progress' => 'bg-hakesa-teal/20 text-teal-700',
-                        'completed' => 'bg-green-100 text-green-700',
-                        'sent' => 'bg-hakesa-pink/20 text-pink-700',
-                        'cancelled' => 'bg-red-100 text-red-700',
-                    ];
-                    $statusLabels = [
-                        'pending' => 'Pendiente',
-                        'confirmed' => 'Confirmado',
-                        'in_progress' => 'En Proceso',
-                        'completed' => 'Completado',
-                        'sent' => 'Enviado',
-                        'cancelled' => 'Cancelado',
-                    ];
-                @endphp
-                <span class="px-4 py-2 text-sm font-bold rounded-xl {{ $statusColors[$order->status] ?? 'bg-gray-100 text-gray-600' }}">
-                    {{ $statusLabels[$order->status] ?? ucfirst($order->status) }}
-                </span>
+                <x-order-status :status="$order->status" size="lg" />
             </div>
         </div>
 
