@@ -1,19 +1,21 @@
 <?php
 
-test('registration screen can be rendered', function () {
-    $response = $this->get('/register');
+describe('Registration', function () {
+    it('registration screen can be rendered', function () {
+        $response = $this->get('/register');
 
-    $response->assertStatus(200);
-});
+        $response->assertStatus(200);
+    });
 
-test('new users can register', function () {
-    $response = $this->post('/register', [
-        'name' => 'Test User',
-        'email' => 'test@example.com',
-        'password' => 'password',
-        'password_confirmation' => 'password',
-    ]);
+    it('new users can register', function () {
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('catalog.index', absolute: false));
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('catalog.index', absolute: false));
+    });
 });
