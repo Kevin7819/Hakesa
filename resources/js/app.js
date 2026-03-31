@@ -205,8 +205,7 @@ document.addEventListener('alpine:init', () => {
         async doUpdate() {
             if (this.updating) return;
             this.updating = true;
-            const form = this.$el.closest('form') || this.$el.querySelector('form');
-            const qtyInput = form.querySelector('[name="quantity"]');
+            const qtyInput = this.$el.querySelector('[name="quantity"]');
             const qty = qtyInput.value;
             if (qty < 1) { qtyInput.value = 1; this.updating = false; return; }
             try {

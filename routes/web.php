@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/carrito/agregar/{product}', [CartController::class, 'add'])->name('cart.add')->middleware('throttle:30,1');
     Route::patch('/carrito/{item}', [CartController::class, 'update'])->name('cart.update')->middleware('throttle:30,1');
     Route::delete('/carrito/{item}', [CartController::class, 'remove'])->name('cart.remove')->middleware('throttle:30,1');
-    Route::delete('/carrito', [CartController::class, 'clear'])->name('cart.clear');
+    Route::delete('/carrito', [CartController::class, 'clear'])->name('cart.clear')->middleware('throttle:10,1');
 
     // ── Checkout ──
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // ── Comentarios ──
-    Route::post('/comentarios', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/comentarios', [CommentController::class, 'store'])->name('comments.store')->middleware('throttle:5,1');
 });
 
 // ── Admin Panel ──
