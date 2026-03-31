@@ -17,7 +17,7 @@
         >
             <!-- Logo -->
             <div class="h-20 flex items-center gap-3 px-6 border-b border-gray-100">
-                <img src="{{ asset('Hakesa_without_background.png') }}" alt="Hakesa" class="h-10 w-auto">
+                <img src="{{ asset('Hakesa_logo.webp') }}" alt="Hakesa" width="43" height="40" class="h-10 w-auto">
                 <div>
                     <span class="text-lg font-bold text-gray-900">Hakesa</span>
                     <span class="block text-xs text-gray-400">Panel de Administración</span>

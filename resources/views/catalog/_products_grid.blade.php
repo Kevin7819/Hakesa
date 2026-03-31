@@ -15,7 +15,7 @@
         </a>
         <div class="p-5">
             @if($product->category)
-                <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full mb-2 bg-hakesa-teal-light/30 text-hakesa-teal">
+                <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full mb-2 bg-hakesa-teal-light/30 text-teal-700">
                     {{ $product->category->name }}
                 </span>
             @endif
@@ -27,7 +27,7 @@
                 <span class="text-xl font-bold text-hakesa-pink-dark">₡{{ number_format($product->price, 0, ',', '.') }}</span>
                 <form action="{{ route('cart.add', $product) }}" method="POST" x-data="addToCart('{{ route('cart.add', $product) }}')" @submit="submit($event)">
                     @csrf
-                    <button type="submit" :disabled="loading" class="w-10 h-10 rounded-xl bg-hakesa-pink/10 text-hakesa-pink hover:bg-hakesa-pink hover:text-white flex items-center justify-center transition-colors disabled:opacity-50">
+                    <button type="submit" :disabled="loading" :aria-label="'Agregar ' + @js($product->name) + ' al carrito'" class="w-10 h-10 rounded-xl bg-hakesa-pink/10 text-hakesa-pink hover:bg-hakesa-pink hover:text-white flex items-center justify-center transition-colors disabled:opacity-50">
                         <svg x-show="!loading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
                         <svg x-show="loading" x-cloak class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     </button>

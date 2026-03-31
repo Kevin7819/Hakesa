@@ -1,0 +1,9 @@
+# GGA Configuration for Hakesa Project
+# Uses OpenCode free models via CLI
+
+PROVIDER="opencode:opencode/gpt-5-nano"
+FILE_PATTERNS="*.php,*.blade.php,*.js,*.css"
+EXCLUDE_PATTERNS="vendor/*,node_modules/*,storage/*,public/build/*,*.min.js"
+RULES_FILE="AGENTS.md"
+STRICT_MODE="true"
+TIMEOUT="120"

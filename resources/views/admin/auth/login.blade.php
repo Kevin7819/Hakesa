@@ -11,7 +11,7 @@
     <div class="w-full max-w-md px-4">
         <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
             <div class="text-center mb-8">
-                <img src="{{ asset('Hakesa_without_background.png') }}" alt="Hakesa" class="w-16 h-16 mx-auto mb-4 object-contain">
+                <img src="{{ asset('Hakesa_logo.webp') }}" alt="Hakesa" width="64" height="60" class="w-16 h-16 mx-auto mb-4 object-contain">
                 <h1 class="text-2xl font-bold text-gray-900">Hakesa Admin</h1>
                 <p class="text-gray-500 mt-1">Panel de Administración</p>
             </div>

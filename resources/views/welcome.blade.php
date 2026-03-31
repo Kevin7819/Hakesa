@@ -130,7 +130,7 @@
 <section id="catalogo" class="section-padding bg-hakesa-light">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="inline-block px-4 py-1.5 bg-hakesa-teal-light/30 text-hakesa-teal rounded-full text-sm font-semibold mb-4">Catálogo</span>
+            <span class="inline-block px-4 py-1.5 bg-hakesa-teal-light/30 text-teal-700 rounded-full text-sm font-semibold mb-4">Catálogo</span>
             <h2 class="section-title text-hakesa-pink">Productos Destacados</h2>
             <p class="section-subtitle">Explora algunos de nuestros productos más populares</p>
         </div>
@@ -156,7 +156,7 @@
                                 </div>
                                 <div class="p-6 flex flex-col flex-grow">
                                     @if($product->category)
-                                        <span class="inline-block px-2.5 py-1 bg-hakesa-teal-light/30 text-hakesa-teal text-xs font-semibold rounded-full mb-3">{{ $product->category->name }}</span>
+                                        <span class="inline-block px-2.5 py-1 bg-hakesa-teal-light/30 text-teal-700 text-xs font-semibold rounded-full mb-3">{{ $product->category->name }}</span>
                                     @endif
                                     <h3 class="text-lg font-bold mb-2">{{ $product->name }}</h3>
                                     <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">{{ $product->description }}</p>
@@ -175,17 +175,17 @@
 
             <!-- Navigation arrows -->
             @if($products->count() > 4)
-            <button @click="prev()" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            <button @click="prev()" aria-label="Producto anterior" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
+                <svg aria-hidden="true" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <button @click="next()" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <button @click="next()" aria-label="Siguiente producto" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
+                <svg aria-hidden="true" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
 
             <!-- Dots -->
             <div class="flex justify-center gap-2 mt-8">
                 <template x-for="i in total" :key="i">
-                    <button @click="goTo(i - 1)" :class="current === i - 1 ? 'bg-hakesa-pink w-8' : 'bg-gray-300 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
+                    <button @click="goTo(i - 1)" :aria-label="'Ir al slide ' + i" :class="current === i - 1 ? 'bg-hakesa-pink w-8' : 'bg-gray-300 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
                 </template>
             </div>
             @endif
@@ -212,7 +212,7 @@
 <section class="section-padding bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="inline-block px-4 py-1.5 bg-hakesa-gold/10 text-hakesa-gold-dark rounded-full text-sm font-semibold mb-4">Proceso</span>
+            <span class="inline-block px-4 py-1.5 bg-hakesa-gold/10 text-yellow-700 rounded-full text-sm font-semibold mb-4">Proceso</span>
             <h2 class="section-title text-hakesa-pink">¿Cómo Funciona?</h2>
             <p class="section-subtitle">En solo 3 pasos tienes tu producto personalizado</p>
         </div>
