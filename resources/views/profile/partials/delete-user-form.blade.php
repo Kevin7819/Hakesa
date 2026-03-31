@@ -10,46 +10,106 @@
     </header>
 
     <x-danger-button
-        x-data=""
+        x-data
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
     >Eliminar Cuenta</x-danger-button>
 
-    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
-            @csrf
-            @method('delete')
+    <!-- Modal: no se cierra al clickear fuera — acción peligrosa -->
+    <div
+        x-data="{ show: {{ $errors->userDeletion->isNotEmpty() ? 'true' : 'false' }} }"
+        x-on:open-modal.window="$event.detail == 'confirm-user-deletion' ? show = true : null"
+        x-on:close-modal.window="$event.detail == 'confirm-user-deletion' ? show = false : null"
+        x-on:keydown.escape.window="show = false"
+        x-show="show"
+        class="fixed inset-0 z-50 overflow-y-auto"
+        style="display: none;"
+    >
+        <!-- Backdrop oscuro — NO cierra el modal al clickear -->
+        <div
+            x-show="show"
+            x-transition:enter="ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-gray-900/75"
+        ></div>
 
-            <h2 class="text-lg font-bold text-gray-900">
-                ¿Estás seguro de que quieres eliminar tu cuenta?
-            </h2>
+        <!-- Panel del modal -->
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div
+                x-show="show"
+                x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                x-transition:leave="ease-in duration-200"
+                x-transition:leave-start="opacity-100 sm:scale-100"
+                x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                class="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden"
+                @click.outside=""
+            >
+                <!-- Header con X -->
+                <div class="flex items-center justify-between px-6 pt-6 pb-2">
+                    <h2 class="text-lg font-bold text-gray-900">
+                        ¿Eliminar tu cuenta?
+                    </h2>
+                    <button
+                        type="button"
+                        x-on:click="show = false"
+                        class="text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Cerrar modal"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
 
-            <p class="mt-1 text-sm text-gray-500">
-                Una vez eliminada, todos tus datos se borrarán de forma permanente. Ingresa tu contraseña para confirmar que deseas eliminar tu cuenta definitivamente.
-            </p>
+                <!-- Body -->
+                <form method="post" action="{{ route('profile.destroy') }}" class="px-6 pb-6">
+                    @csrf
+                    @method('delete')
 
-            <div class="mt-6">
-                <x-input-label for="password" value="Contraseña" class="sr-only" />
+                    <p class="text-sm text-gray-500 mb-6">
+                        Esta acción es <strong>permanente e irreversible</strong>. Todos tus datos, pedidos y configuración se eliminarán para siempre. Ingresa tu contraseña para confirmar.
+                    </p>
 
-                <x-text-input
-                    id="password"
-                    name="password"
-                    type="password"
-                    class="mt-1 block w-3/4"
-                    placeholder="Contraseña"
-                />
+                    <div>
+                        <label for="delete-password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                        <input
+                            id="delete-password"
+                            name="password"
+                            type="password"
+                            required
+                            autofocus
+                            autocomplete="current-password"
+                            class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-shadow"
+                            placeholder="Tu contraseña actual"
+                        />
+                        @error('password', 'userDeletion')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                    <!-- Footer -->
+                    <div class="mt-6 flex justify-end gap-3">
+                        <button
+                            type="button"
+                            x-on:click="show = false"
+                            class="px-5 py-2.5 bg-white border border-gray-300 rounded-xl font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="submit"
+                            class="px-5 py-2.5 bg-red-600 border border-transparent rounded-xl font-semibold text-sm text-white hover:bg-red-500 active:bg-red-700 transition-colors"
+                        >
+                            Eliminar Cuenta
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <div class="mt-6 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    Cancelar
-                </x-secondary-button>
-
-                <x-danger-button class="ms-3">
-                    Eliminar Cuenta
-                </x-danger-button>
-            </div>
-        </form>
-    </x-modal>
+        </div>
+    </div>
 </section>
