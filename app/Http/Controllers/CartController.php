@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class CartController extends Controller
@@ -38,43 +39,47 @@ class CartController extends Controller
 
         $requestedQty = $request->input('quantity', 1);
 
-        // Stock validation
-        if ($requestedQty > $product->stock) {
-            $msg = "Stock insuficiente. Disponible: {$product->stock}";
+        // Lock product row to prevent race conditions on stock
+        $result = DB::transaction(function () use ($cart, $product, $requestedQty, $request) {
+            $lockedProduct = Product::lockForUpdate()->find($product->id);
 
-            return $request->wantsJson()
-                ? response()->json(['message' => $msg], 422)
-                : back()->with('error', $msg);
-        }
-
-        $existingItem = $cart->items()
-            ->where('product_id', $product->id);
-
-        if ($request->filled('customization')) {
-            $existingItem->where('customization', $request->input('customization'));
-        } else {
-            $existingItem->whereNull('customization');
-        }
-
-        $existing = $existingItem->first();
-
-        if ($existing) {
-            $newQty = $existing->quantity + $requestedQty;
-            if ($newQty > $product->stock) {
-                $msg = "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$product->stock}";
-
-                return $request->wantsJson()
-                    ? response()->json(['message' => $msg], 422)
-                    : back()->with('error', $msg);
+            if ($requestedQty > $lockedProduct->stock) {
+                return "Stock insuficiente. Disponible: {$lockedProduct->stock}";
             }
-            $existing->update(['quantity' => $newQty]);
-        } else {
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'product_id' => $product->id,
-                'quantity' => $requestedQty,
-                'customization' => $request->input('customization'),
-            ]);
+
+            $existingItem = $cart->items()
+                ->where('product_id', $product->id);
+
+            if ($request->filled('customization')) {
+                $existingItem->where('customization', $request->input('customization'));
+            } else {
+                $existingItem->whereNull('customization');
+            }
+
+            $existing = $existingItem->first();
+
+            if ($existing) {
+                $newQty = $existing->quantity + $requestedQty;
+                if ($newQty > $lockedProduct->stock) {
+                    return "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$lockedProduct->stock}";
+                }
+                $existing->update(['quantity' => $newQty]);
+            } else {
+                CartItem::create([
+                    'cart_id' => $cart->id,
+                    'product_id' => $product->id,
+                    'quantity' => $requestedQty,
+                    'customization' => $request->input('customization'),
+                ]);
+            }
+
+            return null; // success
+        });
+
+        if ($result !== null) {
+            return $request->wantsJson()
+                ? response()->json(['message' => $result], 422)
+                : back()->with('error', $result);
         }
 
         $message = "¡{$product->name} agregado al carrito!";
@@ -97,11 +102,13 @@ class CartController extends Controller
             'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ]);
 
-        $item->load(['cart', 'product']);
-
+        // Check ownership BEFORE loading sensitive data
+        $item->load('cart');
         if ($item->cart->user_id !== Auth::id()) {
             abort(403);
         }
+
+        $item->load('product');
 
         if ($request->quantity > $item->product->stock) {
             $msg = "Stock insuficiente. Disponible: {$item->product->stock}";
