@@ -77,7 +77,7 @@ class CartController extends Controller
             ]);
         }
 
-        $message = "{$product->name} agregado al carrito.";
+        $message = "¡{$product->name} agregado al carrito!";
 
         if ($request->wantsJson()) {
             $cart->load('items');
@@ -115,11 +115,14 @@ class CartController extends Controller
 
         if ($request->wantsJson()) {
             $item->cart->load('items');
+            $item->load('product');
 
             return response()->json([
                 'message' => 'Cantidad actualizada.',
                 'cart_count' => $item->cart->item_count,
                 'cart_total' => '₡'.number_format($item->cart->total, 0, ',', '.'),
+                'item_subtotal' => '₡'.number_format($item->subtotal, 0, ',', '.'),
+                'item_id' => $item->id,
             ]);
         }
 
