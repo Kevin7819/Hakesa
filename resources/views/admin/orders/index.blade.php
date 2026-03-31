@@ -23,7 +23,7 @@
                     <td class="px-6 py-4"><p class="text-gray-900">{{ $order->customer_name }}</p><p class="text-sm text-gray-400">{{ $order->customer_email }}</p></td>
                     <td class="px-6 py-4 text-gray-900 font-semibold">₡{{ number_format($order->total, 0, ',', '.') }}</td>
                     <td class="px-6 py-4">
-                        @php $c=['pending'=>'bg-yellow-100 text-yellow-700','confirmed'=>'bg-blue-100 text-blue-700','in_progress'=>'bg-hakesa-teal/10 text-hakesa-teal-dark','completed'=>'bg-green-100 text-green-700','sent'=>'bg-hakesa-pink/10 text-hakesa-pink-dark','cancelled'=>'bg-red-100 text-red-700']; $l=['pending'=>'Pendiente','confirmed'=>'Confirmado','in_progress'=>'En Proceso','completed'=>'Completado','sent'=>'Enviado','cancelled'=>'Cancelado']; @endphp
+                        @php $c=['pending'=>'bg-yellow-100 text-yellow-700','confirmed'=>'bg-blue-100 text-blue-700','in_progress'=>'bg-hakesa-teal/10 text-teal-700','completed'=>'bg-green-100 text-green-700','sent'=>'bg-hakesa-pink/10 text-pink-700','cancelled'=>'bg-red-100 text-red-700']; $l=['pending'=>'Pendiente','confirmed'=>'Confirmado','in_progress'=>'En Proceso','completed'=>'Completado','sent'=>'Enviado','cancelled'=>'Cancelado']; @endphp
                         <span class="px-2.5 py-1 text-xs font-semibold rounded-full {{ $c[$order->status]??'bg-gray-100 text-gray-600' }}">{{ $l[$order->status]??ucfirst($order->status) }}</span>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-400">{{ $order->created_at->format('d/m/Y H:i') }}</td>

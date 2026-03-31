@@ -106,6 +106,8 @@ document.addEventListener('alpine:init', () => {
                 if (res.ok) {
                     Alpine.store('cart').update(data.cart_count);
                     Alpine.store('toasts').success(data.message);
+                    // Bounce cart icon
+                    window.dispatchEvent(new CustomEvent('cart-bounce'));
                     form.reset();
                     const qty = form.querySelector('[name="quantity"]');
                     if (qty) qty.value = 1;
@@ -163,7 +165,7 @@ document.addEventListener('alpine:init', () => {
                     pName.textContent = userName;
 
                     const pStatus = document.createElement('p');
-                    pStatus.className = 'text-hakesa-teal text-xs font-medium flex items-center gap-1';
+                    pStatus.className = 'text-teal-700 text-xs font-medium flex items-center gap-1';
                     pStatus.innerHTML = '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>Pendiente de aprobación';
 
                     const infoDiv = document.createElement('div');
@@ -191,11 +193,20 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('cartItem', (updateUrl, removeUrl) => ({
         updating: false,
         removing: false,
-        async updateQty(e) {
-            e.preventDefault();
+        _debounceTimer: null,
+        autoUpdate(e) {
+            clearTimeout(this._debounceTimer);
+            this._debounceTimer = setTimeout(() => {
+                this.doUpdate();
+            }, 600);
+        },
+        async doUpdate() {
+            if (this.updating) return;
             this.updating = true;
-            const form = this.$el;
-            const qty = form.querySelector('[name="quantity"]').value;
+            const form = this.$el.closest('form') || this.$el.querySelector('form');
+            const qtyInput = form.querySelector('[name="quantity"]');
+            const qty = qtyInput.value;
+            if (qty < 1) { qtyInput.value = 1; this.updating = false; return; }
             try {
                 const res = await fetch(updateUrl, {
                     method: 'PATCH',
@@ -209,9 +220,14 @@ document.addEventListener('alpine:init', () => {
                 const data = await res.json();
                 if (res.ok) {
                     Alpine.store('cart').update(data.cart_count);
-                    Alpine.store('toasts').success(data.message);
-                    // Reload page to update totals (simpler than partial DOM update)
-                    window.location.reload();
+                    // Update subtotal inline
+                    const subtotalEl = this.$el.closest('[data-cart-item]').querySelector('[data-subtotal]');
+                    if (subtotalEl) subtotalEl.textContent = data.item_subtotal;
+                    // Update summary
+                    const totalEl = document.getElementById('cart-total');
+                    if (totalEl) totalEl.textContent = data.cart_total;
+                    const countEl = document.getElementById('cart-item-count');
+                    if (countEl) countEl.textContent = `${data.cart_count} producto${data.cart_count !== 1 ? 's' : ''}`;
                 } else {
                     Alpine.store('toasts').error(data.message || 'Error');
                 }
@@ -234,16 +250,22 @@ document.addEventListener('alpine:init', () => {
                 if (res.ok) {
                     Alpine.store('cart').update(data.cart_count);
                     Alpine.store('toasts').success(data.message);
-                    this.$el.closest('[data-cart-item]').remove();
-                    // If no items left, reload to show empty state
-                    if (data.cart_count === 0) window.location.reload();
+                    const item = this.$el.closest('[data-cart-item]');
+                    item.style.transition = 'opacity 0.3s, max-height 0.3s, padding 0.3s';
+                    item.style.opacity = '0';
+                    item.style.maxHeight = '0';
+                    item.style.overflow = 'hidden';
+                    item.style.paddingTop = '0';
+                    item.style.paddingBottom = '0';
+                    setTimeout(() => {
+                        item.remove();
+                        if (data.cart_count === 0) window.location.reload();
+                    }, 300);
                     // Update summary
-                    const subtotalEl = document.getElementById('cart-subtotal');
-                    if (subtotalEl) subtotalEl.textContent = data.cart_total;
-                    const countEl = document.getElementById('cart-item-count');
-                    if (countEl) countEl.textContent = `${data.cart_count} producto${data.cart_count !== 1 ? 's' : ''}`;
                     const totalEl = document.getElementById('cart-total');
                     if (totalEl) totalEl.textContent = data.cart_total;
+                    const countEl = document.getElementById('cart-item-count');
+                    if (countEl) countEl.textContent = `${data.cart_count} producto${data.cart_count !== 1 ? 's' : ''}`;
                 } else {
                     Alpine.store('toasts').error(data.message || 'Error');
                 }

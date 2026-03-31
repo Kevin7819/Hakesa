@@ -24,11 +24,11 @@
                         <p class="font-bold text-lg text-gray-900">₡{{ number_format($order->total, 0, ',', '.') }}</p>
                         @php
                             $statusColors = [
-                                'pending' => 'bg-hakesa-yellow/20 text-hakesa-yellow-dark',
+                                'pending' => 'bg-hakesa-yellow/20 text-yellow-700',
                                 'confirmed' => 'bg-blue-100 text-blue-700',
-                                'in_progress' => 'bg-hakesa-teal/20 text-hakesa-teal-dark',
+                                'in_progress' => 'bg-hakesa-teal/20 text-teal-700',
                                 'completed' => 'bg-green-100 text-green-700',
-                                'sent' => 'bg-hakesa-pink/20 text-hakesa-pink-dark',
+                                'sent' => 'bg-hakesa-pink/20 text-pink-700',
                                 'cancelled' => 'bg-red-100 text-red-700',
                             ];
                             $statusLabels = [

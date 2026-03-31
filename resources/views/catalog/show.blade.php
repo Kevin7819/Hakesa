@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', $product->name . ' - Hakesa')
+@section('meta-description', Str::limit(strip_tags($product->description ?? $product->name . ' — Producto personalizado de Hakesa Costa Rica.'), 160))
 
 @section('content')
 <section class="section-padding bg-white">
@@ -38,9 +39,9 @@
             <div>
                 @if($product->service_type)
                     <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full mb-3
-                        {{ $product->service_type === 'sublimacion' ? 'bg-hakesa-pink/10 text-hakesa-pink' : '' }}
-                        {{ $product->service_type === 'laser' ? 'bg-hakesa-teal/10 text-hakesa-teal' : '' }}
-                        {{ $product->service_type === 'vinil' ? 'bg-hakesa-yellow/10 text-hakesa-yellow-dark' : '' }}">
+                        {{ $product->service_type === 'sublimacion' ? 'bg-hakesa-pink/10 text-hakesa-pink-dark' : '' }}
+                        {{ $product->service_type === 'laser' ? 'bg-hakesa-teal/10 text-teal-700' : '' }}
+                        {{ $product->service_type === 'vinil' ? 'bg-hakesa-yellow/10 text-yellow-700' : '' }}">
                         {{ ucfirst($product->service_type) }}
                     </span>
                 @endif

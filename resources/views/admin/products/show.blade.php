@@ -15,7 +15,7 @@
                     <h1 class="text-2xl font-bold text-gray-900">{{ $product->name }}</h1>
                     @if($product->is_active)<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">Activo</span>@else<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">Inactivo</span>@endif
                 </div>
-                @if($product->category)<span class="inline-block px-2.5 py-1 bg-hakesa-teal/10 text-hakesa-teal text-xs font-semibold rounded-full mb-4">{{ $product->category->name }}</span>@endif
+                @if($product->category)<span class="inline-block px-2.5 py-1 bg-hakesa-teal/10 text-teal-700 text-xs font-semibold rounded-full mb-4">{{ $product->category->name }}</span>@endif
                 @if($product->description)<p class="text-gray-600 mb-6">{{ $product->description }}</p>@endif
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div class="bg-gray-50 p-4 rounded-xl"><p class="text-gray-400 text-sm">Precio</p><p class="text-2xl font-bold text-hakesa-pink">₡{{ number_format($product->price, 0, ',', '.') }}</p></div>
