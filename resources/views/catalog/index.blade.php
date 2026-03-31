@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Catálogo - Hakesa')
+@section('meta-description', 'Explora nuestro catálogo de productos personalizados. Tazas, camisas, termos, stickers y más.')
 
 @section('content')
 <section class="section-padding bg-white">
