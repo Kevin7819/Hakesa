@@ -1,29 +1,36 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.public')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+@section('title', 'Mi Perfil - Hakesa')
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
+@section('content')
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+<!-- ═══════════════════════════════════════════════════════════════
+     PROFILE HEADER
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section-padding bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <span class="inline-block px-4 py-1.5 bg-hakesa-pink/10 text-hakesa-pink rounded-full text-sm font-semibold mb-4">Mi Cuenta</span>
+            <h1 class="section-title">Mi Perfil</h1>
+            <p class="section-subtitle">Administra tu información personal y configuración de cuenta</p>
+        </div>
+
+        <!-- Profile Information -->
+        <div class="card-hakesa p-8 mb-8">
+            @include('profile.partials.update-profile-information-form')
+        </div>
+
+        <!-- Update Password -->
+        <div class="card-hakesa p-8 mb-8">
+            @include('profile.partials.update-password-form')
+        </div>
+
+        <!-- Delete Account -->
+        <div class="card-hakesa p-8">
+            @include('profile.partials.delete-user-form')
         </div>
     </div>
-</x-app-layout>
+</section>
+
+@endsection
