@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Fillable(['user_id', 'content', 'status'])]
+#[Hidden(['created_at', 'updated_at'])]
 class Comment extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'user_id',
-        'content',
-        'status',
-    ];
 
     protected function casts(): array
     {

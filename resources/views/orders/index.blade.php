@@ -25,7 +25,7 @@
                         <x-order-status :status="$order->status" />
                     </div>
                 </div>
-                <p class="text-sm text-gray-500 mt-2">{{ $order->items->count() }} producto(s)</p>
+                <p class="text-sm text-gray-500 mt-2">{{ $order->items_count }} producto(s)</p>
             </a>
             @endforeach
         </div>

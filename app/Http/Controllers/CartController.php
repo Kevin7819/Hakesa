@@ -47,33 +47,36 @@ class CartController extends Controller
                 return "Stock insuficiente. Disponible: {$lockedProduct->stock}";
             }
 
-            $existingItem = $cart->items()
-                ->where('product_id', $product->id);
+            $existingItem = $cart->items()->where('product_id', $product->id);
 
-            if ($request->filled('customization')) {
-                $existingItem->where('customization', $request->input('customization'));
-            } else {
-                $existingItem->whereNull('customization');
-            }
+            $customization = $request->input('customization');
+
+            $customization !== null
+                ? $existingItem->where('customization', $customization)
+                : $existingItem->whereNull('customization');
 
             $existing = $existingItem->first();
 
             if ($existing) {
                 $newQty = $existing->quantity + $requestedQty;
+
                 if ($newQty > $lockedProduct->stock) {
                     return "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$lockedProduct->stock}";
                 }
+
                 $existing->update(['quantity' => $newQty]);
-            } else {
-                CartItem::create([
-                    'cart_id' => $cart->id,
-                    'product_id' => $product->id,
-                    'quantity' => $requestedQty,
-                    'customization' => $request->input('customization'),
-                ]);
+
+                return null;
             }
 
-            return null; // success
+            CartItem::create([
+                'cart_id' => $cart->id,
+                'product_id' => $product->id,
+                'quantity' => $requestedQty,
+                'customization' => $request->input('customization'),
+            ]);
+
+            return null;
         });
 
         if ($result !== null) {
@@ -102,8 +105,8 @@ class CartController extends Controller
             'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ]);
 
-        // Check ownership BEFORE loading sensitive data
         $item->load('cart');
+
         if ($item->cart->user_id !== Auth::id()) {
             abort(403);
         }

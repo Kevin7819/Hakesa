@@ -10,7 +10,7 @@ class ClientOrderController extends Controller
 {
     public function index(): View
     {
-        $orders = Auth::user()->orders()->latest()->paginate(10);
+        $orders = Auth::user()->orders()->withCount('items')->latest()->paginate(10);
 
         return view('orders.index', compact('orders'));
     }

@@ -1,9 +1,10 @@
-name: Tests
+name: CI - Hakesa Tests & Quality
 
 on:
   push:
     branches:
       - master
+      - main
       - '*.x'
   pull_request:
   schedule:
@@ -13,7 +14,34 @@ permissions:
   contents: read
 
 jobs:
+  # ============================================
+  # 1. LINTING - Code Style Check
+  # ============================================
+  lint:
+    name: Code Style (Pint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Run Laravel Pint
+        run: vendor/bin/pint --test
+
+  # ============================================
+  # 2. TESTS - Full Test Suite with PHP Matrix
+  # ============================================
   tests:
+    name: Tests (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,11 +49,9 @@ jobs:
       matrix:
         php: [8.3, 8.4, 8.5]
 
-    name: PHP ${{ matrix.php }}
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -34,14 +60,14 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: none
 
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Install npm dependencies
         run: npm ci
@@ -55,5 +81,56 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
+      - name: Run migrations
+        run: php artisan migrate --force
+
       - name: Execute tests
         run: php artisan test
+
+  # ============================================
+  # 3. SECURITY - Composer Audit
+  # ============================================
+  security:
+    name: Security Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Check for vulnerable dependencies
+        run: composer audit --no-interaction
+
+  # ============================================
+  # 4. FRONTEND BUILD
+  # ============================================
+  frontend-build:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run Vite Build
+        run: npm run build
+
+      - name: Verify build output
+        run: test -d public/build && echo "Build successful" || exit 1

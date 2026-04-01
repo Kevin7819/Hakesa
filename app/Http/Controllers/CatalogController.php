@@ -16,7 +16,9 @@ class CatalogController extends Controller
 
         // Búsqueda por nombre
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%'.$request->search.'%');
+            // Escape LIKE wildcards to prevent injection
+            $search = str_replace(['%', '_'], ['\%', '\_'], $request->search);
+            $query->where('name', 'like', "%{$search}%");
         }
 
         // Filtro por categoría
@@ -71,12 +73,13 @@ class CatalogController extends Controller
 
         $product->load('category');
 
-        $related = Product::active()
-            ->with('category')
-            ->where('category_id', $product->category_id)
-            ->where('id', '!=', $product->id)
-            ->take(4)
-            ->get();
+        $related = $product->category_id
+            ? Product::active()->with('category')
+                ->where('category_id', $product->category_id)
+                ->where('id', '!=', $product->id)
+                ->take(4)
+                ->get()
+            : collect();
 
         return view('catalog.show', compact('product', 'related'));
     }

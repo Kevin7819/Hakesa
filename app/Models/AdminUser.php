@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+#[Hidden(['password', 'remember_token', 'created_at', 'updated_at'])]
 class AdminUser extends Authenticatable
 {
-    use HasFactory, HasRoles, Notifiable;
+    use HasFactory, Notifiable;
 
     protected function casts(): array
     {
