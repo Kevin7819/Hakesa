@@ -326,7 +326,7 @@
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Aún no hay comentarios</h3>
                 <p class="text-gray-500">¡Sé el primero en compartir tu experiencia con Hakesa!</p>
             </div>
-            <div id="comments-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            <div id="comments-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         @endif
     </div>
 </section>

@@ -146,7 +146,8 @@ document.addEventListener('alpine:init', () => {
                     Alpine.store('toasts').success(data.message);
                     this.content = '';
                     // Add pending comment to the list
-                    const list = document.getElementById('comments-list');
+                    const list = document.getElementById('comments-list')
+                        || document.getElementById('comments-list-container');
                     const empty = document.getElementById('comments-empty');
                     if (empty) empty.remove();
                     const userName = data.comment.user_name;
