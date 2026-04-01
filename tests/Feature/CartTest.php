@@ -107,4 +107,65 @@ describe('Cart', function () {
 
         $response->assertStatus(422);
     });
+
+    it('cannot add more than available stock', function () {
+        $lowStock = Product::factory()->create(['stock' => 3, 'is_active' => true]);
+
+        $response = $this->actingAs($this->user)
+            ->postJson("/carrito/agregar/{$lowStock->id}", ['quantity' => 10]);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment(['message' => 'Stock insuficiente. Disponible: 3']);
+    });
+
+    it('cannot add zero quantity', function () {
+        $response = $this->actingAs($this->user)
+            ->postJson("/carrito/agregar/{$this->product->id}", ['quantity' => 0]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['quantity']);
+    });
+
+    it('cannot add negative quantity', function () {
+        $response = $this->actingAs($this->user)
+            ->postJson("/carrito/agregar/{$this->product->id}", ['quantity' => -1]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['quantity']);
+    });
+
+    it('cannot update quantity exceeding stock', function () {
+        $lowStock = Product::factory()->create(['stock' => 2, 'is_active' => true]);
+
+        $this->actingAs($this->user)
+            ->postJson("/carrito/agregar/{$lowStock->id}", ['quantity' => 1]);
+
+        $cartItem = $this->user->cart->items->first();
+
+        $response = $this->actingAs($this->user)
+            ->patchJson("/carrito/{$cartItem->id}", ['quantity' => 99]);
+
+        $response->assertStatus(422);
+    });
+
+    it('cannot add product with zero stock', function () {
+        $noStock = Product::factory()->create(['stock' => 0, 'is_active' => true]);
+
+        $response = $this->actingAs($this->user)
+            ->postJson("/carrito/agregar/{$noStock->id}", ['quantity' => 1]);
+
+        $response->assertStatus(422);
+    });
+
+    it('cumulative quantity cannot exceed stock', function () {
+        $limited = Product::factory()->create(['stock' => 5, 'is_active' => true]);
+
+        $this->actingAs($this->user)
+            ->postJson("/carrito/agregar/{$limited->id}", ['quantity' => 3]);
+
+        $response = $this->actingAs($this->user)
+            ->postJson("/carrito/agregar/{$limited->id}", ['quantity' => 5]);
+
+        $response->assertStatus(422);
+    });
 });
