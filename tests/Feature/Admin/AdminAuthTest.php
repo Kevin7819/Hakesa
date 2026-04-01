@@ -9,6 +9,8 @@ describe('Admin Authentication', function () {
     it('can display the admin login page', function () {
         $response = $this->get('/admin/login');
         $response->assertStatus(200);
+        $response->assertSee('Hakesa Admin');
+        $response->assertSee('Panel de Administración');
     });
 
     it('admin can login with valid credentials', function () {

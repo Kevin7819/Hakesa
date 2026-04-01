@@ -68,11 +68,37 @@ describe('Catalog', function () {
     });
 
     it('can sort products by price ascending', function () {
-        Product::factory()->create(['price' => 1000, 'name' => 'Mas Barato', 'is_active' => true]);
-        Product::factory()->create(['price' => 99999, 'name' => 'Mas Caro', 'is_active' => true]);
+        // Clear existing products to isolate sort order
+        Product::query()->delete();
+
+        $expensive = Product::factory()->create(['price' => 99999, 'name' => 'Mas Caro', 'is_active' => true]);
+        $cheap = Product::factory()->create(['price' => 1000, 'name' => 'Mas Barato', 'is_active' => true]);
 
         $response = $this->get('/productos?sort=price_asc');
         $response->assertStatus(200);
+
+        $html = $response->getContent();
+        $cheapPos = strpos($html, 'Mas Barato');
+        $expensivePos = strpos($html, 'Mas Caro');
+
+        expect($cheapPos)->not->toBeFalse();
+        expect($expensivePos)->not->toBeFalse();
+        expect($cheapPos)->toBeLessThan($expensivePos);
+    });
+
+    it('can sort products by price descending', function () {
+        Product::query()->delete();
+
+        $expensive = Product::factory()->create(['price' => 99999, 'name' => 'Mas Caro', 'is_active' => true]);
+        $cheap = Product::factory()->create(['price' => 1000, 'name' => 'Mas Barato', 'is_active' => true]);
+
+        $response = $this->get('/productos?sort=price_desc');
+        $html = $response->getContent();
+
+        $expensivePos = strpos($html, 'Mas Caro');
+        $cheapPos = strpos($html, 'Mas Barato');
+
+        expect($expensivePos)->toBeLessThan($cheapPos);
     });
 
     it('can show product detail page', function () {
@@ -90,8 +116,25 @@ describe('Catalog', function () {
 
     it('shows related products on detail page', function () {
         $product = $this->products->first();
+        $secondProduct = $this->products->skip(1)->first();
+
         $response = $this->get("/productos/{$product->id}");
         $response->assertStatus(200);
+        $response->assertSee('Productos Relacionados');
+        // Other products in the same category should appear as related
+        $response->assertSee($secondProduct->name);
+    });
+
+    it('does not show inactive products as related', function () {
+        $product = $this->products->first();
+
+        Product::factory()->inactive()->create([
+            'category_id' => $this->category->id,
+            'name' => 'Inactivo Relacionado',
+        ]);
+
+        $response = $this->get("/productos/{$product->id}");
+        $response->assertDontSee('Inactivo Relacionado');
     });
 
     it('can filter via AJAX and return JSON', function () {

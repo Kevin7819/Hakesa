@@ -3,10 +3,13 @@
 use App\Models\User;
 
 describe('Authentication', function () {
-    it('login screen can be rendered', function () {
+    it('login screen can be rendered with form', function () {
         $response = $this->get('/login');
 
         $response->assertStatus(200);
+        $response->assertSee('Iniciar Sesión');
+        $response->assertSee('Email');
+        $response->assertSee('_token'); // CSRF token present
     });
 
     it('users can authenticate using the login screen', function () {

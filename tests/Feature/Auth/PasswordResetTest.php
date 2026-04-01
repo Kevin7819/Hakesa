@@ -9,6 +9,7 @@ describe('Password Reset', function () {
         $response = $this->get('/forgot-password');
 
         $response->assertStatus(200);
+        $response->assertSee('_token');
     });
 
     it('reset password link can be requested', function () {

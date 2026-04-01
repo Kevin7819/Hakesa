@@ -13,12 +13,17 @@ describe('Admin Orders', function () {
         $this->admin = AdminUser::factory()->create();
     });
 
-    it('can list orders', function () {
-        Order::factory()->count(3)->create();
+    it('can list orders with order numbers visible', function () {
+        $order1 = Order::factory()->create();
+        $order2 = Order::factory()->create();
+        $order3 = Order::factory()->create();
 
         $response = $this->actingAs($this->admin, 'admin')->get('/admin/orders');
         $response->assertStatus(200);
         $response->assertSee('Gestión de Pedidos');
+        $response->assertSee($order1->order_number);
+        $response->assertSee($order2->order_number);
+        $response->assertSee($order3->order_number);
     });
 
     it('can show an order with items', function () {

@@ -14,6 +14,7 @@ describe('Email Verification', function () {
         $response = $this->actingAs($this->user)->get('/verify-email');
 
         $response->assertStatus(200);
+        $response->assertSee('verif');
     });
 
     it('email can be verified', function () {
