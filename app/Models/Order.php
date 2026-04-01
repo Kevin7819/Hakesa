@@ -40,7 +40,7 @@ class Order extends Model
         $date = now()->format('Ymd');
         $random = strtoupper(substr(Str::uuid()->toString(), 0, 8));
 
-        return $prefix.$date.'-'.$random;
+        return "{$prefix}{$date}-{$random}";
     }
 
     public function scopePending(Builder $query): Builder

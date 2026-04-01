@@ -6,6 +6,7 @@ use App\Http\Requests\CheckoutRequest;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +37,6 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Tu carrito está vacío.');
         }
 
-        // Update customizations on cart items before creating order
         $customizations = $request->input('customizations', []);
         foreach ($customizations as $itemId => $text) {
             $cartItem = $cart->items->firstWhere('id', $itemId);
@@ -45,7 +45,6 @@ class CheckoutController extends Controller
             }
         }
 
-        // Reload items with updated customizations
         $cart->load('items.product');
 
         $subtotal = $cart->total;
@@ -69,21 +68,18 @@ class CheckoutController extends Controller
                 ]);
 
                 foreach ($cart->items as $item) {
-                    // Lock the row to prevent race conditions on stock
                     $product = Product::lockForUpdate()->find($item->product_id);
 
-                    // Check if product still exists
                     if (! $product) {
-                        throw new \Exception("El producto '{$item->product->name}' ya no está disponible.");
+                        throw new Exception("El producto '{$item->product_id}' ya no está disponible.");
                     }
 
                     if ($product->stock < $item->quantity) {
-                        throw new \Exception("Stock insuficiente para {$product->name}. Disponible: {$product->stock}");
+                        throw new Exception("Stock insuficiente para {$product->name}. Disponible: {$product->stock}");
                     }
 
                     $itemSubtotal = $product->price * $item->quantity;
 
-                    // Create order item with denormalized data
                     $order->items()->create([
                         'product_id' => $item->product_id,
                         'product_name' => $product->name,
@@ -93,7 +89,6 @@ class CheckoutController extends Controller
                         'customization' => $item->customization,
                     ]);
 
-                    // Decrement stock atomically
                     $product->decrement('stock', $item->quantity);
                 }
 
@@ -104,8 +99,8 @@ class CheckoutController extends Controller
 
             return redirect()->route('orders.show', $order)
                 ->with('success', "🎉 ¡Pedido realizado exitosamente! Número: {$order->order_number}\n\nNos estaremos contactando vía WhatsApp al número registrado para coordinar tu pedido y personalización.");
-        } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+        } catch (Exception $exception) {
+            return back()->with('error', $exception->getMessage());
         }
     }
 }

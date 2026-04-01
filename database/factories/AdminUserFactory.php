@@ -19,7 +19,7 @@ class AdminUserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'),
-            'role' => 'editor',
+            'role' => 'admin',
             'email_verified_at' => now(),
         ];
     }

@@ -62,10 +62,10 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-            // Delete old image
             if ($product->image && Storage::disk('public')->exists($product->image)) {
                 Storage::disk('public')->delete($product->image);
             }
+
             $path = $this->storeProductImage($request->file('image'), $validated);
             $validated['image'] = $path;
         }
@@ -88,16 +88,13 @@ class ProductController extends Controller
             ->with('success', 'Producto eliminado exitosamente.');
     }
 
-    /**
-     * Store product image with unique filename based on category and name.
-     */
     private function storeProductImage($file, array $validated): string
     {
-        $extension = $file->getClientOriginalExtension();
+        $extension = $file->extension();
         $categoryName = Category::find($validated['category_id'] ?? null)?->name ?? 'sin-categoria';
         $productName = Str::slug($validated['name']);
-        $uniqueId = uniqid();
-        $filename = Str::slug($categoryName).'-'.$productName.'-'.$uniqueId.'.'.$extension;
+        $uniqueId = Str::uuid();
+        $filename = Str::slug($categoryName)."-{$productName}-{$uniqueId}.{$extension}";
 
         return $file->storeAs('products', $filename, 'public');
     }
