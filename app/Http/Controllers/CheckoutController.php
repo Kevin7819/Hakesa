@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckoutRequest;
+use App\Mail\OrderConfirmation;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
@@ -10,6 +11,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class CheckoutController extends Controller
@@ -96,6 +98,9 @@ class CheckoutController extends Controller
 
                 return $order;
             });
+
+            // Send order confirmation email
+            Mail::to($order->customer_email)->queue(new OrderConfirmation($order));
 
             return redirect()->route('orders.show', $order)
                 ->with('success', "🎉 ¡Pedido realizado exitosamente! Número: {$order->order_number}\n\nNos estaremos contactando vía WhatsApp al número registrado para coordinar tu pedido y personalización.");
