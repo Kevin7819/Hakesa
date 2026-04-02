@@ -200,13 +200,26 @@ describe('Security — Rate Limiting', function () {
         $response->assertTooManyRequests();
     });
 
-    it('user login rate limiting (gap documented)', function () {
-        // SECURITY GAP: POST /login has NO throttle middleware in routes/auth.php.
-        // Register has throttle:10,1, forgot-password has throttle:5,1,
-        // but login has NO rate limiting — brute force is possible.
-        // TODO: Add ->middleware('throttle:5,1') to POST /login in routes/auth.php
-        //       then change this test to assert 429.
-        $this->markTestIncomplete('POST /login needs throttle middleware added to routes/auth.php');
+    it('user login rate limits after 5 failed attempts', function () {
+        $user = User::factory()->create(['email' => 'user@test.com']);
+
+        RateLimiter::clear('login:user@test.com|127.0.0.1');
+
+        // 5 failed attempts (limit is 5)
+        for ($i = 0; $i < 5; $i++) {
+            $this->post('/login', [
+                'email' => 'user@test.com',
+                'password' => 'wrong-password',
+            ]);
+        }
+
+        // 6th attempt should be rate limited
+        $response = $this->post('/login', [
+            'email' => 'user@test.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertTooManyRequests();
     });
 });
 
