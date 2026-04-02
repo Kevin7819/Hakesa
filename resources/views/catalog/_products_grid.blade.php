@@ -7,9 +7,7 @@
                 @if($product->image)
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 @else
-                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
-                        <span class="text-4xl font-bold text-hakesa-pink/40">H</span>
-                    </div>
+                    <x-product-placeholder size="default" />
                 @endif
             </div>
         </a>

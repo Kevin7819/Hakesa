@@ -8,7 +8,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="md:flex">
             <div class="md:w-2/5 bg-gray-50 flex items-center justify-center p-8">
-                @if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="max-w-full h-auto rounded-xl">@else<div class="w-48 h-48 bg-gray-100 rounded-xl flex items-center justify-center"><i class="fas fa-image text-5xl text-gray-300"></i></div>@endif
+                @if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="max-w-full h-auto rounded-xl">@else<x-product-placeholder size="lg" class="w-48 h-48 rounded-xl" />@endif
             </div>
             <div class="md:w-3/5 p-8">
                 <div class="flex justify-between items-start mb-4">

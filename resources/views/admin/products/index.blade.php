@@ -23,7 +23,7 @@
             <tbody class="divide-y divide-gray-100">
                 @forelse($products as $product)
                 <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4">@if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="w-14 h-14 object-cover rounded-xl">@else<div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center"><i class="fas fa-image text-gray-300"></i></div>@endif</td>
+                    <td class="px-6 py-4">@if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="w-14 h-14 object-cover rounded-xl">@else<x-product-placeholder size="sm" class="w-14 h-14 rounded-xl" />@endif</td>
                     <td class="px-6 py-4 text-gray-900 font-medium">{{ $product->name }}</td>
                     <td class="px-6 py-4 text-gray-500">{{ $product->category?->name ?? '—' }}</td>
                     <td class="px-6 py-4 text-gray-900 font-semibold">₡{{ number_format($product->price, 0, ',', '.') }}</td>

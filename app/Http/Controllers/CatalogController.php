@@ -12,11 +12,13 @@ class CatalogController extends Controller
 {
     public function index(Request $request): View|JsonResponse
     {
-        $query = Product::active()->with('category');
+        $query = Product::query()
+            ->where('is_active', true)
+            ->select(['id', 'name', 'description', 'price', 'image', 'category_id', 'service_type'])
+            ->with('category:id,name');
 
         // Búsqueda por nombre
         if ($request->filled('search')) {
-            // Escape LIKE wildcards to prevent injection
             $search = str_replace(['%', '_'], ['\%', '\_'], $request->search);
             $query->where('name', 'like', "%{$search}%");
         }
@@ -40,11 +42,14 @@ class CatalogController extends Controller
             'price_asc' => $query->orderBy('price', 'asc'),
             'price_desc' => $query->orderBy('price', 'desc'),
             'name' => $query->orderBy('name', 'asc'),
-            default => $query->latest(),
+            default => $query->orderByDesc('id'),
         };
 
         $products = $query->paginate(12)->withQueryString();
-        $categories = Category::active()->orderBy('sort_order')->get();
+        $categories = Category::where('is_active', true)
+            ->select(['id', 'name', 'slug', 'sort_order'])
+            ->orderBy('sort_order')
+            ->get();
 
         // AJAX: return JSON with rendered HTML
         if ($request->header('X-Requested-With') === 'XMLHttpRequest') {
@@ -71,12 +76,15 @@ class CatalogController extends Controller
             abort(404);
         }
 
-        $product->load('category');
+        $product->load('category:id,name');
 
         $related = $product->category_id
-            ? Product::active()->with('category')
+            ? Product::query()
+                ->where('is_active', true)
                 ->where('category_id', $product->category_id)
                 ->where('id', '!=', $product->id)
+                ->select(['id', 'name', 'description', 'price', 'image', 'category_id'])
+                ->with('category:id,name')
                 ->take(4)
                 ->get()
             : collect();

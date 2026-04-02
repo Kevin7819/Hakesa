@@ -18,9 +18,7 @@
                         @if($item->product->image)
                             <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover">
                         @else
-                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
-                                <span class="text-lg font-bold text-hakesa-pink/40">H</span>
-                            </div>
+                            <x-product-placeholder size="sm" class="w-20 h-20 rounded-xl" />
                         @endif
                     </div>
 

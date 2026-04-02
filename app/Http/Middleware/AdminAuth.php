@@ -15,12 +15,6 @@ class AdminAuth
             return redirect('/admin/login');
         }
 
-        // Require at least 'admin' or 'super-admin' role for full access
-        $user = Auth::guard('admin')->user();
-        if (! in_array($user->role, ['super-admin', 'admin'], true)) {
-            abort(403, 'No tienes permisos para acceder a esta sección.');
-        }
-
         return $next($request);
     }
 }

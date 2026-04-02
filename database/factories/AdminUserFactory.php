@@ -23,18 +23,4 @@ class AdminUserFactory extends Factory
             'email_verified_at' => now(),
         ];
     }
-
-    public function superAdmin(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'super-admin',
-        ]);
-    }
-
-    public function admin(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'admin',
-        ]);
-    }
 }
