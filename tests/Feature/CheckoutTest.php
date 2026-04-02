@@ -28,7 +28,7 @@ describe('Checkout', function () {
             ->post("/carrito/agregar/{$this->product->id}", ['quantity' => 2]);
 
         $response = $this->actingAs($this->user)->get('/checkout');
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertSee('Finalizar Pedido');
         $response->assertSee($this->product->name);
     });
@@ -93,6 +93,26 @@ describe('Checkout', function () {
         expect($this->product->stock)->toBe(7);
     });
 
+    it('checkout calculates correct order total', function () {
+        $this->actingAs($this->user)
+            ->post("/carrito/agregar/{$this->product->id}", ['quantity' => 3]);
+
+        $this->actingAs($this->user)
+            ->post('/checkout', [
+                'customer_name' => $this->user->name,
+                'customer_email' => $this->user->email,
+                'customer_phone' => '+506 8888 9999',
+            ]);
+
+        $order = Order::where('user_id', $this->user->id)->first();
+        $order->loadMissing('items');
+        $expectedSubtotal = $this->product->price * 3;
+
+        expect((float) $order->subtotal)->toBe($expectedSubtotal);
+        expect((float) $order->total)->toBe($expectedSubtotal + (float) $order->shipping_cost);
+        expect((float) $order->items->first()->subtotal)->toBe($expectedSubtotal);
+    });
+
     it('checkout clears cart after order', function () {
         $this->actingAs($this->user)
             ->post("/carrito/agregar/{$this->product->id}", ['quantity' => 1]);
@@ -143,6 +163,7 @@ describe('Checkout', function () {
             ]);
 
         $response->assertSessionHas('error');
+        $this->assertDatabaseMissing('orders', ['user_id' => $this->user->id]);
     });
 
     it('checkout requires customer_name', function () {
@@ -186,7 +207,7 @@ describe('Checkout', function () {
 
         $order = Order::where('user_id', $this->user->id)->first();
         $response = $this->actingAs($this->user)->get("/mis-pedidos/{$order->id}");
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertSee($order->order_number);
     });
 
@@ -204,7 +225,7 @@ describe('Checkout', function () {
 
         $order = Order::where('user_id', $otherUser->id)->first();
         $response = $this->actingAs($this->user)->get("/mis-pedidos/{$order->id}");
-        $response->assertStatus(403);
+        $response->assertForbidden();
     });
 
     it('rejects checkout when product stock is zero', function () {
@@ -221,6 +242,7 @@ describe('Checkout', function () {
             ]);
 
         $response->assertSessionHas('error');
+        $this->assertDatabaseMissing('orders', ['user_id' => $this->user->id]);
     });
 
     it('displays error message on checkout failure', function () {
@@ -238,6 +260,7 @@ describe('Checkout', function () {
 
         $response->assertRedirect();
         $response->assertSessionHas('error');
+        $this->assertDatabaseMissing('orders', ['user_id' => $this->user->id]);
     });
 
     it('checkout requires customer_phone validation', function () {

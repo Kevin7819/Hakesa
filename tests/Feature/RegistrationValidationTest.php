@@ -104,8 +104,11 @@ describe('Registration Validation', function () {
             'password_confirmation' => 'password123',
         ]);
         $response->assertSessionHasErrors('name');
-        // Verified via tinker: __('validation.required', ['attribute' => 'nombre completo'])
-        // returns "El campo nombre completo es obligatorio."
+
+        // Verify the error message is in Spanish, not English
+        $errors = session('errors');
+        $nameError = $errors->first('name');
+        expect($nameError)->toContain('obligatorio');
     });
 
     it('validation errors are in Spanish - email', function () {
@@ -116,6 +119,10 @@ describe('Registration Validation', function () {
             'password_confirmation' => 'password123',
         ]);
         $response->assertSessionHasErrors('email');
+
+        $errors = session('errors');
+        $emailError = $errors->first('email');
+        expect($emailError)->toContain('correo');
     });
 
     it('validation errors are in Spanish - password min', function () {
@@ -126,6 +133,10 @@ describe('Registration Validation', function () {
             'password_confirmation' => 'abc',
         ]);
         $response->assertSessionHasErrors('password');
+
+        $errors = session('errors');
+        $passwordError = $errors->first('password');
+        expect($passwordError)->toContain('al menos');
     });
 
     it('validation message translation works', function () {

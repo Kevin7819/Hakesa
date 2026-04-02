@@ -1,10 +1,13 @@
 <?php
 
 describe('Registration', function () {
-    it('registration screen can be rendered', function () {
+    it('registration screen can be rendered with form', function () {
         $response = $this->get('/register');
 
         $response->assertStatus(200);
+        $response->assertSee('Crear Cuenta');
+        $response->assertSee('Nombre completo');
+        $response->assertSee('_token');
     });
 
     it('new users can register', function () {

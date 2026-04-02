@@ -11,6 +11,7 @@ describe('Password Confirmation', function () {
         $response = $this->actingAs($this->user)->get('/confirm-password');
 
         $response->assertStatus(200);
+        $response->assertSee('_token');
     });
 
     it('password can be confirmed', function () {
