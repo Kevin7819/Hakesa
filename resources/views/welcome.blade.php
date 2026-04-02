@@ -149,9 +149,7 @@
                                     @if($product->image)
                                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                                     @else
-                                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
-                                            <span class="text-5xl font-bold text-hakesa-pink/40">H</span>
-                                        </div>
+                                        <x-product-placeholder size="default" />
                                     @endif
                                 </div>
                                 <div class="p-6 flex flex-col flex-grow">
@@ -298,23 +296,58 @@
             </div>
         @endauth
 
-        {{-- Comments list --}}
+        {{-- Comments list — Carousel --}}
         @if($comments->count() > 0)
-            <div id="comments-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($comments as $comment)
-                    <div class="card-hakesa p-8">
-                        <p class="text-gray-600 mb-6 italic">"{{ $comment->content }}"</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 bg-hakesa-pink/20 rounded-full flex items-center justify-center text-hakesa-pink font-bold">
-                                {{ strtoupper(substr($comment->user?->name ?? 'XX', 0, 2)) }}
-                            </div>
-                            <div>
-                                <p class="font-semibold">{{ $comment->user?->name ?? 'Usuario' }}</p>
-                                <p class="text-gray-400 text-sm">{{ $comment->created_at->diffForHumans() }}</p>
+            <div x-data="{
+                current: 0,
+                total: {{ $comments->count() }},
+                perView: 3,
+                get pages() { return Math.ceil(this.total / this.perView) },
+                next() { this.current = (this.current + 1) % this.pages },
+                prev() { this.current = (this.current - 1 + this.pages) % this.pages },
+                goTo(i) { this.current = i }
+            }" class="relative">
+                <div class="overflow-hidden rounded-2xl">
+                    <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${current * 100}%)`">
+                        @foreach($comments->chunk(3) as $chunk)
+                        <div class="w-full flex-shrink-0 px-2">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                @foreach($chunk as $comment)
+                                    <div class="card-hakesa p-6 flex flex-col">
+                                        <p class="text-gray-600 mb-4 italic flex-grow">"{{ Str::limit($comment->content, 150) }}"</p>
+                                        <div class="flex items-center gap-3 mt-auto">
+                                            <div class="w-10 h-10 bg-hakesa-pink/20 rounded-full flex items-center justify-center text-hakesa-pink font-bold text-sm flex-shrink-0">
+                                                {{ strtoupper(substr($comment->user?->name ?? 'XX', 0, 2)) }}
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="font-semibold text-sm truncate">{{ $comment->user?->name ?? 'Usuario' }}</p>
+                                                <p class="text-gray-400 text-xs">{{ $comment->created_at->diffForHumans() }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
+
+                {{-- Navigation arrows --}}
+                @if($comments->count() > 3)
+                <button @click="prev()" aria-label="Comentarios anteriores" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button @click="next()" aria-label="Siguientes comentarios" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+
+                {{-- Dots --}}
+                <div class="flex justify-center gap-2 mt-6">
+                    <template x-for="i in pages" :key="i">
+                        <button @click="goTo(i - 1)" :class="current === i - 1 ? 'bg-hakesa-pink w-8' : 'bg-gray-300 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
+                    </template>
+                </div>
+                @endif
             </div>
         @else
             <div id="comments-empty" class="text-center py-12">

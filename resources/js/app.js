@@ -78,7 +78,7 @@ document.addEventListener('alpine:init', () => {
         },
         debounceSubmit() {
             clearTimeout(this._debounceTimer);
-            this._debounceTimer = setTimeout(() => this.submit(), 500);
+            this._debounceTimer = setTimeout(() => this.submit(), 300);
         },
         clearFilters() {
             clearTimeout(this._debounceTimer);

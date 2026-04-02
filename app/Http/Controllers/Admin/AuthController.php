@@ -11,13 +11,21 @@ use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    public function showLoginForm(): View
+    public function showLoginForm(): View|RedirectResponse
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
         return view('admin.auth.login');
     }
 
     public function login(Request $request): RedirectResponse
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],

@@ -36,45 +36,53 @@ class CartController extends Controller
         }
 
         $cart = Cart::getOrCreateForUser(Auth::user());
-
         $requestedQty = $request->input('quantity', 1);
+        $customization = $request->input('customization');
 
-        // Lock product row to prevent race conditions on stock
-        $result = DB::transaction(function () use ($cart, $product, $requestedQty, $request) {
-            $lockedProduct = Product::lockForUpdate()->find($product->id);
+        // Optimized: single transaction with minimal queries
+        $result = DB::transaction(function () use ($cart, $product, $requestedQty, $customization) {
+            $stock = (int) DB::table('products')
+                ->where('id', $product->id)
+                ->lockForUpdate()
+                ->value('stock');
 
-            if ($requestedQty > $lockedProduct->stock) {
-                return "Stock insuficiente. Disponible: {$lockedProduct->stock}";
+            if ($requestedQty > $stock) {
+                return "Stock insuficiente. Disponible: {$stock}";
             }
 
-            $existingItem = $cart->items()->where('product_id', $product->id);
+            // Build query for existing item
+            $existingQuery = DB::table('cart_items')
+                ->where('cart_id', $cart->id)
+                ->where('product_id', $product->id);
 
-            $customization = $request->input('customization');
+            if ($customization !== null) {
+                $existingQuery->where('customization', $customization);
+            } else {
+                $existingQuery->whereNull('customization');
+            }
 
-            $customization !== null
-                ? $existingItem->where('customization', $customization)
-                : $existingItem->whereNull('customization');
-
-            $existing = $existingItem->first();
+            $existing = $existingQuery->first();
 
             if ($existing) {
                 $newQty = $existing->quantity + $requestedQty;
 
-                if ($newQty > $lockedProduct->stock) {
-                    return "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$lockedProduct->stock}";
+                if ($newQty > $stock) {
+                    return "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$stock}";
                 }
 
-                $existing->update(['quantity' => $newQty]);
-
-                return null;
+                DB::table('cart_items')
+                    ->where('id', $existing->id)
+                    ->update(['quantity' => $newQty, 'updated_at' => now()]);
+            } else {
+                DB::table('cart_items')->insert([
+                    'cart_id' => $cart->id,
+                    'product_id' => $product->id,
+                    'quantity' => $requestedQty,
+                    'customization' => $customization,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
             }
-
-            CartItem::create([
-                'cart_id' => $cart->id,
-                'product_id' => $product->id,
-                'quantity' => $requestedQty,
-                'customization' => $request->input('customization'),
-            ]);
 
             return null;
         });
@@ -85,14 +93,15 @@ class CartController extends Controller
                 : back()->with('error', $result);
         }
 
+        // Fast count without loading full cart
+        $cartCount = (int) DB::table('cart_items')->where('cart_id', $cart->id)->sum('quantity');
+
         $message = "¡{$product->name} agregado al carrito!";
 
         if ($request->wantsJson()) {
-            $cart->load('items');
-
             return response()->json([
                 'message' => $message,
-                'cart_count' => $cart->item_count,
+                'cart_count' => $cartCount,
             ]);
         }
 
@@ -105,33 +114,46 @@ class CartController extends Controller
             'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ]);
 
-        $item->load('cart');
+        // Fast ownership check without loading relationship
+        $cartOwnerId = (int) DB::table('carts')
+            ->where('id', $item->cart_id)
+            ->value('user_id');
 
-        if ($item->cart->user_id !== Auth::id()) {
+        if ($cartOwnerId !== Auth::id()) {
             abort(403);
         }
 
-        $item->load('product');
+        $stock = (int) DB::table('products')->where('id', $item->product_id)->value('stock');
 
-        if ($request->quantity > $item->product->stock) {
-            $msg = "Stock insuficiente. Disponible: {$item->product->stock}";
+        if ($request->quantity > $stock) {
+            $msg = "Stock insuficiente. Disponible: {$stock}";
 
             return $request->wantsJson()
                 ? response()->json(['message' => $msg], 422)
                 : back()->with('error', $msg);
         }
 
-        $item->update(['quantity' => $request->quantity]);
+        DB::table('cart_items')
+            ->where('id', $item->id)
+            ->update(['quantity' => $request->quantity, 'updated_at' => now()]);
 
         if ($request->wantsJson()) {
-            $item->cart->load('items');
-            $item->load('product');
+            $cartTotal = (float) DB::table('cart_items')
+                ->join('products', 'cart_items.product_id', '=', 'products.id')
+                ->where('cart_items.cart_id', $item->cart_id)
+                ->sum(DB::raw('cart_items.quantity * products.price'));
+
+            $itemSubtotal = (float) DB::table('products')
+                ->where('id', $item->product_id)
+                ->value('price') * $request->quantity;
+
+            $cartCount = (int) DB::table('cart_items')->where('cart_id', $item->cart_id)->sum('quantity');
 
             return response()->json([
                 'message' => 'Cantidad actualizada.',
-                'cart_count' => $item->cart->item_count,
-                'cart_total' => '₡'.number_format($item->cart->total, 0, ',', '.'),
-                'item_subtotal' => '₡'.number_format($item->subtotal, 0, ',', '.'),
+                'cart_count' => $cartCount,
+                'cart_total' => '₡'.number_format($cartTotal, 0, ',', '.'),
+                'item_subtotal' => '₡'.number_format($itemSubtotal, 0, ',', '.'),
                 'item_id' => $item->id,
             ]);
         }
@@ -141,22 +163,30 @@ class CartController extends Controller
 
     public function remove(Request $request, CartItem $item): JsonResponse|RedirectResponse
     {
-        $item->load('cart');
+        // Fast ownership check
+        $cartOwnerId = (int) DB::table('carts')
+            ->where('id', $item->cart_id)
+            ->value('user_id');
 
-        if ($item->cart->user_id !== Auth::id()) {
+        if ($cartOwnerId !== Auth::id()) {
             abort(403);
         }
 
-        $cart = $item->cart;
+        $cartId = $item->cart_id;
         $item->delete();
 
         if ($request->wantsJson()) {
-            $cart->load('items');
+            $cartTotal = (float) DB::table('cart_items')
+                ->join('products', 'cart_items.product_id', '=', 'products.id')
+                ->where('cart_items.cart_id', $cartId)
+                ->sum(DB::raw('cart_items.quantity * products.price'));
+
+            $cartCount = (int) DB::table('cart_items')->where('cart_id', $cartId)->sum('quantity');
 
             return response()->json([
                 'message' => 'Producto eliminado del carrito.',
-                'cart_count' => $cart->item_count,
-                'cart_total' => '₡'.number_format($cart->total, 0, ',', '.'),
+                'cart_count' => $cartCount,
+                'cart_total' => '₡'.number_format($cartTotal, 0, ',', '.'),
             ]);
         }
 

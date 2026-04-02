@@ -21,9 +21,4 @@ class AdminUser extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function isSuperAdmin(): bool
-    {
-        return $this->role === 'super-admin';
-    }
 }

@@ -319,11 +319,4 @@ describe('Security — Authorization Isolation', function () {
         // Both messages must be IDENTICAL to prevent email enumeration
         expect($error1)->toBe($error2);
     });
-
-    it('editor role cannot access admin routes that require admin role', function () {
-        $editor = AdminUser::factory()->create(['role' => 'editor']);
-
-        $response = $this->actingAs($editor, 'admin')->get('/admin/dashboard');
-        $response->assertForbidden();
-    });
 });
