@@ -16,12 +16,12 @@ describe('Admin Categories CRUD', function () {
         Category::factory()->count(3)->create();
 
         $response = $this->actingAs($this->admin, 'admin')->get('/admin/categories');
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     });
 
     it('can display create category form', function () {
         $response = $this->actingAs($this->admin, 'admin')->get('/admin/categories/create');
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     });
 
     it('can create a category', function () {
@@ -56,6 +56,7 @@ describe('Admin Categories CRUD', function () {
         $response = $this->actingAs($this->admin, 'admin')->post('/admin/categories', []);
 
         $response->assertSessionHasErrors('name');
+        expect(session('errors')->first('name'))->toContain('obligatorio');
     });
 
     it('validates unique name when creating category', function () {
@@ -72,7 +73,7 @@ describe('Admin Categories CRUD', function () {
         $category = Category::factory()->create();
 
         $response = $this->actingAs($this->admin, 'admin')->get("/admin/categories/{$category->id}/edit");
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertSee($category->name);
     });
 

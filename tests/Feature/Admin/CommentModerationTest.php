@@ -18,7 +18,7 @@ describe('Admin Comment Moderation', function () {
         Comment::factory()->pending()->create(['user_id' => $this->user->id]);
 
         $response = $this->actingAs($this->admin, 'admin')->get('/admin/comments');
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     });
 
     it('can approve a pending comment', function () {
@@ -28,6 +28,7 @@ describe('Admin Comment Moderation', function () {
             ->patch("/admin/comments/{$comment->id}/approve");
 
         $response->assertRedirect('/admin/comments');
+        $response->assertSessionHas('success');
         $this->assertDatabaseHas('comments', [
             'id' => $comment->id,
             'status' => 'aprobado',
@@ -41,6 +42,7 @@ describe('Admin Comment Moderation', function () {
             ->patch("/admin/comments/{$comment->id}/reject");
 
         $response->assertRedirect('/admin/comments');
+        $response->assertSessionHas('success');
         $this->assertDatabaseHas('comments', [
             'id' => $comment->id,
             'status' => 'rechazado',
@@ -54,15 +56,18 @@ describe('Admin Comment Moderation', function () {
             ->delete("/admin/comments/{$comment->id}");
 
         $response->assertRedirect('/admin/comments');
+        $response->assertSessionHas('success');
         $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
     });
 
     it('can approve a rejected comment', function () {
         $comment = Comment::factory()->rejected()->create(['user_id' => $this->user->id]);
 
-        $this->actingAs($this->admin, 'admin')
+        $response = $this->actingAs($this->admin, 'admin')
             ->patch("/admin/comments/{$comment->id}/approve");
 
+        $response->assertRedirect('/admin/comments');
+        $response->assertSessionHas('success');
         $this->assertDatabaseHas('comments', [
             'id' => $comment->id,
             'status' => 'aprobado',
