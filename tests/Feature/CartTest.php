@@ -19,7 +19,7 @@ describe('Cart', function () {
 
     it('authenticated user can view cart', function () {
         $response = $this->actingAs($this->user)->get('/carrito');
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertSee('Mi Carrito');
     });
 
@@ -27,13 +27,17 @@ describe('Cart', function () {
         $response = $this->actingAs($this->user)
             ->postJson("/carrito/agregar/{$this->product->id}", ['quantity' => 1]);
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertJsonFragment(['cart_count' => 1]);
 
         $this->assertDatabaseHas('cart_items', [
             'product_id' => $this->product->id,
             'quantity' => 1,
         ]);
+
+        // Stock should NOT be decremented — that only happens at checkout
+        $this->product->refresh();
+        expect($this->product->stock)->toBe(10);
     });
 
     it('adding same product increments quantity', function () {
@@ -56,7 +60,7 @@ describe('Cart', function () {
                 'customization' => 'Quiero mi nombre grabado',
             ]);
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $this->assertDatabaseHas('cart_items', [
             'product_id' => $this->product->id,
             'customization' => 'Quiero mi nombre grabado',
@@ -72,7 +76,7 @@ describe('Cart', function () {
         $response = $this->actingAs($this->user)
             ->patchJson("/carrito/{$cartItem->id}", ['quantity' => 5]);
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertJsonFragment(['cart_count' => 5]);
     });
 
@@ -85,7 +89,7 @@ describe('Cart', function () {
         $response = $this->actingAs($this->user)
             ->deleteJson("/carrito/{$cartItem->id}");
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertJsonFragment(['cart_count' => 0]);
     });
 
@@ -95,7 +99,7 @@ describe('Cart', function () {
             ->post("/carrito/agregar/{$this->product->id}", ['quantity' => 1]);
 
         $response = $this->actingAs($this->user)->deleteJson('/carrito');
-        $response->assertStatus(200);
+        $response->assertSuccessful();
         $response->assertJsonFragment(['cart_count' => 0]);
     });
 
