@@ -75,7 +75,7 @@ class OtpPasswordResetController extends Controller
 
         $email = session('otp_reset_email');
         if (! $email) {
-            return redirect()->route('password.reset.request')
+            return redirect()->route('password.request')
                 ->withErrors(['otp_code' => 'Sesión expirada. Solicita un nuevo código.']);
         }
 
@@ -90,6 +90,7 @@ class OtpPasswordResetController extends Controller
 
         RateLimiter::hit($throttleKey, 600);
 
+        // verify() now marks OTP as used atomically
         $otp = $this->otpService->verify($email, $request->otp_code);
 
         if (! $otp) {
@@ -98,13 +99,11 @@ class OtpPasswordResetController extends Controller
             ]);
         }
 
-        // Mark OTP as used
-        $this->otpService->markAsUsed($otp);
-
         // Generate reset token and store in session
         $token = $this->otpService->generateResetToken();
         session([
             'otp_reset_verified' => true,
+            'otp_reset_verified_at' => now(),
             'otp_reset_token' => $token,
             'otp_reset_email' => $email,
         ]);
@@ -119,8 +118,8 @@ class OtpPasswordResetController extends Controller
     {
         $token = $request->route('token');
 
-        if (session('otp_reset_token') !== $token) {
-            return redirect()->route('password.reset.request')
+        if (! session('otp_reset_verified') || session('otp_reset_token') !== $token) {
+            return redirect()->route('password.request')
                 ->withErrors(['token' => 'Token inválido o expirado.']);
         }
 
@@ -137,10 +136,10 @@ class OtpPasswordResetController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
-        // Verify token matches session
-        if (session('otp_reset_token') !== $request->token) {
-            return redirect()->route('password.reset.request')
-                ->withErrors(['token' => 'Token inválido.']);
+        // Verify OTP was completed and token matches session
+        if (! session('otp_reset_verified') || session('otp_reset_token') !== $request->token) {
+            return redirect()->route('password.request')
+                ->withErrors(['token' => 'Token inválido. Debes verificar tu código primero.']);
         }
 
         $email = session('otp_reset_email');
@@ -157,7 +156,7 @@ class OtpPasswordResetController extends Controller
         ])->save();
 
         // Clear session
-        session()->forget(['otp_reset_verified', 'otp_reset_token', 'otp_reset_email']);
+        session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email']);
 
         return redirect()->route('login')
             ->with('status', 'Contraseña restablecida exitosamente. Ya puedes iniciar sesión.');
@@ -170,8 +169,19 @@ class OtpPasswordResetController extends Controller
     {
         $email = session('otp_reset_email');
         if (! $email) {
-            return redirect()->route('password.reset.request');
+            return redirect()->route('password.request');
         }
+
+        // Rate limit: same as sendOtp — max 3 per email per hour
+        $throttleKey = 'otp-request:'.$email;
+        if (RateLimiter::tooManyAttempts($throttleKey, 3)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+            throw ValidationException::withMessages([
+                'email' => "Demasiados intentos. Intenta de nuevo en {$seconds} segundos.",
+            ]);
+        }
+
+        RateLimiter::hit($throttleKey, 3600);
 
         $this->otpService->generateAndSend($email);
 

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Mail\OtpVerification;
 use App\Models\PasswordResetOtp;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -23,56 +24,54 @@ class OtpService
             return true;
         }
 
-        // Invalidate any existing OTPs for this email
-        PasswordResetOtp::where('email', $email)
-            ->whereNull('used_at')
-            ->update(['used_at' => now()]);
+        DB::transaction(function () use ($email) {
+            // Invalidate any existing OTPs for this email
+            PasswordResetOtp::where('email', $email)
+                ->whereNull('used_at')
+                ->update(['used_at' => now()]);
 
-        // Generate 6-digit OTP
-        $otpCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+            // Generate 6-digit OTP
+            $otpCode = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        // Store hashed OTP
-        PasswordResetOtp::create([
-            'email' => $email,
-            'otp_code' => Hash::make($otpCode),
-            'expires_at' => now()->addMinutes(10),
-        ]);
+            // Store hashed OTP
+            PasswordResetOtp::create([
+                'email' => $email,
+                'otp_code' => Hash::make($otpCode),
+                'expires_at' => now()->addMinutes(10),
+            ]);
 
-        // Send OTP via email
-        Mail::to($email)->queue(new OtpVerification($otpCode));
+            // Send OTP via email
+            Mail::to($email)->queue(new OtpVerification($otpCode));
+        });
 
         return true;
     }
 
     /**
-     * Verify OTP code.
+     * Verify OTP code and mark as used atomically.
+     * Returns the OTP record if valid, null otherwise.
      */
     public function verify(string $email, string $otpCode): ?PasswordResetOtp
     {
-        $records = PasswordResetOtp::where('email', $email)
+        $otp = PasswordResetOtp::where('email', $email)
             ->whereNull('used_at')
+            ->where('expires_at', '>', now())
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->lockForUpdate()
+            ->first();
 
-        foreach ($records as $record) {
-            if ($record->isExpired()) {
-                continue;
-            }
-
-            if (Hash::check($otpCode, $record->otp_code)) {
-                return $record;
-            }
+        if (! $otp) {
+            return null;
         }
 
-        return null;
-    }
+        if (! Hash::check($otpCode, $otp->otp_code)) {
+            return null;
+        }
 
-    /**
-     * Mark OTP as used.
-     */
-    public function markAsUsed(PasswordResetOtp $otp): void
-    {
+        // Mark as used atomically
         $otp->update(['used_at' => now()]);
+
+        return $otp;
     }
 
     /**

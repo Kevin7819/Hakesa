@@ -11,7 +11,7 @@ Tu código de verificación es:
 
 Este código expira en **{{ $expiresInMinutes }} minutos**. Si no solicitaste este cambio, puedes ignorar este mensaje.
 
-<x-mail::button :url="route('password.reset.otp')">
+<x-mail::button :url="route('password.reset.otp.verify')">
 Ingresar código
 </x-mail::button>
 

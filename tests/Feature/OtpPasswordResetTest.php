@@ -7,6 +7,7 @@ use App\Services\OtpService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 
 uses(RefreshDatabase::class);
 
@@ -35,9 +36,9 @@ describe('OtpService', function () {
         Mail::assertNothingQueued();
     });
 
-    it('verifies valid OTP', function () {
+    it('verifies valid OTP and marks it as used atomically', function () {
         $user = User::factory()->create(['email' => 'test@test.com']);
-        $otp = PasswordResetOtp::create([
+        PasswordResetOtp::create([
             'email' => 'test@test.com',
             'otp_code' => Hash::make('123456'),
             'expires_at' => now()->addMinutes(10),
@@ -47,11 +48,11 @@ describe('OtpService', function () {
         $result = $service->verify('test@test.com', '123456');
 
         expect($result)->not->toBeNull();
-        expect($result->id)->toBe($otp->id);
+        expect($result->used_at)->not->toBeNull();
     });
 
     it('rejects expired OTP', function () {
-        $otp = PasswordResetOtp::create([
+        PasswordResetOtp::create([
             'email' => 'test@test.com',
             'otp_code' => Hash::make('123456'),
             'expires_at' => now()->subMinutes(1),
@@ -64,7 +65,7 @@ describe('OtpService', function () {
     });
 
     it('rejects invalid OTP code', function () {
-        $otp = PasswordResetOtp::create([
+        PasswordResetOtp::create([
             'email' => 'test@test.com',
             'otp_code' => Hash::make('123456'),
             'expires_at' => now()->addMinutes(10),
@@ -76,18 +77,18 @@ describe('OtpService', function () {
         expect($result)->toBeNull();
     });
 
-    it('marks OTP as used', function () {
+    it('rejects already-used OTP', function () {
         $otp = PasswordResetOtp::create([
             'email' => 'test@test.com',
             'otp_code' => Hash::make('123456'),
             'expires_at' => now()->addMinutes(10),
+            'used_at' => now(),
         ]);
 
         $service = app(OtpService::class);
-        $service->markAsUsed($otp);
+        $result = $service->verify('test@test.com', '123456');
 
-        $otp->refresh();
-        expect($otp->used_at)->not->toBeNull();
+        expect($result)->toBeNull();
     });
 
     it('invalidates previous OTPs when generating new one', function () {
@@ -104,6 +105,24 @@ describe('OtpService', function () {
             ->count();
 
         expect($unusedCount)->toBe(1);
+    });
+
+    it('cannot verify same OTP twice (atomic mark-as-used)', function () {
+        PasswordResetOtp::create([
+            'email' => 'test@test.com',
+            'otp_code' => Hash::make('123456'),
+            'expires_at' => now()->addMinutes(10),
+        ]);
+
+        $service = app(OtpService::class);
+
+        // First verification succeeds
+        $result1 = $service->verify('test@test.com', '123456');
+        expect($result1)->not->toBeNull();
+
+        // Second verification with same code fails
+        $result2 = $service->verify('test@test.com', '123456');
+        expect($result2)->toBeNull();
     });
 });
 
@@ -134,7 +153,7 @@ describe('OTP Password Reset Flow', function () {
 
     it('verifies OTP and redirects to new password form', function () {
         $user = User::factory()->create(['email' => 'test@test.com']);
-        $otp = PasswordResetOtp::create([
+        PasswordResetOtp::create([
             'email' => 'test@test.com',
             'otp_code' => Hash::make('123456'),
             'expires_at' => now()->addMinutes(10),
@@ -150,7 +169,7 @@ describe('OTP Password Reset Flow', function () {
 
     it('rejects invalid OTP code', function () {
         $user = User::factory()->create(['email' => 'test@test.com']);
-        $otp = PasswordResetOtp::create([
+        PasswordResetOtp::create([
             'email' => 'test@test.com',
             'otp_code' => Hash::make('123456'),
             'expires_at' => now()->addMinutes(10),
@@ -169,7 +188,7 @@ describe('OTP Password Reset Flow', function () {
             'password' => Hash::make('old-password'),
         ]);
 
-        $otp = PasswordResetOtp::create([
+        PasswordResetOtp::create([
             'email' => 'test@test.com',
             'otp_code' => Hash::make('123456'),
             'expires_at' => now()->addMinutes(10),
@@ -199,5 +218,80 @@ describe('OTP Password Reset Flow', function () {
         // Verify new password works
         $user->refresh();
         expect(Hash::check('new-password-123', $user->password))->toBeTrue();
+    });
+
+    it('rejects password reset without OTP verification', function () {
+        session(['otp_reset_verified' => false]);
+
+        $response = $this->post('/reset-password', [
+            'token' => 'fake-token',
+            'password' => 'new-password-123',
+            'password_confirmation' => 'new-password-123',
+        ]);
+
+        $response->assertRedirect('/forgot-password');
+        $response->assertSessionHasErrors('token');
+    });
+
+    it('rejects password reset with mismatched token', function () {
+        session([
+            'otp_reset_verified' => true,
+            'otp_reset_token' => 'real-token',
+            'otp_reset_email' => 'test@test.com',
+        ]);
+
+        $response = $this->post('/reset-password', [
+            'token' => 'wrong-token',
+            'password' => 'new-password-123',
+            'password_confirmation' => 'new-password-123',
+        ]);
+
+        $response->assertRedirect('/forgot-password');
+        $response->assertSessionHasErrors('token');
+    });
+
+    it('redirects to request form when OTP verification has no email in session', function () {
+        session()->forget('otp_reset_email');
+
+        $response = $this->post('/verify-otp', ['otp_code' => '123456']);
+
+        $response->assertRedirect('/forgot-password');
+        $response->assertSessionHasErrors('otp_code');
+    });
+
+    it('rate limits OTP requests after 3 attempts per hour', function () {
+        Mail::fake();
+        $user = User::factory()->create(['email' => 'test@test.com']);
+        RateLimiter::clear('otp-request:test@test.com');
+
+        // 3 attempts
+        for ($i = 0; $i < 3; $i++) {
+            $this->post('/forgot-password', ['email' => 'test@test.com']);
+        }
+
+        // 4th attempt should be rate limited (route middleware returns 429)
+        $response = $this->post('/forgot-password', ['email' => 'test@test.com']);
+        $response->assertStatus(429);
+    });
+
+    it('rate limits OTP verification after 5 attempts per 10 minutes', function () {
+        $user = User::factory()->create(['email' => 'test@test.com']);
+        PasswordResetOtp::create([
+            'email' => 'test@test.com',
+            'otp_code' => Hash::make('123456'),
+            'expires_at' => now()->addMinutes(10),
+        ]);
+
+        session(['otp_reset_email' => 'test@test.com']);
+        RateLimiter::clear('otp-verify:test@test.com');
+
+        // 5 attempts
+        for ($i = 0; $i < 5; $i++) {
+            $this->post('/verify-otp', ['otp_code' => 'wrong']);
+        }
+
+        // 6th attempt should be rate limited (route middleware returns 429)
+        $response = $this->post('/verify-otp', ['otp_code' => '123456']);
+        $response->assertStatus(429);
     });
 });
