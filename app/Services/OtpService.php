@@ -26,8 +26,9 @@ class OtpService
         }
 
         $otpCode = null;
+        $emailSent = false;
 
-        DB::transaction(function () use ($email, &$otpCode) {
+        DB::transaction(function () use ($email, &$otpCode, &$emailSent) {
             // Invalidate any existing OTPs for this email
             PasswordResetOtp::where('email', $email)
                 ->whereNull('used_at')
@@ -46,13 +47,15 @@ class OtpService
             // Send OTP via email
             try {
                 Mail::to($email)->queue(new OtpVerification($otpCode));
+                $emailSent = true;
             } catch (\Exception $e) {
-                // Email failed — return OTP code for development fallback
+                // Email failed — report but do NOT expose OTP
                 report($e);
             }
         });
 
-        return $otpCode;
+        // Only return OTP when email actually failed (development fallback)
+        return $emailSent ? null : $otpCode;
     }
 
     /**

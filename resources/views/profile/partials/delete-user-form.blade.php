@@ -14,7 +14,7 @@
 
         <!-- Modal Overlay -->
         <template x-teleport="body">
-            <div x-show="open" x-cloak class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div x-show="open" x-cloak class="relative z-50" @keydown.escape.window="open = false" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                 <!-- Backdrop -->
                 <div
                     x-show="open"

@@ -130,6 +130,15 @@ class OtpPasswordResetController extends Controller
                 ->withErrors(['token' => 'Token inválido o expirado.']);
         }
 
+        // Enforce 10-minute window from OTP verification
+        $verifiedAt = session('otp_reset_verified_at');
+        if (! $verifiedAt || now()->diffInMinutes($verifiedAt) > 10) {
+            session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email', 'otp_dev_code']);
+
+            return redirect()->route('password.request')
+                ->withErrors(['token' => 'La sesión expiró. Solicita un nuevo código.']);
+        }
+
         return view('auth.reset-password-otp', ['token' => $token]);
     }
 
@@ -149,6 +158,15 @@ class OtpPasswordResetController extends Controller
                 ->withErrors(['token' => 'Token inválido. Debes verificar tu código primero.']);
         }
 
+        // Enforce 10-minute window from OTP verification
+        $verifiedAt = session('otp_reset_verified_at');
+        if (! $verifiedAt || now()->diffInMinutes($verifiedAt) > 10) {
+            session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email', 'otp_dev_code']);
+
+            return redirect()->route('password.request')
+                ->withErrors(['token' => 'La sesión expiró. Solicita un nuevo código.']);
+        }
+
         $email = session('otp_reset_email');
         $user = User::where('email', $email)->first();
 
@@ -163,7 +181,7 @@ class OtpPasswordResetController extends Controller
         ])->save();
 
         // Clear session
-        session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email']);
+        session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email', 'otp_dev_code']);
 
         return redirect()->route('login')
             ->with('status', 'Contraseña restablecida exitosamente. Ya puedes iniciar sesión.');
@@ -195,6 +213,8 @@ class OtpPasswordResetController extends Controller
         // If email failed (dev mode), store OTP in session to show on screen
         if ($otpCode !== null) {
             session(['otp_dev_code' => $otpCode]);
+        } else {
+            session()->forget('otp_dev_code');
         }
 
         return back()->with('status', 'Nuevo código enviado.');

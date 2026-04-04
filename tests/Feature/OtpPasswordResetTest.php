@@ -19,8 +19,9 @@ describe('OtpService', function () {
         $service = app(OtpService::class);
         $result = $service->generateAndSend('test@test.com');
 
-        // Returns the OTP code string when email succeeds (or null if email fails)
-        expect($result)->toBeString()->toHaveLength(6);
+        // Returns null on success (OTP is sent via email, not exposed)
+        // Only returns the OTP code string when email delivery fails (dev fallback)
+        expect($result)->toBeNull();
         Mail::assertQueued(OtpVerification::class);
         $this->assertDatabaseHas('password_reset_otps', [
             'email' => 'test@test.com',

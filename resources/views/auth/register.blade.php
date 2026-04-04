@@ -39,7 +39,7 @@
                         maxlength="20"
                         class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink focus:border-transparent transition-all"
                         placeholder="+506 8888 9999"
-                        oninput="this.value = this.value.replace(/[^+0-9\s\-]/g, '')">
+                        oninput="this.value=this.value.replace(/[^0-9\s\-]/g,'').replace(/(?!^)\+/g,'')">
                     @error('phone')<p class="mt-1 text-sm text-red-500">{{ $message }}</p>@enderror
                 </div>
 
