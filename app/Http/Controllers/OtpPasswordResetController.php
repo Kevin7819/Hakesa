@@ -95,12 +95,12 @@ class OtpPasswordResetController extends Controller
             ]);
         }
 
-        RateLimiter::hit($throttleKey, 600);
-
         // verify() now marks OTP as used atomically
         $otp = $this->otpService->verify($email, $request->otp_code);
 
         if (! $otp) {
+            RateLimiter::hit($throttleKey, 600);
+
             throw ValidationException::withMessages([
                 'otp_code' => 'Código inválido o expirado.',
             ]);
@@ -133,7 +133,7 @@ class OtpPasswordResetController extends Controller
         // Enforce 10-minute window from OTP verification
         $verifiedAt = session('otp_reset_verified_at');
         if (! $verifiedAt || now()->diffInMinutes($verifiedAt) > 10) {
-            session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email', 'otp_dev_code']);
+            $this->clearOtpSession();
 
             return redirect()->route('password.request')
                 ->withErrors(['token' => 'La sesión expiró. Solicita un nuevo código.']);
@@ -161,7 +161,7 @@ class OtpPasswordResetController extends Controller
         // Enforce 10-minute window from OTP verification
         $verifiedAt = session('otp_reset_verified_at');
         if (! $verifiedAt || now()->diffInMinutes($verifiedAt) > 10) {
-            session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email', 'otp_dev_code']);
+            $this->clearOtpSession();
 
             return redirect()->route('password.request')
                 ->withErrors(['token' => 'La sesión expiró. Solicita un nuevo código.']);
@@ -171,6 +171,8 @@ class OtpPasswordResetController extends Controller
         $user = User::where('email', $email)->first();
 
         if (! $user) {
+            $this->clearOtpSession();
+
             return redirect()->route('login')
                 ->withErrors(['email' => 'No se encontró la cuenta.']);
         }
@@ -181,7 +183,10 @@ class OtpPasswordResetController extends Controller
         ])->save();
 
         // Clear session
-        session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email', 'otp_dev_code']);
+        $this->clearOtpSession();
+
+        // Regenerate session ID to prevent session fixation
+        $request->session()->regenerate();
 
         return redirect()->route('login')
             ->with('status', 'Contraseña restablecida exitosamente. Ya puedes iniciar sesión.');
@@ -218,5 +223,13 @@ class OtpPasswordResetController extends Controller
         }
 
         return back()->with('status', 'Nuevo código enviado.');
+    }
+
+    /**
+     * Clear all OTP-related session keys.
+     */
+    private function clearOtpSession(): void
+    {
+        session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email', 'otp_dev_code']);
     }
 }

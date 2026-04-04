@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <div x-data="{ open: false }" x-init="$watch('open', value => { if (value) { document.body.style.overflow = 'hidden' } else { document.body.style.overflow = '' } })">
+    <div x-data="deleteAccountModal()">
         <x-danger-button x-on:click="open = true">Eliminar Cuenta</x-danger-button>
 
         <!-- Modal Overlay -->
@@ -114,3 +114,14 @@
         </template>
     </div>
 </section>
+
+<script>
+function deleteAccountModal() {
+    return {
+        open: false,
+        toggleOverflow(open) {
+            document.body.style.overflow = open ? 'hidden' : '';
+        },
+    };
+}
+</script>
