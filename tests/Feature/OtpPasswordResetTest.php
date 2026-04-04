@@ -19,20 +19,22 @@ describe('OtpService', function () {
         $service = app(OtpService::class);
         $result = $service->generateAndSend('test@test.com');
 
-        expect($result)->toBeTrue();
+        // Returns null on success (OTP is sent via email, not exposed)
+        // Only returns the OTP code string when email delivery fails (dev fallback)
+        expect($result)->toBeNull();
         Mail::assertQueued(OtpVerification::class);
         $this->assertDatabaseHas('password_reset_otps', [
             'email' => 'test@test.com',
         ]);
     });
 
-    it('returns true for non-existing email to prevent enumeration', function () {
+    it('returns null for non-existing email to prevent enumeration', function () {
         Mail::fake();
 
         $service = app(OtpService::class);
         $result = $service->generateAndSend('nobody@test.com');
 
-        expect($result)->toBeTrue();
+        expect($result)->toBeNull();
         Mail::assertNothingQueued();
     });
 

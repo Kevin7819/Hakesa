@@ -14,17 +14,21 @@ class OtpService
 {
     /**
      * Generate and send OTP for password reset.
+     * Returns the plain OTP code if email fails (for development fallback).
      */
-    public function generateAndSend(string $email): bool
+    public function generateAndSend(string $email): ?string
     {
         $user = User::where('email', $email)->first();
 
-        // Always return true to prevent email enumeration
+        // Always return null to prevent email enumeration
         if (! $user) {
-            return true;
+            return null;
         }
 
-        DB::transaction(function () use ($email) {
+        $otpCode = null;
+        $emailSent = false;
+
+        DB::transaction(function () use ($email, &$otpCode, &$emailSent) {
             // Invalidate any existing OTPs for this email
             PasswordResetOtp::where('email', $email)
                 ->whereNull('used_at')
@@ -41,10 +45,22 @@ class OtpService
             ]);
 
             // Send OTP via email
-            Mail::to($email)->queue(new OtpVerification($otpCode));
+            try {
+                Mail::to($email)->queue(new OtpVerification($otpCode));
+                $emailSent = true;
+            } catch (\Exception $e) {
+                // Email failed — report but do NOT expose OTP
+                report($e);
+            }
         });
 
-        return true;
+        // Only return OTP when email actually failed AND we're in a dev environment
+        // Never expose OTP in production
+        if (! $emailSent && app()->environment('local', 'testing')) {
+            return $otpCode;
+        }
+
+        return null;
     }
 
     /**

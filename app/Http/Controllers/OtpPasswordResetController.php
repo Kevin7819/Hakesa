@@ -47,10 +47,17 @@ class OtpPasswordResetController extends Controller
 
         RateLimiter::hit($throttleKey, 3600);
 
-        $this->otpService->generateAndSend($request->email);
+        $otpCode = $this->otpService->generateAndSend($request->email);
 
         // Store email in session for OTP verification step
         session(['otp_reset_email' => $request->email]);
+
+        // If email failed (dev mode), store OTP in session to show on screen
+        if ($otpCode !== null) {
+            session(['otp_dev_code' => $otpCode]);
+        } else {
+            session()->forget('otp_dev_code');
+        }
 
         return redirect()->route('password.reset.otp.verify')
             ->with('status', 'Si el correo existe, recibirás un código de 6 dígitos.');
@@ -88,12 +95,12 @@ class OtpPasswordResetController extends Controller
             ]);
         }
 
-        RateLimiter::hit($throttleKey, 600);
-
         // verify() now marks OTP as used atomically
         $otp = $this->otpService->verify($email, $request->otp_code);
 
         if (! $otp) {
+            RateLimiter::hit($throttleKey, 600);
+
             throw ValidationException::withMessages([
                 'otp_code' => 'Código inválido o expirado.',
             ]);
@@ -123,6 +130,15 @@ class OtpPasswordResetController extends Controller
                 ->withErrors(['token' => 'Token inválido o expirado.']);
         }
 
+        // Enforce 10-minute window from OTP verification
+        $verifiedAt = session('otp_reset_verified_at');
+        if (! $verifiedAt || now()->diffInMinutes($verifiedAt) > 10) {
+            $this->clearOtpSession();
+
+            return redirect()->route('password.request')
+                ->withErrors(['token' => 'La sesión expiró. Solicita un nuevo código.']);
+        }
+
         return view('auth.reset-password-otp', ['token' => $token]);
     }
 
@@ -142,10 +158,21 @@ class OtpPasswordResetController extends Controller
                 ->withErrors(['token' => 'Token inválido. Debes verificar tu código primero.']);
         }
 
+        // Enforce 10-minute window from OTP verification
+        $verifiedAt = session('otp_reset_verified_at');
+        if (! $verifiedAt || now()->diffInMinutes($verifiedAt) > 10) {
+            $this->clearOtpSession();
+
+            return redirect()->route('password.request')
+                ->withErrors(['token' => 'La sesión expiró. Solicita un nuevo código.']);
+        }
+
         $email = session('otp_reset_email');
         $user = User::where('email', $email)->first();
 
         if (! $user) {
+            $this->clearOtpSession();
+
             return redirect()->route('login')
                 ->withErrors(['email' => 'No se encontró la cuenta.']);
         }
@@ -156,7 +183,10 @@ class OtpPasswordResetController extends Controller
         ])->save();
 
         // Clear session
-        session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email']);
+        $this->clearOtpSession();
+
+        // Regenerate session ID to prevent session fixation
+        $request->session()->regenerate();
 
         return redirect()->route('login')
             ->with('status', 'Contraseña restablecida exitosamente. Ya puedes iniciar sesión.');
@@ -183,8 +213,23 @@ class OtpPasswordResetController extends Controller
 
         RateLimiter::hit($throttleKey, 3600);
 
-        $this->otpService->generateAndSend($email);
+        $otpCode = $this->otpService->generateAndSend($email);
+
+        // If email failed (dev mode), store OTP in session to show on screen
+        if ($otpCode !== null) {
+            session(['otp_dev_code' => $otpCode]);
+        } else {
+            session()->forget('otp_dev_code');
+        }
 
         return back()->with('status', 'Nuevo código enviado.');
+    }
+
+    /**
+     * Clear all OTP-related session keys.
+     */
+    private function clearOtpSession(): void
+    {
+        session()->forget(['otp_reset_verified', 'otp_reset_verified_at', 'otp_reset_token', 'otp_reset_email', 'otp_dev_code']);
     }
 }
