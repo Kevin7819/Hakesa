@@ -54,8 +54,13 @@ class OtpService
             }
         });
 
-        // Only return OTP when email actually failed (development fallback)
-        return $emailSent ? null : $otpCode;
+        // Only return OTP when email actually failed AND we're in a dev environment
+        // Never expose OTP in production
+        if (! $emailSent && app()->environment('local', 'testing')) {
+            return $otpCode;
+        }
+
+        return null;
     }
 
     /**

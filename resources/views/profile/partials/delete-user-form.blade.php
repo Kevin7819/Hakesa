@@ -119,8 +119,10 @@
 function deleteAccountModal() {
     return {
         open: false,
-        toggleOverflow(open) {
-            document.body.style.overflow = open ? 'hidden' : '';
+        init() {
+            this.$watch('open', (value) => {
+                document.body.style.overflow = value ? 'hidden' : '';
+            });
         },
     };
 }

@@ -49,8 +49,8 @@ Route::middleware('auth')->group(function () {
 
     // ── Perfil ──
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/perfil', [ProfileController::class, 'update'])->name('profile.update')->middleware('throttle:10,1');
+    Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy')->middleware('throttle:3,1');
 
     // ── Comentarios ──
     Route::post('/comentarios', [CommentController::class, 'store'])->name('comments.store')->middleware('throttle:5,1');

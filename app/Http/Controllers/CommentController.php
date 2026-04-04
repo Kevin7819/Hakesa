@@ -32,8 +32,8 @@ class CommentController extends Controller
             return response()->json([
                 'message' => $message,
                 'comment' => [
-                    'content' => $request->input('content'),
-                    'user_name' => Auth::user()->name,
+                    'content' => e($request->input('content')),
+                    'user_name' => e(Auth::user()->name),
                     'created_at' => 'Ahora',
                 ],
             ]);
