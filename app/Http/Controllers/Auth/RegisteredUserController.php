@@ -35,9 +35,11 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['nullable', 'string', 'max:20'],
+            'phone' => ['nullable', 'string', 'regex:/^[\+]?[\d\s\-]{7,20}$/', 'max:20'],
             'birthday' => ['nullable', 'date', 'before:today'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'phone.regex' => 'El teléfono solo puede contener números, espacios, guiones y el signo +.',
         ]);
 
         $user = User::create([

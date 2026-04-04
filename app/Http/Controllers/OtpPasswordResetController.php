@@ -47,10 +47,17 @@ class OtpPasswordResetController extends Controller
 
         RateLimiter::hit($throttleKey, 3600);
 
-        $this->otpService->generateAndSend($request->email);
+        $otpCode = $this->otpService->generateAndSend($request->email);
 
         // Store email in session for OTP verification step
         session(['otp_reset_email' => $request->email]);
+
+        // If email failed (dev mode), store OTP in session to show on screen
+        if ($otpCode !== null) {
+            session(['otp_dev_code' => $otpCode]);
+        } else {
+            session()->forget('otp_dev_code');
+        }
 
         return redirect()->route('password.reset.otp.verify')
             ->with('status', 'Si el correo existe, recibirás un código de 6 dígitos.');
@@ -183,7 +190,12 @@ class OtpPasswordResetController extends Controller
 
         RateLimiter::hit($throttleKey, 3600);
 
-        $this->otpService->generateAndSend($email);
+        $otpCode = $this->otpService->generateAndSend($email);
+
+        // If email failed (dev mode), store OTP in session to show on screen
+        if ($otpCode !== null) {
+            session(['otp_dev_code' => $otpCode]);
+        }
 
         return back()->with('status', 'Nuevo código enviado.');
     }

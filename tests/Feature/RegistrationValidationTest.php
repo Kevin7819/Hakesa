@@ -147,6 +147,92 @@ describe('Registration Validation', function () {
         expect(__('validation.attributes.password'))->toBe('contraseña');
         expect(__('validation.attributes.email'))->toBe('correo electrónico');
     });
+
+    it('rejects phone with letters', function () {
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'phone' => 'abc123',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors('phone');
+    });
+
+    it('rejects phone with invalid special characters', function () {
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'phone' => '123@#$%',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors('phone');
+    });
+
+    it('rejects phone that is too short', function () {
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'phone' => '123',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors('phone');
+    });
+
+    it('accepts valid phone formats', function () {
+        $validPhones = [
+            '+506 8888 9999',
+            '8888-9999',
+            '50688889999',
+            '+50688889999',
+            '8888 9999',
+            '+1 555 123 4567',
+        ];
+
+        foreach ($validPhones as $phone) {
+            $response = $this->post('/register', [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'phone' => $phone,
+                'password' => 'password123',
+                'password_confirmation' => 'password123',
+            ]);
+
+            $response->assertSessionHasNoErrors('phone', "Phone format '{$phone}' should be valid");
+        }
+    });
+
+    it('accepts null phone (optional field)', function () {
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'phone' => null,
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertSessionHasNoErrors('phone');
+    });
+
+    it('phone error message is in Spanish', function () {
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'phone' => 'abc123',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertSessionHasErrors('phone');
+        $errors = session('errors');
+        $phoneError = $errors->first('phone');
+        expect($phoneError)->toContain('teléfono');
+    });
 });
 
 describe('Login Validation', function () {

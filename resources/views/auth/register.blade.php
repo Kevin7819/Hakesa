@@ -34,8 +34,12 @@
                 <div class="mb-4">
                     <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
                     <input type="tel" name="phone" id="phone" value="{{ old('phone') }}"
+                        inputmode="numeric"
+                        pattern="[+0-9\s\-]{7,20}"
+                        maxlength="20"
                         class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink focus:border-transparent transition-all"
-                        placeholder="+506 8992 6464">
+                        placeholder="+506 8888 9999"
+                        oninput="this.value = this.value.replace(/[^+0-9\s\-]/g, '')">
                     @error('phone')<p class="mt-1 text-sm text-red-500">{{ $message }}</p>@enderror
                 </div>
 

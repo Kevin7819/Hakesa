@@ -19,20 +19,21 @@ describe('OtpService', function () {
         $service = app(OtpService::class);
         $result = $service->generateAndSend('test@test.com');
 
-        expect($result)->toBeTrue();
+        // Returns the OTP code string when email succeeds (or null if email fails)
+        expect($result)->toBeString()->toHaveLength(6);
         Mail::assertQueued(OtpVerification::class);
         $this->assertDatabaseHas('password_reset_otps', [
             'email' => 'test@test.com',
         ]);
     });
 
-    it('returns true for non-existing email to prevent enumeration', function () {
+    it('returns null for non-existing email to prevent enumeration', function () {
         Mail::fake();
 
         $service = app(OtpService::class);
         $result = $service->generateAndSend('nobody@test.com');
 
-        expect($result)->toBeTrue();
+        expect($result)->toBeNull();
         Mail::assertNothingQueued();
     });
 

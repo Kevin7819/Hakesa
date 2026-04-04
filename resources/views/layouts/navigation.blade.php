@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ mobileMenu: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -21,45 +21,27 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-hakesa-pink focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Perfil') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}" x-ref="logoutFormDesktop">
-                            @csrf
-
-                            <x-dropdown-link href="{{ route('logout') }}"
-                                    @click.prevent="$refs.logoutFormDesktop.submit()">
-                                {{ __('Cerrar Sesión') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
+            <!-- Desktop User Links (no dropdown) -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6 sm:space-x-4">
+                <a href="{{ route('profile.edit') }}" class="text-sm text-gray-500 hover:text-hakesa-pink transition-colors">
+                    {{ __('Perfil') }}
+                </a>
+                <span class="text-gray-300">|</span>
+                <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="text-sm text-gray-500 hover:text-hakesa-pink transition-colors">
+                        {{ __('Cerrar Sesión') }}
+                    </button>
+                </form>
             </div>
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-hakesa-pink hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-hakesa-pink transition duration-150 ease-in-out">
+                <button @click="mobileMenu = ! mobileMenu" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-hakesa-pink hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-hakesa-pink transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{'hidden': mobileMenu, 'inline-flex': ! mobileMenu }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{'hidden': ! mobileMenu, 'inline-flex': mobileMenu }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -67,7 +49,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <div :class="{'block': mobileMenu, 'hidden': ! mobileMenu}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.index')">
                 {{ __('Catálogo') }}
@@ -90,11 +72,10 @@
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}" x-ref="logoutFormResponsive">
+                <form method="POST" action="{{ route('logout') }}" x-ref="logoutFormMobile">
                     @csrf
-
                     <x-responsive-nav-link href="{{ route('logout') }}"
-                            @click.prevent="$refs.logoutFormResponsive.submit()">
+                            @click.prevent="$refs.logoutFormMobile.submit()">
                         {{ __('Cerrar Sesión') }}
                     </x-responsive-nav-link>
                 </form>
