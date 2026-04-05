@@ -150,7 +150,9 @@
                                         @if($product->image)
                                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                                         @else
-                                            <x-product-placeholder size="default" />
+                                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
+                                                <span class="text-5xl font-extrabold text-hakesa-pink/40 select-none">H</span>
+                                            </div>
                                         @endif
                                     </div>
                                     @auth
