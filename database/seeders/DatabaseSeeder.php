@@ -19,72 +19,84 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
         ]);
 
-        $this->createTestUsers();
-        $this->createTestComments();
-        $this->createTestOrders();
+        $users = $this->createTestUsers();
+        $this->createTestComments($users);
+        $this->createTestOrders($users);
     }
 
-    protected function createTestUsers(): void
+    /** @return array<int, User> */
+    protected function createTestUsers(): array
     {
+        $testPassword = Hash::make(env('SEEDER_PASSWORD', 'password'));
+
         $users = [
             [
                 'name' => 'María González',
-                'email' => 'maria@hakesa.com',
-                'password' => 'Hakesa2026!',
+                'email' => fake()->safeEmail(),
+                'password' => $testPassword,
                 'phone' => '+506 8888 1111',
                 'birthday' => '1990-05-15',
             ],
             [
                 'name' => 'Carlos Ramírez',
-                'email' => 'carlos@hakesa.com',
-                'password' => 'Hakesa2026!',
+                'email' => fake()->safeEmail(),
+                'password' => $testPassword,
                 'phone' => '+506 8888 2222',
                 'birthday' => '1985-11-20',
             ],
             [
                 'name' => 'Ana Solano',
-                'email' => 'ana@hakesa.com',
-                'password' => 'Hakesa2026!',
+                'email' => fake()->safeEmail(),
+                'password' => $testPassword,
                 'phone' => '+506 8888 3333',
                 'birthday' => '1995-03-08',
             ],
         ];
 
+        $createdUsers = [];
+
         foreach ($users as $data) {
-            User::firstOrCreate(
+            $user = User::firstOrCreate(
                 ['email' => $data['email']],
                 [
                     'name' => $data['name'],
-                    'password' => Hash::make($data['password']),
+                    'password' => $data['password'],
                     'phone' => $data['phone'],
                     'birthday' => $data['birthday'],
                     'email_verified_at' => now(),
                 ]
             );
+            $createdUsers[] = $user;
         }
 
         $this->command->info('✓ '.count($users).' usuarios de prueba creados.');
+
+        return $createdUsers;
     }
 
-    protected function createTestComments(): void
+    protected function createTestComments(array $users): void
     {
+        if (count($users) < 3) {
+            return;
+        }
+
         $comments = [
-            ['user_email' => 'maria@hakesa.com', 'content' => '¡Excelente calidad! Pedí una taza personalizada y quedó hermosa. La recomiendo totalmente.', 'status' => 'aprobado'],
-            ['user_email' => 'carlos@hakesa.com', 'content' => 'Los stickers de vinil son resistentes al agua como prometen. Ya llevo 3 meses con el mío en el carro y perfecto.', 'status' => 'aprobado'],
-            ['user_email' => 'ana@hakesa.com', 'content' => 'Muy buen servicio, el grabado láser en la placa de madera quedó muy detallado. Solo tardó 2 días.', 'status' => 'aprobado'],
-            ['user_email' => 'maria@hakesa.com', 'content' => 'El termo mantiene la temperatura perfecto. Lo uso todos los días para el café. Muy contenta con la compra.', 'status' => 'aprobado'],
-            ['user_email' => 'carlos@hakesa.com', 'content' => 'Pedí 50 stickers para mi negocio y quedaron increíbles. Buena resolución de impresión y el vinil es de calidad.', 'status' => 'aprobado'],
-            ['user_email' => 'ana@hakesa.com', 'content' => 'La camisa de algodón es suave y el estampado no se ha despintado después de varios lavados. ¡Volveré a comprar!', 'status' => 'aprobado'],
-            ['user_email' => 'maria@hakesa.com', 'content' => 'Me encantó la taza mágica. El efecto de revelar la foto al poner el café caliente es genial. Mi familia quedó impresionada.', 'status' => 'aprobado'],
-            ['user_email' => 'carlos@hakesa.com', 'content' => 'El llavero de acrílico es muy bonito. Lo grabaron con el nombre de mi hija y quedó perfecto. Buen detalle para regalo.', 'status' => 'aprobado'],
-            ['user_email' => 'ana@hakesa.com', 'content' => 'La alfombra para ratón tiene buena calidad de impresión. Los colores son vivos y la base no se mueve. Recomendado.', 'status' => 'aprobado'],
-            ['user_email' => 'maria@hakesa.com', 'content' => 'Pedí un rompecabezas personalizado con una foto familiar. El resultado fue increíble, la calidad del corte láser es precisa.', 'status' => 'aprobado'],
-            ['user_email' => 'carlos@hakesa.com', 'content' => 'Buen producto, pero tardó un poco más de lo esperado en llegar. La calidad del grabado es buena.', 'status' => 'pendiente'],
-            ['user_email' => 'ana@hakesa.com', 'content' => 'Las letras de vinil cortado son fáciles de aplicar. Las usé para decorar la puerta de mi cuarto. Quedó muy bien.', 'status' => 'pendiente'],
+            ['user_index' => 0, 'content' => '¡Excelente calidad! Pedí una taza personalizada y quedó hermosa. La recomiendo totalmente.', 'status' => 'aprobado'],
+            ['user_index' => 1, 'content' => 'Los stickers de vinil son resistentes al agua como prometen. Ya llevo 3 meses con el mío en el carro y perfecto.', 'status' => 'aprobado'],
+            ['user_index' => 2, 'content' => 'Muy buen servicio, el grabado láser en la placa de madera quedó muy detallado. Solo tardó 2 días.', 'status' => 'aprobado'],
+            ['user_index' => 0, 'content' => 'El termo mantiene la temperatura perfecto. Lo uso todos los días para el café. Muy contenta con la compra.', 'status' => 'aprobado'],
+            ['user_index' => 1, 'content' => 'Pedí 50 stickers para mi negocio y quedaron increíbles. Buena resolución de impresión y el vinil es de calidad.', 'status' => 'aprobado'],
+            ['user_index' => 2, 'content' => 'La camisa de algodón es suave y el estampado no se ha despintado después de varios lavados. ¡Volveré a comprar!', 'status' => 'aprobado'],
+            ['user_index' => 0, 'content' => 'Me encantó la taza mágica. El efecto de revelar la foto al poner el café caliente es genial. Mi familia quedó impresionada.', 'status' => 'aprobado'],
+            ['user_index' => 1, 'content' => 'El llavero de acrílico es muy bonito. Lo grabaron con el nombre de mi hija y quedó perfecto. Buen detalle para regalo.', 'status' => 'aprobado'],
+            ['user_index' => 2, 'content' => 'La alfombra para ratón tiene buena calidad de impresión. Los colores son vivos y la base no se mueve. Recomendado.', 'status' => 'aprobado'],
+            ['user_index' => 0, 'content' => 'Pedí un rompecabezas personalizado con una foto familiar. El resultado fue increíble, la calidad del corte láser es precisa.', 'status' => 'aprobado'],
+            ['user_index' => 1, 'content' => 'Buen producto, pero tardó un poco más de lo esperado en llegar. La calidad del grabado es buena.', 'status' => 'pendiente'],
+            ['user_index' => 2, 'content' => 'Las letras de vinil cortado son fáciles de aplicar. Las usé para decorar la puerta de mi cuarto. Quedó muy bien.', 'status' => 'pendiente'],
         ];
 
         foreach ($comments as $data) {
-            $user = User::where('email', $data['user_email'])->first();
+            $user = $users[$data['user_index']] ?? null;
             if ($user) {
                 Comment::firstOrCreate(
                     ['user_id' => $user->id, 'content' => $data['content']],
@@ -100,18 +112,17 @@ class DatabaseSeeder extends Seeder
         $this->command->info('✓ '.count($comments).' comentarios de prueba creados.');
     }
 
-    protected function createTestOrders(): void
+    protected function createTestOrders(array $users): void
     {
-        $users = User::all();
         $products = Product::where('is_active', true)->get();
 
-        if ($users->isEmpty() || $products->isEmpty()) {
+        if (count($users) < 3 || $products->isEmpty()) {
             return;
         }
 
         $orders = [
             [
-                'user_email' => 'maria@hakesa.com',
+                'user_index' => 0,
                 'order_number' => 'HAK-2026-0001',
                 'status' => 'completed',
                 'items' => [
@@ -121,7 +132,7 @@ class DatabaseSeeder extends Seeder
                 'notes' => 'Por favor envolver para regalo.',
             ],
             [
-                'user_email' => 'carlos@hakesa.com',
+                'user_index' => 1,
                 'order_number' => 'HAK-2026-0002',
                 'status' => 'in_progress',
                 'items' => [
@@ -130,7 +141,7 @@ class DatabaseSeeder extends Seeder
                 'notes' => null,
             ],
             [
-                'user_email' => 'ana@hakesa.com',
+                'user_index' => 2,
                 'order_number' => 'HAK-2026-0003',
                 'status' => 'pending',
                 'items' => [
@@ -142,7 +153,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($orders as $orderData) {
-            $user = User::where('email', $orderData['user_email'])->first();
+            $user = $users[$orderData['user_index']] ?? null;
             if (! $user) {
                 continue;
             }
