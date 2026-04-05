@@ -8,7 +8,7 @@
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="md:flex">
             <div class="md:w-2/5 bg-gray-50 flex items-center justify-center p-8">
-                @if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="max-w-full h-auto rounded-xl">@else<x-product-placeholder size="lg" class="w-48 h-48 rounded-xl" />@endif
+                @if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="max-w-full h-auto rounded-xl">@else<div class="w-48 h-48 rounded-xl flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20"><span class="text-5xl font-extrabold text-hakesa-pink/40 select-none">H</span></div>@endif
             </div>
             <div class="md:w-3/5 p-8">
                 <div class="flex justify-between items-start mb-4">
