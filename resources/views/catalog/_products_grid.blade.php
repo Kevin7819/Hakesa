@@ -7,22 +7,22 @@
     <div class="card-hakesa overflow-hidden group">
         <div class="relative">
             <a href="{{ route('catalog.show', $product) }}">
-                <div class="h-52 bg-gray-100 overflow-hidden">
-                    @if($product->image)
+                @if($product->image)
+                    <div class="h-52 bg-gray-100 overflow-hidden">
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
-                            <span class="text-5xl font-extrabold text-hakesa-pink/40 select-none">H</span>
-                        </div>
-                    @endif
-                </div>
+                    </div>
+                @else
+                    <div class="h-52 overflow-hidden bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20 flex items-center justify-center">
+                        <span class="text-5xl font-extrabold text-hakesa-pink/40 select-none">H</span>
+                    </div>
+                @endif
             </a>
             @auth
             <button x-data="wishlistToggle({{ $product->id }}, {{ in_array($product->id, $wlIds) ? 'true' : 'false' }})"
                 @click="toggle()" :disabled="loading"
-                class="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition-colors disabled:opacity-50"
+                class="absolute top-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all disabled:opacity-50 border border-gray-100"
                 aria-label="Agregar a favoritos">
-                <svg x-show="!loading" :class="inWishlist ? 'text-hakesa-pink' : 'text-gray-400'" class="w-5 h-5 transition-colors" :fill="inWishlist ? 'currentColor' : 'none'" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                <svg x-show="!loading" :class="inWishlist ? 'text-hakesa-pink' : 'text-gray-500'" class="w-5 h-5" :fill="inWishlist ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                 <svg x-show="loading" x-cloak class="w-4 h-4 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
             @endauth
