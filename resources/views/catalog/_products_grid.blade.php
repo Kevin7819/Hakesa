@@ -1,18 +1,32 @@
 @if($products->count() > 0)
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    @php
+        $wlIds = $wishlistIds ?? [];
+    @endphp
     @foreach($products as $product)
     <div class="card-hakesa overflow-hidden group">
-        <a href="{{ route('catalog.show', $product) }}">
-            <div class="h-52 bg-gray-100 overflow-hidden">
+        <div class="relative h-52">
+            <a href="{{ route('catalog.show', $product) }}" class="block h-full">
                 @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="h-full bg-gray-100 overflow-hidden">
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
                 @else
-                    <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
+                    <div class="h-full overflow-hidden bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20 flex items-center justify-center">
                         <span class="text-5xl font-extrabold text-hakesa-pink/40 select-none">H</span>
                     </div>
                 @endif
-            </div>
-        </a>
+            </a>
+            @auth
+            <button x-data="wishlistToggle({{ $product->id }}, {{ in_array($product->id, $wlIds) ? 'true' : 'false' }})"
+                @click="toggle()" :disabled="loading"
+                class="absolute top-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-110 hover:bg-pink-50 transition-all duration-300 disabled:opacity-50 z-10"
+                aria-label="Agregar a favoritos">
+                <svg class="w-5 h-5 transition-all duration-300" :fill="inWishlist ? '#F26BB5' : 'none'" stroke="#F26BB5" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                <svg x-show="loading" x-cloak class="absolute w-4 h-4 animate-spin" fill="none" stroke="#F26BB5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </button>
+            @endauth
+        </div>
         <div class="p-5">
             @if($product->category)
                 <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded-full mb-2 bg-hakesa-teal-light/30 text-teal-700">
