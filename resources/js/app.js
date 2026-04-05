@@ -20,6 +20,14 @@ document.addEventListener('alpine:init', () => {
         }
     });
 
+    // Wishlist counter store
+    Alpine.store('wishlist', {
+        count: window.__wishlistCount || 0,
+        update(count) {
+            this.count = count;
+        },
+    });
+
     // Toast notification store
     Alpine.store('toasts', {
         items: [],
@@ -295,6 +303,77 @@ document.addEventListener('alpine:init', () => {
                     Alpine.store('cart').update(0);
                     Alpine.store('toasts').success(data.message);
                     window.location.reload();
+                } else {
+                    Alpine.store('toasts').error(data.message || 'Error');
+                }
+            } catch (e) {
+                Alpine.store('toasts').error('Error de conexión');
+            }
+            this.loading = false;
+        }
+    }));
+
+    // ── Wishlist item (AJAX remove) ──
+    Alpine.data('wishlistItem', (productId) => ({
+        loading: false,
+        async remove() {
+            this.loading = true;
+            try {
+                const res = await fetch(`/favoritos/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    Alpine.store('wishlist').update(data.count);
+                    Alpine.store('toasts').success(data.message);
+                    window.dispatchEvent(new CustomEvent('wishlist-bounce'));
+                    // Remove card from DOM
+                    const card = this.$el.closest('.card-hakesa');
+                    if (card) {
+                        card.style.transition = 'opacity 0.3s, transform 0.3s';
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.95)';
+                        setTimeout(() => card.remove(), 300);
+                    }
+                } else {
+                    Alpine.store('toasts').error(data.message || 'Error');
+                }
+            } catch (e) {
+                Alpine.store('toasts').error('Error de conexión');
+            }
+            this.loading = false;
+        }
+    }));
+
+    // ── Wishlist toggle button (AJAX add/remove) ──
+    Alpine.data('wishlistToggle', (productId, initialInWishlist = false) => ({
+        productId,
+        inWishlist: initialInWishlist,
+        loading: false,
+        async toggle() {
+            this.loading = true;
+            try {
+                const url = this.inWishlist
+                    ? `/favoritos/${this.productId}`
+                    : `/favoritos/agregar/${this.productId}`;
+                const method = this.inWishlist ? 'DELETE' : 'POST';
+                const res = await fetch(url, {
+                    method,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    Alpine.store('wishlist').update(data.count);
+                    this.inWishlist = data.in_wishlist;
+                    Alpine.store('toasts').success(data.message);
+                    window.dispatchEvent(new CustomEvent('wishlist-bounce'));
                 } else {
                     Alpine.store('toasts').error(data.message || 'Error');
                 }

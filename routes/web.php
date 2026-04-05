@@ -14,6 +14,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 // ── Landing Page ──
@@ -54,6 +55,11 @@ Route::middleware('auth')->group(function () {
 
     // ── Comentarios ──
     Route::post('/comentarios', [CommentController::class, 'store'])->name('comments.store')->middleware('throttle:5,1');
+
+    // ── Wishlist ──
+    Route::get('/mis-favoritos', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/favoritos/agregar/{product}', [WishlistController::class, 'store'])->name('wishlist.store')->middleware('throttle:30,1');
+    Route::delete('/favoritos/{product}', [WishlistController::class, 'destroy'])->name('wishlist.destroy')->middleware('throttle:30,1');
 });
 
 // ── Admin Panel ──

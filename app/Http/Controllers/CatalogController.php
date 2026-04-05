@@ -51,9 +51,13 @@ class CatalogController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $wishlistIds = auth()->check()
+            ? auth()->user()->wishlists()->pluck('product_id')->toArray()
+            : [];
+
         // AJAX: return JSON with rendered HTML
         if ($request->header('X-Requested-With') === 'XMLHttpRequest') {
-            $gridHtml = view('catalog._products_grid', compact('products'))->render();
+            $gridHtml = view('catalog._products_grid', compact('products', 'wishlistIds'))->render();
             $paginationHtml = $products->appends($request->query())->links()->render();
             $hasFilters = $request->hasAny(['search', 'category', 'price_min', 'price_max']);
             $resultsInfo = $hasFilters
@@ -67,7 +71,7 @@ class CatalogController extends Controller
             ]);
         }
 
-        return view('catalog.index', compact('products', 'categories'));
+        return view('catalog.index', compact('products', 'categories', 'wishlistIds'));
     }
 
     public function show(Product $product): View
@@ -89,6 +93,10 @@ class CatalogController extends Controller
                 ->get()
             : collect();
 
-        return view('catalog.show', compact('product', 'related'));
+        $inWishlist = auth()->check()
+            ? auth()->user()->wishlists()->where('product_id', $product->id)->exists()
+            : false;
+
+        return view('catalog.show', compact('product', 'related', 'inWishlist'));
     }
 }
