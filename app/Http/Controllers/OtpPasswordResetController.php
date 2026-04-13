@@ -52,8 +52,8 @@ class OtpPasswordResetController extends Controller
         // Store email in session for OTP verification step
         session(['otp_reset_email' => $request->email]);
 
-        // If email failed (dev mode), store OTP in session to show on screen
-        if ($otpCode !== null) {
+        // In dev/testing, store OTP in session for easy access — never in production
+        if ($otpCode !== null && app()->environment('local', 'testing')) {
             session(['otp_dev_code' => $otpCode]);
         } else {
             session()->forget('otp_dev_code');
@@ -215,8 +215,8 @@ class OtpPasswordResetController extends Controller
 
         $otpCode = $this->otpService->generateAndSend($email);
 
-        // If email failed (dev mode), store OTP in session to show on screen
-        if ($otpCode !== null) {
+        // In dev/testing, store OTP in session — never in production
+        if ($otpCode !== null && app()->environment('local', 'testing')) {
             session(['otp_dev_code' => $otpCode]);
         } else {
             session()->forget('otp_dev_code');

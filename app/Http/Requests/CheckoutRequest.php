@@ -26,10 +26,13 @@ class CheckoutRequest extends FormRequest
 
     public function rules(): array
     {
+        $user = $this->user();
+        $phoneRequired = ! $user?->phone;
+
         return [
             'customer_name' => ['required', 'string', 'max:255'],
             'customer_email' => ['required', 'email'],
-            'customer_phone' => ['nullable', 'string', 'max:20'],
+            'customer_phone' => [$phoneRequired ? 'required' : 'nullable', 'string', 'max:20'],
             'notes' => ['nullable', 'string', 'max:1000'],
             'customizations' => ['nullable', 'array'],
             'customizations.*' => ['nullable', 'string', 'max:500'],

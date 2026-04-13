@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 #[Fillable(['user_id'])]
 #[Hidden(['created_at', 'updated_at'])]
@@ -23,16 +24,17 @@ class Cart extends Model
     }
 
     /**
-     * Get cart total.
-     *
-     * @requires items.product to be eager-loaded to avoid N+1 queries.
-     *           Use $cart->load('items.product') before accessing this accessor.
+     * Get cart total via database query (avoids N+1).
      */
     public function getTotalAttribute(): float
     {
-        return $this->items->sum(function ($item) {
-            return ($item->product?->price ?? 0) * $item->quantity;
-        });
+        if (! $this->exists) {
+            return 0;
+        }
+
+        return (float) CartItem::where('cart_id', $this->id)
+            ->join('products', 'cart_items.product_id', '=', 'products.id')
+            ->sum(DB::raw('cart_items.quantity * products.price'));
     }
 
     public function getItemCountAttribute(): int

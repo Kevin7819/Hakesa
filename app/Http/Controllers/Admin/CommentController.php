@@ -20,7 +20,7 @@ class CommentController extends Controller
 
     public function approve(Comment $comment): RedirectResponse
     {
-        $comment->update(['status' => 'aprobado']);
+        $comment->update(['status' => Comment::STATUS_APPROVED]);
 
         return redirect()->route('admin.comments.index')
             ->with('success', 'Comentario aprobado exitosamente.');
@@ -28,7 +28,7 @@ class CommentController extends Controller
 
     public function reject(Comment $comment): RedirectResponse
     {
-        $comment->update(['status' => 'rechazado']);
+        $comment->update(['status' => Comment::STATUS_REJECTED]);
 
         return redirect()->route('admin.comments.index')
             ->with('success', 'Comentario rechazado.');

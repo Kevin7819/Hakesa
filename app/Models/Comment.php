@@ -15,6 +15,18 @@ class Comment extends Model
 {
     use HasFactory;
 
+    public const STATUS_PENDING = 'pendiente';
+
+    public const STATUS_APPROVED = 'aprobado';
+
+    public const STATUS_REJECTED = 'rechazado';
+
+    public const ALL_STATUSES = [
+        self::STATUS_PENDING,
+        self::STATUS_APPROVED,
+        self::STATUS_REJECTED,
+    ];
+
     protected function casts(): array
     {
         return [
@@ -30,32 +42,32 @@ class Comment extends Model
     // Scopes
     public function scopeApproved(Builder $query): Builder
     {
-        return $query->where('status', 'aprobado');
+        return $query->where('status', self::STATUS_APPROVED);
     }
 
     public function scopePending(Builder $query): Builder
     {
-        return $query->where('status', 'pendiente');
+        return $query->where('status', self::STATUS_PENDING);
     }
 
     public function scopeRejected(Builder $query): Builder
     {
-        return $query->where('status', 'rechazado');
+        return $query->where('status', self::STATUS_REJECTED);
     }
 
     // Helpers
     public function isPending(): bool
     {
-        return $this->status === 'pendiente';
+        return $this->status === self::STATUS_PENDING;
     }
 
     public function isApproved(): bool
     {
-        return $this->status === 'aprobado';
+        return $this->status === self::STATUS_APPROVED;
     }
 
     public function isRejected(): bool
     {
-        return $this->status === 'rechazado';
+        return $this->status === self::STATUS_REJECTED;
     }
 }

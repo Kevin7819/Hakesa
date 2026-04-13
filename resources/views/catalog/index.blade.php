@@ -1,14 +1,14 @@
 @extends('layouts.public')
 
-@section('title', 'Catálogo - Hakesa')
+@section('title', 'Catálogo - Gracia Creativa')
 @section('meta-description', 'Explora nuestro catálogo de productos personalizados. Tazas, camisas, termos, stickers y más.')
 
 @section('content')
-<section class="section-padding bg-white">
+<section class="section-padding bg-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center mb-10">
-            <span class="inline-block px-4 py-1.5 bg-hakesa-pink/10 text-hakesa-pink rounded-full text-sm font-semibold mb-4">Catálogo</span>
+            <span class="inline-block px-4 py-1.5 bg-gracia-primary/10 text-gracia-primary rounded-full text-sm font-semibold mb-4">Catálogo</span>
             <h1 class="section-title">Nuestros Productos</h1>
             <p class="section-subtitle">Explora todos los productos que podemos personalizar para ti</p>
         </div>
@@ -20,94 +20,86 @@
             </div>
         @endif
 
-        <!-- Search & Filters (AJAX) -->
-        <form x-ref="filtrosForm" method="GET" action="{{ route('catalog.index') }}" id="filterForm" class="mb-8" x-data="{ ...catalogFilters(), showFilters: false }">
-            <div class="card-hakesa p-5">
-                <!-- Search (always visible) -->
-                <div class="mb-4 md:mb-0">
-                    <div class="flex gap-3">
-                        <div class="flex-1">
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar productos..."
-                                class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm"
-                                @input="debounceSubmit()">
-                        </div>
-                        <button type="button" @click="showFilters = !showFilters" class="md:hidden px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-                            <span x-text="showFilters ? 'Ocultar' : 'Filtros'"></span>
-                        </button>
+        <!-- Layout: Sidebar + Product Grid -->
+        <div class="flex flex-col lg:flex-row gap-8" x-data="{ ...catalogFilters(), mobileDrawerOpen: false }">
+
+            {{-- Mobile Filter Toggle --}}
+            <div class="lg:hidden mb-4">
+                <button type="button" @click="mobileDrawerOpen = true"
+                    class="w-full px-4 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                    Filtros
+                </button>
+            </div>
+
+            {{-- Mobile Drawer Overlay --}}
+            <div x-show="mobileDrawerOpen" x-cloak
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 @click.self="mobileDrawerOpen = false"
+                 class="fixed inset-0 bg-black/50 z-40 lg:hidden">
+            </div>
+
+            {{-- Mobile Drawer Panel --}}
+            <div x-show="mobileDrawerOpen" x-cloak
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="-translate-x-full"
+                 x-transition:enter-end="translate-x-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="translate-x-0"
+                 x-transition:leave-end="-translate-x-full"
+                 class="fixed top-0 left-0 h-full w-80 bg-gray-800 z-50 p-6 overflow-y-auto lg:hidden shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-white">Filtros</h2>
+                    <button @click="mobileDrawerOpen = false" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors" aria-label="Cerrar filtros">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                @include('catalog._filter_fields')
+            </div>
+
+            {{-- Desktop Sidebar --}}
+            <aside class="hidden lg:block w-72 flex-shrink-0">
+                <div class="sticky top-24 card-hakesa p-5">
+                    <h2 class="text-lg font-bold text-white mb-4">Filtros</h2>
+                    @include('catalog._filter_fields')
+                </div>
+            </aside>
+
+            {{-- Product Grid --}}
+            <div class="flex-1 min-w-0">
+                <!-- Results info -->
+                <div id="results-info">
+                    @if(request()->has('search') || request()->has('category') || request()->has('price_min') || request()->has('price_max'))
+                        <p class="text-sm text-gray-400 mb-4">{{ $products->total() }} resultado(s) encontrado(s)</p>
+                    @endif
+                </div>
+
+                <!-- Search bar (mobile + desktop, above grid) -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar productos..."
+                            x-ref="searchInput"
+                            class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary text-white placeholder-gray-400 text-sm"
+                            @input="debounceSubmit()">
                     </div>
                 </div>
 
-                <!-- Filters (collapsible on mobile, always visible on desktop) -->
-                <div x-show="showFilters || window.innerWidth >= 768" x-collapse class="mt-4 overflow-hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <!-- Category -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Categoría</label>
-                            <select name="category" @change="submit()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
-                                <option value="">Todas</option>
-                                @foreach($categories as $cat)
-                                    <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                <!-- Products Grid (replaced via AJAX) -->
+                <div id="products-grid">
+                    @include('catalog._products_grid', ['products' => $products])
+                </div>
 
-                        <!-- Price Range -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Precio (₡)</label>
-                            <div class="flex gap-2">
-                                <input type="number" name="price_min" value="{{ request('price_min') }}" placeholder="Mín"
-                                    @change="submit()"
-                                    class="w-1/2 px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
-                                <input type="number" name="price_max" value="{{ request('price_max') }}" placeholder="Máx"
-                                    @change="submit()"
-                                    class="w-1/2 px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
-                            </div>
-                        </div>
-
-                        <!-- Sort -->
-                        <div>
-                            <label class="block text-xs font-medium text-gray-500 mb-1">Ordenar</label>
-                            <select name="sort" @change="submit()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink text-sm">
-                                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Más recientes</option>
-                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Precio: menor a mayor</option>
-                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Precio: mayor a menor</option>
-                                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Nombre A-Z</option>
-                            </select>
-                        </div>
-
-                        <!-- Actions -->
-                        <div class="flex items-end">
-                            <button type="button" @click="clearFilters()" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-gray-500 hover:text-gray-700 hover:border-gray-300 text-sm font-medium transition-colors">
-                                Limpiar filtros
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Loading indicator -->
-                    <div x-show="loading" x-cloak class="flex items-center gap-2 text-sm text-gray-500 mt-3">
-                        <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        Filtrando...
-                    </div>
+                <!-- Pagination (replaced via AJAX) -->
+                <div id="products-pagination" class="mt-10">
+                    {{ $products->withQueryString()->links() }}
                 </div>
             </div>
-        </form>
-
-        <!-- Results info -->
-        <div id="results-info">
-            @if(request()->has('search') || request()->has('category') || request()->has('price_min') || request()->has('price_max'))
-                <p class="text-sm text-gray-500 mb-4">{{ $products->total() }} resultado(s) encontrado(s)</p>
-            @endif
-        </div>
-
-        <!-- Products Grid (replaced via AJAX) -->
-        <div id="products-grid">
-            @include('catalog._products_grid', ['products' => $products])
-        </div>
-
-        <!-- Pagination (replaced via AJAX) -->
-        <div id="products-pagination" class="mt-10">
-            {{ $products->links() }}
         </div>
     </div>
 </section>

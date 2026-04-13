@@ -42,7 +42,7 @@ document.addEventListener('alpine:init', () => {
         error(msg) { this.show(msg, 'error'); },
     });
 
-    // ── Hakesa: Carrusel manual ──
+    // ── Carousel ──
     Alpine.data('carousel', () => ({
         current: 0,
         total: 0,
@@ -63,24 +63,30 @@ document.addEventListener('alpine:init', () => {
     // ── Catalog filters (AJAX) ──
     Alpine.data('catalogFilters', () => ({
         loading: false,
+        error: null,
+        mobileDrawerOpen: false,
         _debounceTimer: null,
         async submit() {
             if (this.loading) return; // Guard against double-fire
             this.loading = true;
+            this.error = null;
             clearTimeout(this._debounceTimer);
             const form = this.$refs.filtrosForm;
+            if (!form) { this.loading = false; return; }
             const params = new URLSearchParams(new FormData(form)).toString();
             try {
                 const res = await fetch(`/productos?${params}`, {
                     headers: { 'X-Requested-With': 'XMLHttpRequest' }
                 });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
                 document.getElementById('products-grid').innerHTML = data.html;
                 document.getElementById('products-pagination').innerHTML = data.pagination;
                 document.getElementById('results-info').innerHTML = data.results_info;
                 history.pushState(null, '', `/productos?${params}`);
             } catch (e) {
-                Alpine.store('toasts').error('Error al filtrar productos');
+                this.error = 'Error al filtrar productos. Intentá de nuevo o recargá la página.';
+                Alpine.store('toasts').error(this.error);
             }
             this.loading = false;
         },

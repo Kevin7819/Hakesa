@@ -1,10 +1,10 @@
 <section>
     <header class="mb-6">
-        <h2 class="text-lg font-bold text-gray-900">
+        <h2 class="text-lg font-bold text-white">
             Cambiar Contraseña
         </h2>
 
-        <p class="mt-1 text-sm text-gray-500">
+        <p class="mt-1 text-sm text-gray-400">
             Asegúrate de usar una contraseña larga y aleatoria para mantener tu cuenta segura.
         </p>
     </header>

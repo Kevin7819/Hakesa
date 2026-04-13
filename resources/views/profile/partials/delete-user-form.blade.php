@@ -1,10 +1,10 @@
 <section>
     <header class="mb-6">
-        <h2 class="text-lg font-bold text-gray-900">
+        <h2 class="text-lg font-bold text-white">
             Eliminar Cuenta
         </h2>
 
-        <p class="mt-1 text-sm text-gray-500">
+        <p class="mt-1 text-sm text-gray-400">
             Una vez que elimines tu cuenta, todos tus datos y recursos se borrarán de forma permanente. Antes de eliminarla, descarga cualquier información que desees conservar.
         </p>
     </header>
@@ -39,10 +39,10 @@
                             x-transition:leave="ease-in duration-200"
                             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+                            class="relative transform overflow-hidden rounded-2xl bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
                         >
                             <!-- Header -->
-                            <div class="bg-white px-6 pt-6 pb-4">
+                            <div class="bg-gray-800 px-6 pt-6 pb-4">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-3">
                                         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100">
@@ -50,12 +50,12 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                                             </svg>
                                         </div>
-                                        <h3 class="text-lg font-bold text-gray-900" id="modal-title">¿Eliminar tu cuenta?</h3>
+                                        <h3 class="text-lg font-bold text-white" id="modal-title">¿Eliminar tu cuenta?</h3>
                                     </div>
                                     <button
                                         type="button"
                                         x-on:click="open = false"
-                                        class="text-gray-400 hover:text-gray-500 transition-colors rounded-lg p-1 hover:bg-gray-100"
+                                        class="text-gray-400 hover:text-gray-400 transition-colors rounded-lg p-1 hover:bg-gray-700"
                                         aria-label="Cerrar"
                                     >
                                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -70,19 +70,19 @@
                                 @csrf
                                 @method('delete')
 
-                                <p class="text-sm text-gray-600 mb-5">
+                                <p class="text-sm text-gray-400 mb-5">
                                     Esta acción es <strong class="text-red-600">permanente e irreversible</strong>. Todos tus datos, pedidos y configuración se eliminarán para siempre.
                                 </p>
 
                                 <div>
-                                    <label for="delete-password" class="block text-sm font-medium text-gray-700 mb-1">Confirmá tu contraseña</label>
+                                    <label for="delete-password" class="block text-sm font-medium text-gray-300 mb-1">Confirmá tu contraseña</label>
                                     <input
                                         id="delete-password"
                                         name="password"
                                         type="password"
                                         required
                                         autocomplete="current-password"
-                                        class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-shadow"
+                                        class="w-full px-4 py-2.5 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-shadow"
                                         placeholder="Tu contraseña actual"
                                     />
                                     @error('password', 'userDeletion')
@@ -101,7 +101,7 @@
                                     <button
                                         type="button"
                                         x-on:click="open = false"
-                                        class="px-5 py-2.5 bg-white border border-gray-300 rounded-xl font-semibold text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                                        class="px-5 py-2.5 bg-gray-800 border border-gray-600 rounded-xl font-semibold text-sm text-gray-300 hover:bg-gray-700 transition-colors"
                                     >
                                         Cancelar
                                     </button>

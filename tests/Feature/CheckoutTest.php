@@ -63,7 +63,7 @@ describe('Checkout', function () {
         $response->assertRedirect("/mis-pedidos/{$order->id}");
     });
 
-    it('order number follows HAK- format', function () {
+    it('order number follows GC- format', function () {
         $this->actingAs($this->user)
             ->post("/carrito/agregar/{$this->product->id}", ['quantity' => 1]);
 
@@ -75,7 +75,7 @@ describe('Checkout', function () {
             ]);
 
         $order = Order::where('user_id', $this->user->id)->first();
-        expect($order->order_number)->toStartWith('HAK-');
+        expect($order->order_number)->toStartWith('GC-');
     });
 
     it('checkout decrements product stock', function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Wishlist;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
@@ -13,16 +14,22 @@ class WishlistController extends Controller
         $wishlistItems = auth()->user()
             ->wishlists()
             ->with('product.category')
-            ->get()
-            ->filter(function ($item) {
-                if (! $item->product || ! $item->product->is_active) {
-                    $item->delete();
+            ->get();
 
-                    return false;
-                }
+        // Identify inactive items to remove
+        $inactiveIds = $wishlistItems->filter(function ($item) {
+            return ! $item->product || ! $item->product->is_active;
+        })->pluck('id');
 
-                return true;
-            });
+        // Delete inactive items in a single query
+        if ($inactiveIds->isNotEmpty()) {
+            Wishlist::whereIn('id', $inactiveIds)->delete();
+        }
+
+        // Return only valid items
+        $wishlistItems = $wishlistItems->filter(function ($item) {
+            return $item->product && $item->product->is_active;
+        });
 
         return view('wishlist.index', compact('wishlistItems'));
     }

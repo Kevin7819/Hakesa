@@ -71,6 +71,29 @@ describe('Email sending in checkout flow', function () {
         // Mailable implements ShouldQueue, so we assert queued
         Mail::assertQueued(OrderConfirmation::class);
     });
+
+    it('creates order even if email queue fails', function () {
+        Mail::fake();
+        // Simulate queue failure — mail::queue will throw
+        Mail::shouldReceive('queue')->andThrow(new Exception('Queue connection failed'));
+
+        $user = User::factory()->create();
+        $product = Product::factory()->create(['stock' => 10, 'price' => 5000, 'is_active' => true]);
+
+        $this->actingAs($user)
+            ->post("/carrito/agregar/{$product->id}", ['quantity' => 1]);
+
+        $response = $this->actingAs($user)
+            ->post('/checkout', [
+                'customer_name' => $user->name,
+                'customer_email' => $user->email,
+                'customer_phone' => '+506 8888 9999',
+            ]);
+
+        // Order should still be created despite email failure
+        $response->assertRedirect();
+        $this->assertDatabaseHas('orders', ['user_id' => $user->id]);
+    });
 });
 
 describe('Email sending in registration flow', function () {

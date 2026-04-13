@@ -39,20 +39,15 @@ class CartController extends Controller
         $requestedQty = $request->input('quantity', 1);
         $customization = $request->input('customization');
 
-        // Optimized: single transaction with minimal queries
         $result = DB::transaction(function () use ($cart, $product, $requestedQty, $customization) {
-            $stock = (int) DB::table('products')
-                ->where('id', $product->id)
-                ->lockForUpdate()
-                ->value('stock');
+            // Re-fetch product with lock for update to ensure fresh stock data
+            $lockedProduct = Product::lockForUpdate()->find($product->id);
 
-            if ($requestedQty > $stock) {
-                return "Stock insuficiente. Disponible: {$stock}";
+            if ($requestedQty > $lockedProduct->stock) {
+                return "Stock insuficiente. Disponible: {$lockedProduct->stock}";
             }
 
-            // Build query for existing item
-            $existingQuery = DB::table('cart_items')
-                ->where('cart_id', $cart->id)
+            $existingQuery = $cart->items()
                 ->where('product_id', $product->id);
 
             if ($customization !== null) {
@@ -66,21 +61,16 @@ class CartController extends Controller
             if ($existing) {
                 $newQty = $existing->quantity + $requestedQty;
 
-                if ($newQty > $stock) {
-                    return "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$stock}";
+                if ($newQty > $lockedProduct->stock) {
+                    return "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$lockedProduct->stock}";
                 }
 
-                DB::table('cart_items')
-                    ->where('id', $existing->id)
-                    ->update(['quantity' => $newQty, 'updated_at' => now()]);
+                $existing->update(['quantity' => $newQty]);
             } else {
-                DB::table('cart_items')->insert([
-                    'cart_id' => $cart->id,
+                $cart->items()->create([
                     'product_id' => $product->id,
                     'quantity' => $requestedQty,
                     'customization' => $customization,
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ]);
             }
 
@@ -93,8 +83,7 @@ class CartController extends Controller
                 : back()->with('error', $result);
         }
 
-        // Fast count without loading full cart
-        $cartCount = (int) DB::table('cart_items')->where('cart_id', $cart->id)->sum('quantity');
+        $cartCount = (int) $cart->items()->sum('quantity');
 
         $message = "¡{$product->name} agregado al carrito!";
 
@@ -114,40 +103,30 @@ class CartController extends Controller
             'quantity' => ['required', 'integer', 'min:1', 'max:99'],
         ]);
 
-        // Fast ownership check without loading relationship
-        $cartOwnerId = (int) DB::table('carts')
-            ->where('id', $item->cart_id)
-            ->value('user_id');
-
-        if ($cartOwnerId !== Auth::id()) {
+        // Ownership check via Eloquent relationship
+        if ($item->cart->user_id !== Auth::id()) {
             abort(403);
         }
 
-        $stock = (int) DB::table('products')->where('id', $item->product_id)->value('stock');
+        $product = $item->product;
 
-        if ($request->quantity > $stock) {
-            $msg = "Stock insuficiente. Disponible: {$stock}";
+        if ($request->quantity > $product->stock) {
+            $msg = "Stock insuficiente. Disponible: {$product->stock}";
 
             return $request->wantsJson()
                 ? response()->json(['message' => $msg], 422)
                 : back()->with('error', $msg);
         }
 
-        DB::table('cart_items')
-            ->where('id', $item->id)
-            ->update(['quantity' => $request->quantity, 'updated_at' => now()]);
+        $item->update(['quantity' => $request->quantity]);
 
         if ($request->wantsJson()) {
-            $cartTotal = (float) DB::table('cart_items')
-                ->join('products', 'cart_items.product_id', '=', 'products.id')
-                ->where('cart_items.cart_id', $item->cart_id)
-                ->sum(DB::raw('cart_items.quantity * products.price'));
+            $cart = $item->cart;
+            $cart->load('items.product');
 
-            $itemSubtotal = (float) DB::table('products')
-                ->where('id', $item->product_id)
-                ->value('price') * $request->quantity;
-
-            $cartCount = (int) DB::table('cart_items')->where('cart_id', $item->cart_id)->sum('quantity');
+            $cartTotal = $cart->total;
+            $itemSubtotal = $product->price * $request->quantity;
+            $cartCount = $cart->items->sum('quantity');
 
             return response()->json([
                 'message' => 'Cantidad actualizada.',
@@ -163,12 +142,8 @@ class CartController extends Controller
 
     public function remove(Request $request, CartItem $item): JsonResponse|RedirectResponse
     {
-        // Fast ownership check
-        $cartOwnerId = (int) DB::table('carts')
-            ->where('id', $item->cart_id)
-            ->value('user_id');
-
-        if ($cartOwnerId !== Auth::id()) {
+        // Ownership check via Eloquent relationship
+        if ($item->cart->user_id !== Auth::id()) {
             abort(403);
         }
 
@@ -176,12 +151,11 @@ class CartController extends Controller
         $item->delete();
 
         if ($request->wantsJson()) {
-            $cartTotal = (float) DB::table('cart_items')
+            $cartTotal = (float) CartItem::where('cart_id', $cartId)
                 ->join('products', 'cart_items.product_id', '=', 'products.id')
-                ->where('cart_items.cart_id', $cartId)
                 ->sum(DB::raw('cart_items.quantity * products.price'));
 
-            $cartCount = (int) DB::table('cart_items')->where('cart_id', $cartId)->sum('quantity');
+            $cartCount = (int) CartItem::where('cart_id', $cartId)->sum('quantity');
 
             return response()->json([
                 'message' => 'Producto eliminado del carrito.',

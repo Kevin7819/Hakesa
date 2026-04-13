@@ -2,6 +2,44 @@
 
 > **Read this before making any changes.** This file is for AI agents and developers working on this codebase.
 
+## Memoria Persistente — ENGRAM (OBLIGATORIO)
+
+**Todos los agents deben revisar engram al inicio de cada sesión.**
+
+Al comenzar cualquier trabajo, ANTES de hacer nada:
+1. Llamar a `mem_context` para obtener contexto de sesiones recientes
+2. Si el usuario menciona algo del proyecto, llamar a `mem_search` con keywords relevantes
+
+**Regla**: "Si el usuario menciona algo que ya hicimos, buscá en engram primero."
+
+### Cuándo guardar en engram (proactivamente):
+- Decisiones de arquitectura o diseño
+- Bugs encontrados y cómo se corrigieron
+- Patrones establecidos (naming, estructura, convenciones)
+- Descubrimientos no obvios del codebase
+- Preferencias del usuario aprendidas
+
+### Formato de guardado:
+```php
+title: "Short searchable title"
+type: "decision|bugfix|pattern|discovery|preference"
+content: "**What**: ... **Why**: ... **Where**: ... **Learned**: ..."
+topic_key: "optional stable key for evolving topics"
+```
+
+### Cuándo buscar en engram:
+- Al inicio de cada sesión: `mem_context` + `mem_search` con keywords del proyecto
+- Cuando el usuario menciona algo del proyecto: "recordar", "qué hicimos", "cómo solucionamos"
+- Antes de crear algo nuevo: verificar si ya existe en memoria
+- Cuando hay tareas pendientes o en progreso
+
+### Session close (OBLIGATORIO):
+Antes de terminar, siempre llamar a `mem_session_summary` con:
+- Goal: qué se trabajó
+- Discoveries: hallazgos técnicos
+- Accomplished: lo completado
+- Next Steps: lo que falta para la próxima sesión
+
 ## Project Overview
 
 - **Backend**: Laravel 13 (PHP 8.3+) with Eloquent ORM

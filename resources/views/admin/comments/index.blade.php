@@ -5,8 +5,8 @@
 @section('content')
 <div class="space-y-6">
     <div>
-        <h1 class="text-2xl font-bold text-gray-900">Moderación de Comentarios</h1>
-        <p class="text-gray-500 mt-1">Aprueba o rechaza comentarios de los clientes</p>
+        <h1 class="text-2xl font-bold text-white">Moderación de Comentarios</h1>
+        <p class="text-gray-400 mt-1">Aprueba o rechaza comentarios de los clientes</p>
     </div>
 
     @if(session('success'))
@@ -16,7 +16,7 @@
     @endif
 
     {{-- Comentarios Pendientes --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 overflow-hidden">
         <div class="px-6 py-4 bg-yellow-50 border-b border-yellow-100">
             <h2 class="text-lg font-semibold text-yellow-800">
                 <i class="fas fa-clock mr-2"></i>Pendientes ({{ $pending->total() }})
@@ -27,15 +27,15 @@
                 <div class="px-6 py-4 flex items-start justify-between gap-4">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="w-8 h-8 bg-hakesa-pink/20 rounded-full flex items-center justify-center text-hakesa-pink font-bold text-sm">
+                            <div class="w-8 h-8 bg-gracia-primary/20 rounded-full flex items-center justify-center text-gracia-primary font-bold text-sm">
                                 {{ strtoupper(substr($comment->user?->name ?? 'XX', 0,2)) }}
                             </div>
                             <div>
-                                <p class="font-semibold text-gray-900">{{ $comment->user?->name ?? 'Usuario eliminado' }}</p>
+                                <p class="font-semibold text-white">{{ $comment->user?->name ?? 'Usuario eliminado' }}</p>
                                 <p class="text-xs text-gray-400">{{ $comment->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
-                        <p class="text-gray-600 italic">"{{ $comment->content }}"</p>
+                        <p class="text-gray-400 italic">"{{ $comment->content }}"</p>
                     </div>
                     <div class="flex gap-2 flex-shrink-0">
                         <form action="{{ route('admin.comments.approve', $comment) }}" method="POST">
@@ -62,12 +62,12 @@
             @endforelse
         </div>
         @if($pending->hasPages())
-            <div class="px-6 py-4 border-t border-gray-100">{{ $pending->links() }}</div>
+            <div class="px-6 py-4 border-t border-gray-700">{{ $pending->links() }}</div>
         @endif
     </div>
 
     {{-- Comentarios Aprobados --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 overflow-hidden">
         <div class="px-6 py-4 bg-green-50 border-b border-green-100">
             <h2 class="text-lg font-semibold text-green-800">
                 <i class="fas fa-check-circle mr-2"></i>Aprobados ({{ $approved->total() }})
@@ -78,20 +78,20 @@
                 <div class="px-6 py-4 flex items-start justify-between gap-4">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="w-8 h-8 bg-hakesa-pink/20 rounded-full flex items-center justify-center text-hakesa-pink font-bold text-sm">
+                            <div class="w-8 h-8 bg-gracia-primary/20 rounded-full flex items-center justify-center text-gracia-primary font-bold text-sm">
                                 {{ strtoupper(substr($comment->user?->name ?? 'XX', 0,2)) }}
                             </div>
                             <div>
-                                <p class="font-semibold text-gray-900">{{ $comment->user?->name ?? 'Usuario eliminado' }}</p>
+                                <p class="font-semibold text-white">{{ $comment->user?->name ?? 'Usuario eliminado' }}</p>
                                 <p class="text-xs text-gray-400">{{ $comment->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
-                        <p class="text-gray-600 italic">"{{ $comment->content }}"</p>
+                        <p class="text-gray-400 italic">"{{ $comment->content }}"</p>
                     </div>
                     <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST" onsubmit="return confirm('¿Eliminar este comentario?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="px-3 py-2 bg-gray-100 text-gray-500 rounded-lg hover:bg-red-50 hover:text-red-500 transition text-sm" title="Eliminar">
+                        <button type="submit" class="px-3 py-2 bg-gray-700 text-gray-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition text-sm" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </button>
                     </form>
@@ -101,12 +101,12 @@
             @endforelse
         </div>
         @if($approved->hasPages())
-            <div class="px-6 py-4 border-t border-gray-100">{{ $approved->links() }}</div>
+            <div class="px-6 py-4 border-t border-gray-700">{{ $approved->links() }}</div>
         @endif
     </div>
 
     {{-- Comentarios Rechazados --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 overflow-hidden">
         <div class="px-6 py-4 bg-red-50 border-b border-red-100">
             <h2 class="text-lg font-semibold text-red-800">
                 <i class="fas fa-times-circle mr-2"></i>Rechazados ({{ $rejected->total() }})
@@ -117,11 +117,11 @@
                 <div class="px-6 py-4 flex items-start justify-between gap-4">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-2">
-                            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 font-bold text-sm">
+                            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 font-bold text-sm">
                                 {{ strtoupper(substr($comment->user?->name ?? 'XX', 0,2)) }}
                             </div>
                             <div>
-                                <p class="font-semibold text-gray-900">{{ $comment->user?->name ?? 'Usuario eliminado' }}</p>
+                                <p class="font-semibold text-white">{{ $comment->user?->name ?? 'Usuario eliminado' }}</p>
                                 <p class="text-xs text-gray-400">{{ $comment->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
@@ -138,7 +138,7 @@
                         <form action="{{ route('admin.comments.destroy', $comment) }}" method="POST" onsubmit="return confirm('¿Eliminar este comentario?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="px-3 py-2 bg-gray-100 text-gray-500 rounded-lg hover:bg-red-50 hover:text-red-500 transition text-sm" title="Eliminar">
+                            <button type="submit" class="px-3 py-2 bg-gray-700 text-gray-400 rounded-lg hover:bg-red-50 hover:text-red-500 transition text-sm" title="Eliminar">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -149,7 +149,7 @@
             @endforelse
         </div>
         @if($rejected->hasPages())
-            <div class="px-6 py-4 border-t border-gray-100">{{ $rejected->links() }}</div>
+            <div class="px-6 py-4 border-t border-gray-700">{{ $rejected->links() }}</div>
         @endif
     </div>
 </div>

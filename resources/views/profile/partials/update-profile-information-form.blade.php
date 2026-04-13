@@ -1,10 +1,10 @@
 <section>
     <header class="mb-6">
-        <h2 class="text-lg font-bold text-gray-900">
+        <h2 class="text-lg font-bold text-white">
             Información del Perfil
         </h2>
 
-        <p class="mt-1 text-sm text-gray-500">
+        <p class="mt-1 text-sm text-gray-400">
             Actualiza tu información personal y dirección de correo electrónico.
         </p>
     </header>
@@ -30,10 +30,10 @@
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div class="mt-2">
-                    <p class="text-sm text-gray-500">
+                    <p class="text-sm text-gray-400">
                         Tu correo electrónico no está verificado.
 
-                        <button form="send-verification" class="underline text-sm text-hakesa-pink hover:text-hakesa-pink-dark rounded-md focus:outline-none focus:ring-2 focus:ring-hakesa-pink focus:ring-offset-2">
+                        <button form="send-verification" class="underline text-sm text-gracia-primary hover:text-gracia-primary-dark rounded-md focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:ring-offset-2">
                             Haz clic aquí para reenviar el correo de verificación.
                         </button>
                     </p>

@@ -1,522 +1,236 @@
-<p align="center">
-  <a href="https://github.com/Kevin7819/Hakesa" target="_blank">
-    <img src="https://via.placeholder.com/400x120/FF6B8A/FFFFFF?text=HAKESA" alt="Hakesa Logo" width="400">
-  </a>
-</p>
+# Gracia Creativa
 
-<p align="center">
-  <a href="https://github.com/Kevin7819/Hakesa/actions/workflows/tests.yml">
-    <img src="https://github.com/Kevin7819/Hakesa/actions/workflows/tests.yml/badge.svg" alt="CI Status">
-  </a>
-  <a href="https://laravel.com">
-    <img src="https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white" alt="Laravel 13">
-  </a>
-  <a href="https://php.net">
-    <img src="https://img.shields.io/badge/PHP-8.3+-777BB4?logo=php&logoColor=white" alt="PHP 8.3+">
-  </a>
-  <a href="https://pestphp.com">
-    <img src="https://img.shields.io/badge/Tested%20with-Pest-FF2D20?logo=pestphp&logoColor=white" alt="Tested with Pest">
-  </a>
-  <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
-  </a>
-</p>
+[![CI Status](https://github.com/Kevin7819/Hakesa/actions/workflows/tests.yml/badge.svg)](https://github.com/Kevin7819/Hakesa/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20.svg)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4.svg)](https://php.net)
 
-<p align="center">
-  <strong>E-commerce platform for personalized products and merchandising</strong>
-</p>
+> Full-featured e-commerce platform for customized products and merchandising. Built with Laravel, Blade, Alpine.js, and a mobile-first API.
 
----
+## Features
 
-## 📖 About
+- **Product catalog** with search, category filters, and AJAX-powered filtering
+- **Shopping cart** with stock validation and real-time updates
+- **Checkout flow** with order creation, stock management, and email confirmation
+- **Customer accounts** with order history, wishlist, and profile management
+- **Admin panel** with product/category/order/comment management
+- **Mobile API** (`/api/v1`) with Sanctum token authentication
+- **OTP password reset** for web and API users
+- **Responsive design** with Tailwind CSS 3 and Alpine.js 3
+- **Full test suite** with Pest PHP (216 tests)
 
-**Hakesa** is a full-featured e-commerce platform built for selling **customized products and merchandising**. It enables customers to browse a product catalog, personalize items (colors, sizes, engravings, custom text), add them to a cart, and place orders — all with a clean, responsive interface.
+## Tech Stack
 
-Administrators get a dedicated panel to manage the catalog, categories, orders, and moderate customer comments, with role-based access control powered by Spatie Laravel Permission.
+| Layer | Technology |
+|-------|-----------|
+| Backend | Laravel 13 (PHP 8.3+) |
+| Frontend | Blade + Alpine.js 3 + Tailwind CSS 3 |
+| Build | Vite 8 |
+| API | Laravel Sanctum (token-based auth) |
+| Testing | Pest PHP 4.x |
+| Database | SQLite (dev), MySQL/PostgreSQL (prod) |
+| Auth | Laravel Breeze (web) + custom admin guard |
+| Permissions | spatie/laravel-permission |
 
-### 🎯 Use Cases
+## Requirements
 
-- Corporate merchandise stores
-- Custom gift businesses
-- Brands selling configurable products
-- Print-on-demand and personalization shops
+- **PHP** 8.3 or higher
+- **Composer** 2.x
+- **Node.js** 18+ and npm
+- **SQLite**, MySQL, or PostgreSQL
 
----
-
-## ✨ Features
-
-### Customer-Facing
-
-| Feature | Description |
-|---------|-------------|
-| **Product Catalog** | Browse, search, and filter products by category and price range |
-| **Product Customization** | Select options like color, size, and custom text per product |
-| **Shopping Cart** | Full cart management with quantity updates and item removal |
-| **Checkout** | Simplified checkout flow with customer delivery details |
-| **Order History** | View past orders with status tracking (`pending` → `processing` → `completed` / `cancelled`) |
-| **Comments** | Leave comments on products (subject to admin moderation) |
-| **User Profile** | Manage personal information and account settings |
-| **Authentication** | Registration, login, and password reset via Laravel Breeze |
-| **OTP Password Reset** | One-time password verification for secure password recovery |
-| **Welcome Emails** | Automated welcome email on registration |
-
-### Admin Panel
-
-| Feature | Description |
-|---------|-------------|
-| **Dashboard** | Overview statistics for orders and key metrics |
-| **Product Management** | Full CRUD for catalog products |
-| **Category Management** | Organize products with categories |
-| **Order Management** | View order details, update order statuses |
-| **Comment Moderation** | Approve, reject, or delete customer comments |
-| **Separate Auth Guard** | Independent admin authentication via `AdminUser` model |
-| **Role-Based Access** | Fine-grained permissions via Spatie Laravel Permission |
-
----
-
-## 🛠️ Tech Stack
-
-### Backend
-
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Laravel** | 13.x | Application framework |
-| **PHP** | 8.3+ | Runtime |
-| **Laravel Breeze** | 2.4 | User authentication scaffolding |
-| **Spatie Laravel Permission** | — | Roles & permissions |
-| **Eloquent ORM** | — | Database abstraction & relationships |
-
-### Frontend
-
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Blade** | — | Server-side templating |
-| **Tailwind CSS** | 3.1+ | Utility-first CSS framework |
-| **Alpine.js** | 3.4+ | Lightweight reactive components |
-| **Vite** | 8.x | Frontend build tool |
-| **Axios** | 1.11+ | HTTP client |
-
-### Development & Testing
-
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Pest PHP** | 4.4+ | Testing framework |
-| **Laravel Pint** | 1.27+ | Code style fixer |
-| **Faker** | 1.23+ | Test data generation |
-| **Concurrently** | 9.0+ | Parallel dev server orchestration |
-
----
-
-## 📋 Requirements
-
-| Dependency | Minimum Version |
-|------------|-----------------|
-| **PHP** | 8.3 |
-| **Composer** | 2.2+ |
-| **Node.js** | 18+ |
-| **npm** | 9+ |
-| **SQLite** | 3.x (development) |
-| **MySQL / PostgreSQL** | — (production, optional) |
-
-### PHP Extensions
-
-Ensure the following extensions are enabled:
-
-- `mbstring`
-- `xml`
-- `ctype`
-- `json`
-- `pdo_sqlite` (or `pdo_mysql` / `pdo_pgsql` for production)
-- `fileinfo`
-- `tokenizer`
-- `bcmath`
-
----
-
-## 🚀 Installation
-
-### Quick Start
+## Installation
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/Kevin7819/Hakesa.git
 cd Hakesa
 
-# One-command setup (installs deps, generates key, migrates, builds assets)
-composer setup
-```
-
-### Manual Setup
-
-```bash
-# 1. Install PHP dependencies
+# 2. Install PHP dependencies
 composer install
 
-# 2. Install frontend dependencies
-npm install
-
-# 3. Create environment file
+# 3. Copy environment file and generate app key
 cp .env.example .env
-
-# 4. Generate application key
 php artisan key:generate
 
-# 5. Create SQLite database file (if using SQLite)
-touch database/database.sqlite
+# 4. Run database migrations
+php artisan migrate
 
-# 6. Run migrations and seeders
-php artisan migrate --seed
+# 5. Seed default data (creates admin user)
+php artisan db:seed
 
-# 7. Build frontend assets
+# 6. Install and build frontend assets
+npm install
 npm run build
 ```
 
-### Default Test Users
+### Default Admin Credentials
 
-After running seeders, the following accounts are available:
+After seeding:
 
 | Role | Email | Password |
 |------|-------|----------|
-| **Admin** | `admin@hakesa.com` | `admin123` |
-| **Customer** | `cliente@test.com` | `password` |
+| Admin | `admin@hakesa.com` | `admin123` |
 
-> **Note:** Admin credentials can be customized via `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `.env` before running seeders.
+> **Change the default password immediately in production.**
 
----
-
-## ⚙️ Environment Configuration
-
-Key `.env` variables to configure:
-
-### Application
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `APP_NAME` | `Hakesa` | Application display name |
-| `APP_ENV` | `local` | Environment (`local`, `production`) |
-| `APP_DEBUG` | `true` | Enable debug mode (set `false` in production) |
-| `APP_URL` | `http://localhost` | Base URL |
-| `APP_LOCALE` | `es` | Application language |
-| `BCRYPT_ROUNDS` | `12` | Password hashing cost |
-
-### Database
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DB_CONNECTION` | `sqlite` | Database driver (`sqlite`, `mysql`, `pgsql`) |
-| `DB_HOST` | — | Database host (MySQL/PostgreSQL) |
-| `DB_PORT` | — | Database port |
-| `DB_DATABASE` | — | Database name or SQLite file path |
-| `DB_USERNAME` | — | Database username |
-| `DB_PASSWORD` | — | Database password |
-
-### Mail
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `MAIL_MAILER` | `log` | Mail driver (`smtp`, `log`, `sendmail`, `mailgun`) |
-| `MAIL_HOST` | `127.0.0.1` | SMTP server host |
-| `MAIL_PORT` | `2525` | SMTP server port |
-| `MAIL_USERNAME` | — | SMTP username |
-| `MAIL_PASSWORD` | — | SMTP password |
-| `MAIL_FROM_ADDRESS` | `hello@example.com` | Sender email address |
-| `MAIL_FROM_NAME` | `${APP_NAME}` | Sender display name |
-
-> For development, consider using [Mailpit](https://github.com/axllent/mailpit) or [Mailhog](https://github.com/mailhog/MailHog) to catch outgoing emails locally.
-
-### Session & Queue
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SESSION_DRIVER` | `database` | Session storage driver |
-| `QUEUE_CONNECTION` | `database` | Queue driver |
-| `CACHE_STORE` | `database` | Cache driver |
-
----
-
-## 💻 Development
-
-### Running the Dev Server
+## Development
 
 ```bash
-# Full development stack (server, queue, logs, Vite)
+# Start development server (Laravel + Vite + queue)
 composer dev
+
+# Or run components separately:
+php artisan serve          # PHP server
+npm run dev                # Vite dev server
+php artisan queue:work     # Queue worker
 ```
 
-This runs four processes concurrently:
-- **PHP Server** — Laravel development server
-- **Queue Worker** — Processes queued jobs (emails, etc.)
-- **Logs** — Real-time log tail via Laravel Pail
-- **Vite** — Hot module replacement for frontend assets
-
-### Individual Commands
-
-```bash
-# Start PHP server only
-php artisan serve
-
-# Start Vite dev server
-npm run dev
-
-# Build production assets
-npm run build
-
-# Start queue worker
-php artisan queue:work
-```
-
-### Code Style
-
-```bash
-# Auto-fix code style
-vendor/bin/pint
-
-# Check style without fixing
-vendor/bin/pint --test
-```
-
-### Cache Management
-
-```bash
-php artisan config:clear
-php artisan cache:clear
-php artisan route:clear
-php artisan view:clear
-```
-
----
-
-## 🧪 Testing
-
-Hakesa uses **Pest PHP** for expressive, readable tests.
+## Testing
 
 ```bash
 # Run all tests
-composer test
-
-# Run all tests (direct)
 vendor/bin/pest
 
-# Run a specific test file
-vendor/bin/pest tests/Feature/CartTest.php
+# Run a single test file
+vendor/bin/pest tests/Feature/CheckoutTest.php
 
-# Filter tests by name
-vendor/bin/pest --filter="can add"
+# Run tests matching a description
+vendor/bin/pest --filter="checkout"
 
-# Run with coverage report
+# Run with coverage
 vendor/bin/pest --coverage
+
+# Auto-fix code style before committing
+vendor/bin/pint
 ```
 
-### Test Structure
+## API Overview
 
-| Directory | Purpose |
-|-----------|---------|
-| `tests/Feature/` | Integration tests (HTTP, database, auth) |
-| `tests/Unit/` | Unit tests (isolated logic) |
+All API routes are prefixed with `/api/v1`. Authentication uses Laravel Sanctum tokens.
 
-Tests use `RefreshDatabase` trait for clean database state and leverage factories for test data generation.
+### Public Routes
 
----
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/auth/login` | Login (returns token) |
+| `POST` | `/api/v1/auth/register` | Register new account |
+| `POST` | `/api/v1/auth/otp/request` | Request OTP for password reset |
+| `POST` | `/api/v1/auth/otp/verify` | Verify OTP code |
+| `POST` | `/api/v1/auth/password/reset/confirm` | Reset password with OTP |
+| `GET` | `/api/v1/products` | List products (paginated) |
+| `GET` | `/api/v1/products/{id}` | Get single product |
+| `GET` | `/api/v1/categories` | List categories |
 
-## 📁 Project Structure
+### Protected Routes (require `Authorization: Bearer {token}`)
 
-```
-hakesa/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── Admin/           # Admin panel controllers
-│   │   │   │   ├── AuthController.php
-│   │   │   │   ├── CategoryController.php
-│   │   │   │   ├── CommentController.php
-│   │   │   │   ├── DashboardController.php
-│   │   │   │   ├── OrderController.php
-│   │   │   │   └── ProductController.php
-│   │   │   ├── Auth/            # Breeze auth controllers
-│   │   │   ├── CartController.php
-│   │   │   ├── CatalogController.php
-│   │   │   ├── CheckoutController.php
-│   │   │   ├── ClientOrderController.php
-│   │   │   ├── CommentController.php
-│   │   │   ├── LandingController.php
-│   │   │   ├── ProfileController.php
-│   │   │   └── SitemapController.php
-│   │   └── Middleware/
-│   │       └── AdminAuth.php    # Admin guard middleware
-│   ├── Mail/
-│   │   ├── OrderConfirmation.php    # Order confirmation emails
-│   │   ├── OtpVerification.php      # OTP code emails
-│   │   └── WelcomeEmail.php         # Welcome emails
-│   ├── Models/
-│   │   ├── AdminUser.php        # Admin authentication model
-│   │   ├── Cart.php             # Shopping cart
-│   │   ├── CartItem.php         # Cart line items
-│   │   ├── Category.php         # Product categories
-│   │   ├── Comment.php          # Product comments
-│   │   ├── Order.php            # Customer orders
-│   │   ├── OrderItem.php        # Order line items
-│   │   ├── PasswordResetOtp.php # OTP password reset tokens
-│   │   ├── Product.php          # Catalog products
-│   │   └── User.php             # Customer user model
-│   ├── Providers/
-│   │   └── AppServiceProvider.php
-│   ├── Services/
-│   │   └── OtpService.php       # OTP generation & verification
-│   └── View/Components/         # Reusable Blade components
-├── config/                      # Laravel configuration files
-├── database/
-│   ├── factories/               # Model factories for testing
-│   ├── migrations/              # Database schema migrations
-│   └── seeders/                 # Database seeders
-├── public/                      # Web root (index.php, assets)
-├── resources/
-│   ├── css/                     # Tailwind & custom CSS
-│   ├── js/                      # Alpine.js & Vite entry points
-│   └── views/                   # Blade templates
-│       ├── admin/               # Admin panel views
-│       ├── auth/                # Authentication views
-│       ├── cart/                # Shopping cart views
-│       ├── catalog/             # Catalog views
-│       ├── checkout/            # Checkout views
-│       ├── comments/            # Comment components
-│       ├── components/          # Reusable Blade components
-│       ├── layouts/             # Layout templates
-│       ├── orders/              # Order views
-│       └── profile/             # User profile views
-├── routes/
-│   ├── web.php                  # Main web routes
-│   └── auth.php                 # Breeze authentication routes
-├── storage/                     # Logs, cache, uploads
-├── tests/
-│   ├── Feature/                 # Feature/integration tests
-│   ├── Unit/                    # Unit tests
-│   └── Pest.php                 # Pest configuration
-├── .env.example                 # Environment template
-├── composer.json                # PHP dependencies & scripts
-├── package.json                 # Node.js dependencies
-├── tailwind.config.js           # Tailwind configuration
-├── vite.config.js               # Vite configuration
-└── phpunit.xml                  # Test configuration
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/v1/auth/logout` | Logout (revoke token) |
+| `GET` | `/api/v1/auth/me` | Get current user profile |
+| `GET` | `/api/v1/cart` | Get cart |
+| `POST` | `/api/v1/cart/add/{product}` | Add to cart |
+| `PATCH` | `/api/v1/cart/{item}` | Update cart item |
+| `DELETE` | `/api/v1/cart/{item}` | Remove from cart |
+| `GET` | `/api/v1/checkout` | Get checkout summary |
+| `POST` | `/api/v1/checkout` | Place order |
+| `GET` | `/api/v1/orders` | List user orders |
+| `GET` | `/api/v1/orders/{order}` | Get order details |
+| `GET` | `/api/v1/wishlist` | Get wishlist |
+| `POST` | `/api/v1/wishlist/{product}` | Add to wishlist |
+| `DELETE` | `/api/v1/wishlist/{product}` | Remove from wishlist |
+
+### Example: Login
+
+```bash
+curl -X POST http://localhost/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@test.com","password":"password","device_name":"MyDevice"}'
 ```
 
----
+Response:
+```json
+{
+  "message": "Inicio de sesión exitoso.",
+  "user": { "id": 1, "name": "User", "email": "user@test.com" },
+  "token": "1|abc123..."
+}
+```
 
-## 🔒 Security
+## Environment Variables
 
-Hakesa implements multiple layers of security:
+Key variables from `.env.example`:
 
-| Feature | Implementation |
-|---------|---------------|
-| **CSRF Protection** | Laravel's built-in CSRF middleware on all POST/PUT/DELETE routes |
-| **XSS Prevention** | Blade's `{{ }}` auto-escaping; `{!! !!}` used only for trusted content |
-| **Rate Limiting** | Throttled routes: checkout (3/min), admin login (5/min), comments (5/min), cart actions (30/min) |
-| **Password Hashing** | Bcrypt with configurable rounds (default: 12) |
-| **OTP Verification** | Time-based one-time passwords for password reset flow |
-| **Separate Admin Guard** | Independent authentication guard for admin users via `AdminUser` model |
-| **Role-Based Permissions** | Spatie Laravel Permission for fine-grained access control |
-| **SQL Injection Prevention** | Eloquent ORM with parameterized queries throughout |
-| **Session Security** | Database-backed sessions with encryption option |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `APP_NAME` | `Gracia Creativa` | Application display name |
+| `APP_ENV` | `local` | Environment (local, testing, production) |
+| `APP_DEBUG` | `true` | Enable debug mode |
+| `APP_URL` | `http://localhost` | Application URL |
+| `DB_CONNECTION` | `sqlite` | Database driver |
+| `DB_DATABASE` | `storage/database/database.sqlite` | Database file path |
+| `MAIL_MAILER` | `log` | Mail driver (log, smtp, sendmail) |
+| `QUEUE_CONNECTION` | `sync` | Queue driver (sync, database, redis) |
+| `CORS_ALLOWED_ORIGINS` | *(empty)* | Comma-separated list of allowed origins for API CORS |
+| `ADMIN_PASSWORD` | `password` | Default admin password (used by seeder) |
 
----
+## Project Structure
 
-## 🚀 Deployment
+```
+app/
+├── Http/
+│   ├── Controllers/        # Web + API controllers
+│   ├── Controllers/Api/    # API-specific controllers
+│   ├── Controllers/Admin/  # Admin panel controllers
+│   ├── Middleware/         # Custom middleware
+│   └── Requests/           # Form request validation
+├── Mail/                   # Mailable classes
+├── Models/                 # Eloquent models
+└── Services/               # Business logic services
+database/
+├── migrations/             # Database migrations
+└── seeders/                # Database seeders
+resources/
+├── views/                  # Blade templates
+│   ├── emails/             # Email templates
+│   └── admin/              # Admin panel views
+├── js/app.js               # Alpine.js stores and components
+└── css/app.css             # Tailwind CSS entry
+routes/
+├── web.php                 # Web routes
+├── api.php                 # API routes
+├── auth.php                # Auth routes (Breeze)
+└── console.php             # Console commands
+tests/
+├── Feature/                # Feature tests
+└── Unit/                   # Unit tests
+```
 
-### Production Checklist
+## Security
 
-1. **Set environment:**
-   ```env
-   APP_ENV=production
-   APP_DEBUG=false
-   APP_URL=https://yourdomain.com
-   ```
+- **CSRF protection** on all web routes
+- **Sanctum tokens** for API authentication
+- **Rate limiting** on login, registration, OTP, checkout, and cart
+- **Stock validation** with database-level locking (`lockForUpdate()`)
+- **Order ownership checks** — users can only view their own orders
+- **SQL injection prevention** — parameterized queries with proper LIKE escaping
+- **XSS prevention** — Blade auto-escapes output
+- **Security headers** — CSP, HSTS, X-Frame-Options, X-Content-Type-Options
 
-2. **Configure database:** Switch from SQLite to MySQL or PostgreSQL.
+## CI/CD
 
-3. **Configure mail:** Set up a real SMTP provider (Mailgun, SendGrid, SES, etc.).
+GitHub Actions runs on every push and PR:
 
-4. **Install dependencies:**
-   ```bash
-   composer install --optimize-autoloader --no-dev
-   npm ci
-   npm run build
-   ```
+- PHP lint
+- Laravel Pint (code style)
+- Unit tests
+- Feature tests
+- Frontend build (npm)
 
-5. **Run migrations:**
-   ```bash
-   php artisan migrate --force
-   ```
+See `.github/workflows/tests.yml`.
 
-6. **Cache configuration:**
-   ```bash
-   php artisan config:cache
-   php artisan route:cache
-   php artisan view:cache
-   ```
+## License
 
-7. **Set up queue worker:** Configure a supervisor process for `php artisan queue:work`.
+The MIT License (MIT). See [LICENSE](LICENSE) for details.
 
-8. **Set file permissions:** Ensure `storage/` and `bootstrap/cache/` are writable by the web server.
-
-### CI/CD
-
-Hakesa uses **GitHub Actions** for continuous integration:
-
-| Workflow | Triggers |
-|----------|----------|
-| **tests.yml** | Push to `master`/`main`, PRs, daily schedule |
-| **issues.yml** | Issue lifecycle events |
-| **pull-requests.yml** | PR lifecycle events |
-| **update-changelog.yml** | Release events |
-
-The test workflow runs a PHP matrix (8.3, 8.4, 8.5) with linting, unit tests, feature tests, and frontend build verification.
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Here's how to get started:
-
-1. **Fork** the repository
-2. **Create a feature branch** (`git checkout -b feat/your-feature`)
-3. **Make your changes** — follow the existing code style
-4. **Run tests** to ensure nothing is broken:
-   ```bash
-   composer test
-   vendor/bin/pint
-   ```
-5. **Commit** using [Conventional Commits](https://www.conventionalcommits.org/):
-   ```bash
-   git commit -m "feat(cart): add bulk quantity update"
-   ```
-6. **Push** to your branch (`git push origin feat/your-feature`)
-7. **Open a Pull Request** with a clear description of changes
-
-### Commit Convention
-
-| Type | Description |
-|------|-------------|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation changes |
-| `style` | Code style changes (formatting, no logic) |
-| `refactor` | Code refactoring (no feature change, no bug fix) |
-| `test` | Adding or updating tests |
-| `chore` | Maintenance tasks, dependencies |
-
----
-
-## 📄 License
-
-This project is open-sourced under the [MIT License](LICENSE).
-
----
-
-## 👨‍💻 Author
-
-**Kevin7819** — [GitHub](https://github.com/Kevin7819)
-
----
-
-<p align="center">
-  Made with ❤️ in Costa Rica 🇨🇷
-</p>
+Copyright (c) 2026 Gracia Creativa
