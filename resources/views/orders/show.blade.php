@@ -20,7 +20,7 @@
             </div>
         @endif
 
-        <div class="card-hakesa p-6 mb-6">
+        <div class="card-gracia p-6 mb-6">
             <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
                 <div>
                     <h1 class="text-2xl font-bold text-white font-mono">{{ $order->order_number }}</h1>
@@ -31,7 +31,7 @@
         </div>
 
         <!-- Items -->
-        <div class="card-hakesa overflow-hidden mb-6">
+        <div class="card-gracia overflow-hidden mb-6">
             <div class="p-5 border-b border-gray-100">
                 <h2 class="font-bold text-white">Productos</h2>
             </div>
@@ -52,7 +52,7 @@
         </div>
 
         <!-- Summary -->
-        <div class="card-hakesa p-6">
+        <div class="card-gracia p-6">
             <div class="space-y-2">
                 <div class="flex justify-between">
                     <span class="text-gray-400">Subtotal</span>

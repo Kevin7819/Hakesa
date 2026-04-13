@@ -26,7 +26,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             @foreach($wishlistItems as $item)
             @if($item->product && $item->product->is_active)
-            <div class="card-hakesa overflow-hidden group" x-data="wishlistItem({{ $item->product->id }})">
+            <div class="card-gracia overflow-hidden group" x-data="wishlistItem({{ $item->product->id }})">
                 <div class="relative">
                     <a href="{{ route('catalog.show', $item->product) }}">
                         <div class="h-52 bg-gray-700 overflow-hidden">
@@ -34,7 +34,7 @@
                                 <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20">
-                                    <span class="text-5xl font-extrabold text-gracia-primary/40 select-none">H</span>
+                                    <span class="text-5xl font-extrabold text-gracia-primary/40 select-none">GC</span>
                                 </div>
                             @endif
                         </div>
@@ -77,7 +77,7 @@
             </div>
             <h3 class="text-2xl font-bold text-white mb-2">No tienes favoritos aún</h3>
             <p class="text-gray-400 mb-6">Explora nuestro catálogo y guarda los productos que te gusten</p>
-            <a href="{{ route('catalog.index') }}" class="btn-hakesa">Ver Catálogo</a>
+            <a href="{{ route('catalog.index') }}" class="btn-gracia">Ver Catálogo</a>
         </div>
         @endif
     </div>

@@ -101,6 +101,45 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 
+    // ── Price Range Slider (Dual handle) ──
+    // Uses two overlapping range inputs. When the user mousedown on
+    // one it gets z-30 (on top), so it receives all pointer events
+    // for the duration of the drag. On mouseup the z-index drops
+    // back and the AJAX filter fires.
+    //
+    // minRange/maxRange are dynamic from DB (floor/ceil of actual prices).
+    Alpine.data('priceRangeSlider', (initialMin = 0, initialMax = 15000, minRange = 0, maxRange = 15000) => ({
+        minPrice: initialMin,
+        maxPrice: initialMax,
+        minRange: minRange,
+        maxRange: maxRange,
+        minThumbActive: false,
+        maxThumbActive: false,
+        _submitTimer: null,
+
+        onMinInput(raw) {
+            let val = parseInt(raw);
+            if (val < this.minRange) val = this.minRange;
+            if (val > this.maxPrice - 500) val = this.maxPrice - 500;
+            this.minPrice = val;
+        },
+        onMaxInput(raw) {
+            let val = parseInt(raw);
+            if (val > this.maxRange) val = this.maxRange;
+            if (val < this.minPrice + 500) val = this.minPrice + 500;
+            this.maxPrice = val;
+        },
+        submit() {
+            clearTimeout(this._submitTimer);
+            this._submitTimer = setTimeout(() => {
+                const form = this.$root?.closest('form') ?? this.$root?.querySelector('form');
+                if (form && typeof form.requestSubmit === 'function') {
+                    form.requestSubmit();
+                }
+            }, 400);
+        }
+    }));
+
     // ── Add to cart (AJAX) ──
     Alpine.data('addToCart', (url) => ({
         loading: false,
@@ -167,14 +206,14 @@ document.addEventListener('alpine:init', () => {
                     const userName = data.comment.user_name;
                     const initials = userName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
                     const card = document.createElement('div');
-                    card.className = 'card-hakesa p-8 animate-fade-in-up';
+                    card.className = 'card-gracia p-8 animate-fade-in-up';
 
                     const pContent = document.createElement('p');
                     pContent.className = 'text-gray-600 mb-6 italic';
                     pContent.textContent = `"${data.comment.content}"`;
 
                     const avatar = document.createElement('div');
-                    avatar.className = 'w-12 h-12 bg-hakesa-pink/20 rounded-full flex items-center justify-center text-hakesa-pink font-bold';
+                    avatar.className = 'w-12 h-12 bg-gracia-primary/20 rounded-full flex items-center justify-center text-gracia-primary font-bold';
                     avatar.textContent = initials;
 
                     const pName = document.createElement('p');
@@ -338,7 +377,7 @@ document.addEventListener('alpine:init', () => {
                     Alpine.store('toasts').success(data.message);
                     window.dispatchEvent(new CustomEvent('wishlist-bounce'));
                     // Remove card from DOM
-                    const card = this.$el.closest('.card-hakesa');
+                    const card = this.$el.closest('.card-gracia');
                     if (card) {
                         card.style.transition = 'opacity 0.3s, transform 0.3s';
                         card.style.opacity = '0';

@@ -10,7 +10,7 @@
         @if($cart->items->count() > 0)
         <div class="space-y-6">
             <!-- Items -->
-            <div class="card-hakesa divide-y divide-gray-100">
+            <div class="card-gracia divide-y divide-gray-100">
                 @foreach($cart->items as $item)
                 <div class="p-5 flex gap-4" data-cart-item>
                     <!-- Image -->
@@ -19,7 +19,7 @@
                             <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20">
-                                <span class="text-lg font-extrabold text-gracia-primary/40 select-none">H</span>
+                                <span class="text-lg font-extrabold text-gracia-primary/40 select-none">GC</span>
                             </div>
                         @endif
                     </div>
@@ -60,7 +60,7 @@
             </div>
 
             <!-- Summary -->
-            <div class="card-hakesa p-6">
+            <div class="card-gracia p-6">
                 <div class="flex justify-between items-center mb-4">
                     <span class="text-gray-400" id="cart-item-count">{{ $cart->item_count }} producto{{ $cart->item_count != 1 ? 's' : '' }}</span>
                     <span class="text-2xl font-bold text-white" id="cart-total">₡{{ number_format($cart->total, 0, ',', '.') }}</span>
@@ -72,20 +72,20 @@
                             <span x-show="loading" x-cloak>Vaciando...</span>
                         </button>
                     </div>
-                    <a href="{{ route('checkout.index') }}" class="btn-hakesa py-3 px-8 text-center">
+                    <a href="{{ route('checkout.index') }}" class="btn-gracia py-3 px-8 text-center">
                         Proceder al Checkout
                     </a>
                 </div>
             </div>
         </div>
         @else
-        <div class="card-hakesa text-center py-16">
+        <div class="card-gracia text-center py-16">
             <div class="w-24 h-24 bg-gracia-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg class="w-12 h-12 text-gracia-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
             </div>
             <h3 class="text-2xl font-bold text-white mb-2">Tu carrito está vacío</h3>
             <p class="text-gray-400 mb-6">Agregá productos desde nuestro catálogo</p>
-            <a href="{{ route('catalog.index') }}" class="btn-hakesa">Ver Catálogo</a>
+            <a href="{{ route('catalog.index') }}" class="btn-gracia">Ver Catálogo</a>
         </div>
         @endif
     </div>

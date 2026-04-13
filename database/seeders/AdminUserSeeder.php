@@ -10,16 +10,20 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        AdminUser::firstOrCreate(
-            ['email' => 'admin@hakesa.com'],
-            [
-                'name' => 'Super Admin',
-                'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
-                'role' => 'admin',
-                'email_verified_at' => now(),
-            ]
-        );
+        // Remove any existing admin users to ensure clean state
+        AdminUser::truncate();
 
-        $this->command->info('✓ Admin user creado.');
+        $password = Hash::make(env('SEEDER_PASSWORD', 'admin123'));
+
+        AdminUser::create([
+            'email' => 'admin@graciacreativa.com',
+            'name' => 'Administrador Gracia Creativa',
+            'password' => $password,
+            'role' => 'admin',
+            'email_verified_at' => now(),
+        ]);
+
+        $this->command->info('✓ 1 usuario admin creado (password: admin123)');
+        $this->command->info('  - admin@graciacreativa.com');
     }
 }

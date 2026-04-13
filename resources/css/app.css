@@ -29,14 +29,14 @@
 
 @layer components {
     /* ── Buttons ── */
-    .btn-hakesa {
+    .btn-gracia {
         @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
                text-white bg-gracia-primary hover:bg-gracia-primary-dark
                transition-all duration-300 shadow-lg shadow-gracia-primary/25
                hover:shadow-xl hover:shadow-gracia-primary/30 hover:-translate-y-0.5;
     }
 
-    .btn-hakesa-outline {
+    .btn-gracia-outline {
         @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
                text-gracia-primary border-2 border-gracia-primary
                hover:bg-gracia-primary hover:text-white
@@ -56,7 +56,7 @@
     }
 
     /* ── Cards - Dark Theme ── */
-    .card-hakesa {
+    .card-gracia {
         @apply bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl
                transition-all duration-300 hover:-translate-y-1 border border-gray-700;
     }
@@ -92,9 +92,39 @@
 
     .admin-input {
         @apply w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg
-               text-white placeholder-gray-400
+               text-gray-900 placeholder-gray-400
                focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:border-transparent
                transition-all duration-200;
+    }
+
+    /* Global input styles for readability */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="search"],
+    input[type="date"],
+    textarea,
+    select {
+        color: #111827;
+    }
+
+    /* Dark theme inputs */
+    .bg-gray-700 input[type="text"],
+    .bg-gray-700 input[type="email"],
+    .bg-gray-700 input[type="password"],
+    .bg-gray-700 input[type="number"],
+    .bg-gray-700 input[type="search"],
+    .bg-gray-700 textarea,
+    .bg-gray-700 select {
+        color: #f9fafb;
+    }
+
+    .bg-gray-700 input::placeholder,
+    .bg-gray-700 textarea::placeholder {
+        color: #9ca3af;
     }
 
     .admin-badge {
@@ -104,15 +134,15 @@
 
 @layer utilities {
     /* ── Gradients ── */
-    .gradient-hakesa {
+    .gradient-gracia {
         background: linear-gradient(135deg, var(--gracia-primary) 0%, var(--gracia-secondary) 100%);
     }
 
-    .gradient-hakesa-warm {
+    .gradient-gracia-warm {
         background: linear-gradient(135deg, var(--gracia-primary) 0%, var(--gracia-accent) 100%);
     }
 
-    .gradient-hakesa-cool {
+    .gradient-gracia-cool {
         background: linear-gradient(135deg, var(--gracia-secondary) 0%, var(--gracia-accent) 100%);
     }
 

@@ -15,7 +15,7 @@ export default {
                 sans: ['Poppins', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                // 🎨 NUEVO BRAND: Gracia Creativa (2026)
+                // 🎨 Gracia Creativa Brand Colors (2026)
                 gracia: {
                     primary: '#BF5098',      // Pink Magenta - CTAs, highlights
                     'primary-dark': '#A84385',
@@ -29,21 +29,6 @@ export default {
                     base: '#0D0D0D',        // Rich Black - text, backgrounds
                     'base-light': '#262626',
                     'base-lighter': '#404040',
-                },
-                // 🏷️ LEGACY: Hakesa (deprecated - remover después de migración)
-                hakesa: {
-                    pink: '#F26BB5',
-                    'pink-dark': '#D94E9B',
-                    'pink-light': '#F5A3D0',
-                    teal: '#04BFBF',
-                    'teal-dark': '#039999',
-                    'teal-light': '#6DD8D8',
-                    yellow: '#F2CB05',
-                    'yellow-dark': '#CCAA00',
-                    gold: '#F2B705',
-                    'gold-dark': '#CC9800',
-                    light: '#F2F2F2',
-                    'light-dark': '#E0E0E0',
                 },
             },
         },

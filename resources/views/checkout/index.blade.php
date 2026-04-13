@@ -20,7 +20,7 @@
             <!-- Form -->
             <div class="lg:col-span-2 space-y-6">
                 <!-- Datos de contacto (read-only) -->
-                <div class="card-hakesa p-6">
+                <div class="card-gracia p-6">
                     <h2 class="text-lg font-bold text-white mb-4">Datos de Contacto</h2>
                     <form action="{{ route('checkout.store') }}" method="POST" id="checkout-form">
                         @csrf
@@ -72,7 +72,7 @@
                                             <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover">
                                         @else
                                             <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20">
-                                                <span class="text-sm font-extrabold text-gracia-primary/40 select-none">H</span>
+                                                <span class="text-sm font-extrabold text-gracia-primary/40 select-none">GC</span>
                                             </div>
                                         @endif
                                     </div>
@@ -109,7 +109,7 @@
                             <p class="text-sm text-gray-400">Una vez realizado el pedido nos contactaremos por WhatsApp para coordinar el diseño y el pago 🇨🇷</p>
                         </div>
 
-                        <button type="submit" class="w-full btn-hakesa py-4 text-lg mt-4">
+                        <button type="submit" class="w-full btn-gracia py-4 text-lg mt-4">
                             Confirmar Pedido
                         </button>
                     </form>
@@ -118,7 +118,7 @@
 
             <!-- Summary -->
             <div>
-                <div class="card-hakesa p-6 sticky top-24">
+                <div class="card-gracia p-6 sticky top-24">
                     <h2 class="text-lg font-bold text-white mb-4">Resumen del Pedido</h2>
                     <div class="divide-y divide-gray-100">
                         @foreach($cart->items as $item)

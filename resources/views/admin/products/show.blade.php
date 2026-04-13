@@ -8,7 +8,7 @@
     <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 overflow-hidden">
         <div class="md:flex">
             <div class="md:w-2/5 bg-gray-900 flex items-center justify-center p-8">
-                @if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="max-w-full h-auto rounded-xl">@else<div class="w-48 h-48 rounded-xl flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20"><span class="text-5xl font-extrabold text-gracia-primary/40 select-none">H</span></div>@endif
+                @if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="max-w-full h-auto rounded-xl">@else<div class="w-48 h-48 rounded-xl flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20"><span class="text-5xl font-extrabold text-gracia-primary/40 select-none">GC</span></div>@endif
             </div>
             <div class="md:w-3/5 p-8">
                 <div class="flex justify-between items-start mb-4">
@@ -22,7 +22,7 @@
                     <div class="bg-gray-900 p-4 rounded-xl"><p class="text-gray-400 text-sm">Stock</p><p class="text-2xl font-bold text-white">{{ $product->stock }} <span class="text-sm font-normal text-gray-400">uds</span></p></div>
                 </div>
                 <div class="flex gap-3">
-                    <a href="{{ route('admin.products.edit', $product) }}" class="btn-hakesa text-sm"><i class="fas fa-edit mr-2"></i>Editar</a>
+                    <a href="{{ route('admin.products.edit', $product) }}" class="btn-gracia text-sm"><i class="fas fa-edit mr-2"></i>Editar</a>
                     <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="inline">@csrf @method('DELETE')<button @click.prevent="confirm('¿Eliminar?') && $el.closest('form').submit()" class="px-5 py-2.5 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 font-semibold text-sm"><i class="fas fa-trash mr-2"></i>Eliminar</button></form>
                 </div>
             </div>

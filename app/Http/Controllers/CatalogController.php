@@ -55,6 +55,18 @@ class CatalogController extends Controller
             ? auth()->user()->wishlists()->pluck('product_id')->toArray()
             : [];
 
+        // Calculate dynamic min/max price for slider (rounded to nearest 1000)
+        $rawMin = Product::active()->min('price');
+        $rawMax = Product::active()->max('price');
+        $minPrice = $rawMin !== null ? (int) floor($rawMin / 1000) * 1000 : 0;
+        $maxPrice = $rawMax !== null ? (int) ceil($rawMax / 1000) * 1000 : 50000;
+
+        // Ensure min/max have at least 500 gap
+        if ($maxPrice - $minPrice < 500) {
+            $minPrice = max(0, $minPrice - 500);
+            $maxPrice = $maxPrice + 500;
+        }
+
         // AJAX: return JSON with rendered HTML
         if ($request->header('X-Requested-With') === 'XMLHttpRequest') {
             $gridHtml = view('catalog._products_grid', compact('products', 'wishlistIds'))->render();
@@ -68,10 +80,12 @@ class CatalogController extends Controller
                 'html' => $gridHtml,
                 'pagination' => $paginationHtml,
                 'results_info' => $resultsInfo,
+                'min_price' => $minPrice,
+                'max_price' => $maxPrice,
             ]);
         }
 
-        return view('catalog.index', compact('products', 'categories', 'wishlistIds'));
+        return view('catalog.index', compact('products', 'categories', 'wishlistIds', 'minPrice', 'maxPrice'));
     }
 
     public function show(Product $product): View

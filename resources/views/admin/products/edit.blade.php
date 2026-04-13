@@ -18,7 +18,7 @@
             </div>
             <div class="mt-6"><label class="block text-sm font-medium text-gray-300 mb-1">Descripción</label><textarea name="description" rows="4" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary">{{ old('description', $product->description) }}</textarea></div>
             <div class="mt-6"><label class="block text-sm font-medium text-gray-300 mb-1">Imagen</label>@if($product->image)<div class="mb-3"><img src="{{ asset('storage/'.$product->image) }}" alt="" class="w-32 h-32 object-cover rounded-xl"></div>@endif<input type="file" name="image" accept="image/*" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gracia-primary/10 file:text-gracia-primary file:font-medium file:cursor-pointer"><p class="mt-1 text-xs text-gray-400">Vacío = mantener imagen actual</p></div>
-            <div class="mt-8 flex justify-end gap-4"><a href="{{ route('admin.products.index') }}" class="px-6 py-2.5 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-200">Cancelar</a><button type="submit" class="btn-hakesa">Actualizar</button></div>
+            <div class="mt-8 flex justify-end gap-4"><a href="{{ route('admin.products.index') }}" class="px-6 py-2.5 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-200">Cancelar</a><button type="submit" class="btn-gracia">Actualizar</button></div>
         </form>
     </div>
 </div>

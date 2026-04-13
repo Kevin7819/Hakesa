@@ -18,7 +18,7 @@
             </div>
             <div class="mt-6"><label class="block text-sm font-medium text-gray-300 mb-1">Descripción</label><textarea name="description" rows="4" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary">{{ old('description') }}</textarea></div>
             <div class="mt-6"><label class="block text-sm font-medium text-gray-300 mb-1">Imagen</label><input type="file" name="image" accept="image/*" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gracia-primary/10 file:text-gracia-primary file:font-medium file:cursor-pointer">@error('image')<p class="mt-1 text-sm text-red-500">{{ $message }}</p>@enderror</div>
-            <div class="mt-8 flex justify-end gap-4"><a href="{{ route('admin.products.index') }}" class="px-6 py-2.5 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-200">Cancelar</a><button type="submit" class="btn-hakesa">Crear Producto</button></div>
+            <div class="mt-8 flex justify-end gap-4"><a href="{{ route('admin.products.index') }}" class="px-6 py-2.5 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-200">Cancelar</a><button type="submit" class="btn-gracia">Crear Producto</button></div>
         </form>
     </div>
 </div>
