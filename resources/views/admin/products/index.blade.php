@@ -6,7 +6,7 @@
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div><h1 class="text-2xl font-bold text-white">Gestión de Productos</h1><p class="text-gray-400 mt-1">Administra tu catálogo</p></div>
-        <a href="{{ route('admin.products.create') }}" class="btn-hakesa text-sm"><i class="fas fa-plus"></i> Nuevo Producto</a>
+        <a href="{{ route('admin.products.create') }}" class="btn-gracia text-sm"><i class="fas fa-plus"></i> Nuevo Producto</a>
     </div>
     @if(session('success'))<div class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl flex items-center gap-3"><i class="fas fa-check-circle"></i>{{ session('success') }}</div>@endif
     <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 overflow-hidden">
@@ -23,7 +23,7 @@
             <tbody class="divide-y divide-gray-100">
                 @forelse($products as $product)
                 <tr class="hover:bg-gray-700">
-                    <td class="px-6 py-4">@if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="w-14 h-14 object-cover rounded-xl">@else<div class="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20"><span class="text-sm font-extrabold text-gracia-primary/40 select-none">H</span></div>@endif</td>
+                    <td class="px-6 py-4">@if($product->image)<img src="{{ asset('storage/'.$product->image) }}" alt="" class="w-14 h-14 object-cover rounded-xl">@else<div class="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20"><span class="text-sm font-extrabold text-gracia-primary/40 select-none">GC</span></div>@endif</td>
                     <td class="px-6 py-4 text-white font-medium">{{ $product->name }}</td>
                     <td class="px-6 py-4 text-gray-400">{{ $product->category?->name ?? '—' }}</td>
                     <td class="px-6 py-4 text-white font-semibold">₡{{ number_format($product->price, 0, ',', '.') }}</td>

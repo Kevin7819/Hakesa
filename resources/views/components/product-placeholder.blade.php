@@ -15,9 +15,9 @@
     <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-white/10 rounded-full blur-sm"></div>
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white/5 rounded-full blur-md"></div>
 
-    <!-- Center H -->
+    <!-- Center GC -->
     <div class="absolute inset-0 flex items-center justify-center">
-        <span class="{{ $s['text'] }} font-extrabold text-white/80 drop-shadow-lg select-none">H</span>
+        <span class="{{ $s['text'] }} font-extrabold text-white/80 drop-shadow-lg select-none">GC</span>
     </div>
 
     <!-- Subtle dot pattern -->

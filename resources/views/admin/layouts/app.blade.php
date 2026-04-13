@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="icon" type="image/png" href="/Gracia_Creativa_Logo.png">
-        <link rel="apple-touch-icon" href="/Gracia_Creativa_Logo.png">
+    <link rel="icon" type="image/png" href="/favicon-Gracia-Creativa.png">
+    <link rel="apple-touch-icon" href="/Gracia_Creativa_Logo_withou_background.png">
     <title>@yield('title', 'Gracia Creativa Admin')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,9 +19,8 @@
         >
             <!-- Logo -->
             <div class="h-20 flex items-center gap-3 px-6 border-b border-gray-700">
-                <img src="{{ asset('Gracia_Creativa_Logo.png') }}" alt="Gracia Creativa" width="43" height="40" class="h-10 w-auto">
+                <img src="{{ asset('Gracia_Creativa_Logo_withou_background.png') }}" alt="Gracia Creativa" width="120" height="32" class="h-8 w-auto">
                 <div>
-                    <span class="text-lg font-bold text-white">Gracia Creativa</span>
                     <span class="block text-xs text-gray-400">Panel de Administración</span>
                 </div>
             </div>

@@ -17,17 +17,17 @@
         </div>
 
         <!-- Profile Information -->
-        <div class="card-hakesa p-8 mb-8">
+        <div class="card-gracia p-8 mb-8">
             @include('profile.partials.update-profile-information-form')
         </div>
 
         <!-- Update Password -->
-        <div class="card-hakesa p-8 mb-8">
+        <div class="card-gracia p-8 mb-8">
             @include('profile.partials.update-password-form')
         </div>
 
         <!-- Delete Account -->
-        <div class="card-hakesa p-8">
+        <div class="card-gracia p-8">
             @include('profile.partials.delete-user-form')
         </div>
     </div>

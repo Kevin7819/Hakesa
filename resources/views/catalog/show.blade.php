@@ -30,7 +30,7 @@
                     </div>
                 @else
                     <div class="bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20 rounded-2xl overflow-hidden flex items-center justify-center min-h-[400px]">
-                        <span class="text-8xl font-extrabold text-gracia-primary/40 select-none">H</span>
+                        <span class="text-8xl font-extrabold text-gracia-primary/40 select-none">GC</span>
                     </div>
                 @endif
                 @auth
@@ -86,7 +86,7 @@
                             placeholder="Describe cómo querés personalizar este producto (texto, diseño, colores, etc.)"></textarea>
                     </div>
 
-                    <button type="submit" :disabled="loading" class="w-full btn-hakesa py-4 text-lg disabled:opacity-50">
+                    <button type="submit" :disabled="loading" class="w-full btn-gracia py-4 text-lg disabled:opacity-50">
                         <svg x-show="!loading" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
                         <svg x-show="loading" x-cloak class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         <span x-show="!loading">Agregar al Carrito</span>
@@ -102,13 +102,13 @@
             <h2 class="text-2xl font-bold text-white mb-8">Productos Relacionados</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($related as $item)
-                <a href="{{ route('catalog.show', $item) }}" class="card-hakesa overflow-hidden group">
+                <a href="{{ route('catalog.show', $item) }}" class="card-gracia overflow-hidden group">
                     <div class="h-40 bg-gray-700 overflow-hidden">
                         @if($item->image)
                             <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         @else
                             <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20">
-                                <span class="text-2xl font-bold text-gracia-primary/40">H</span>
+                                <span class="text-2xl font-bold text-gracia-primary/40">GC</span>
                             </div>
                         @endif
                     </div>

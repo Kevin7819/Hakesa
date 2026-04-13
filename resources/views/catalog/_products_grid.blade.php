@@ -4,7 +4,7 @@
         $wlIds = $wishlistIds ?? [];
     @endphp
     @foreach($products as $product)
-    <div class="card-hakesa overflow-hidden group">
+    <div class="card-gracia overflow-hidden group">
         <div class="relative h-52">
             <a href="{{ route('catalog.show', $product) }}" class="block h-full">
                 @if($product->image)
@@ -13,19 +13,28 @@
                     </div>
                 @else
                     <div class="h-full overflow-hidden bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20 flex items-center justify-center">
-                        <span class="text-5xl font-extrabold text-gracia-primary/40 select-none">H</span>
+                        <span class="text-5xl font-extrabold text-gracia-primary/40 select-none">GC</span>
                     </div>
                 @endif
             </a>
-            @auth
-            <button x-data="wishlistToggle({{ $product->id }}, {{ in_array($product->id, $wlIds) ? 'true' : 'false' }})"
-                @click="toggle()" :disabled="loading"
-                class="absolute top-3 right-3 w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center shadow-md hover:scale-110 hover:bg-gracia-primary/20 transition-all duration-300 disabled:opacity-50 z-10"
-                aria-label="Agregar a favoritos">
-                <svg class="w-5 h-5 transition-all duration-300" :fill="inWishlist ? '#BF5098' : 'none'" stroke="#BF5098" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-                <svg x-show="loading" x-cloak class="absolute w-4 h-4 animate-spin" fill="none" stroke="#BF5098" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            </button>
-            @endauth
+
+            {{-- Wishlist Heart Button — Auth: toggle, Guest: login redirect --}}
+            <div class="absolute top-3 right-3 z-10">
+                @auth
+                <button x-data="wishlistToggle({{ $product->id }}, {{ in_array($product->id, $wlIds) ? 'true' : 'false' }})"
+                    @click="toggle()" :disabled="loading"
+                    class="w-10 h-10 bg-gray-700/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:scale-110 hover:bg-gracia-primary/20 transition-all duration-300 disabled:opacity-50"
+                    :aria-label="inWishlist ? 'Quitar de favoritos' : 'Agregar a favoritos'">
+                    <svg class="w-5 h-5 transition-all duration-300" :fill="inWishlist ? '#BF5098' : 'none'" stroke="#BF5098" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                    <svg x-show="loading" x-cloak class="absolute w-4 h-4 animate-spin" fill="none" stroke="#BF5098" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+                @else
+                <a href="{{ route('login') }}" class="w-10 h-10 bg-gray-700/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:scale-110 hover:bg-gracia-primary/20 transition-all duration-300"
+                    aria-label="Inicia sesión para agregar a favoritos" title="Inicia sesión para agregar a favoritos">
+                    <svg class="w-5 h-5" fill="none" stroke="#BF5098" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </a>
+                @endauth
+            </div>
         </div>
         <div class="p-5">
             @if($product->category)

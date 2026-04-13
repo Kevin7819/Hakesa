@@ -39,7 +39,7 @@
                         <option value="sent" {{ $order->status==='sent'?'selected':'' }}>Enviado</option>
                         <option value="cancelled" {{ $order->status==='cancelled'?'selected':'' }}>Cancelado</option>
                     </select>
-                    <button type="submit" class="w-full btn-hakesa">Actualizar</button>
+                    <button type="submit" class="w-full btn-gracia">Actualizar</button>
                 </form>
             </div>
             <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 p-6">

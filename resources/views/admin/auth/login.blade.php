@@ -11,7 +11,7 @@
     <div class="w-full max-w-md px-4">
         <div class="bg-gray-800 rounded-2xl shadow-lg border border-gray-700 p-8">
             <div class="text-center mb-8">
-                <img src="{{ asset('Gracia_Creativa_Logo.png') }}" alt="Gracia Creativa" width="64" height="60" class="w-16 h-16 mx-auto mb-4 object-contain">
+                <img src="{{ asset('Gracia_Creativa_Logo_withou_background.png') }}" alt="Gracia Creativa" width="200" height="auto" class="w-52 h-auto mx-auto mb-4 object-contain">
                 <h1 class="text-2xl font-bold text-white">Gracia Creativa Admin</h1>
                 <p class="text-gray-400 mt-1">Panel de Administración</p>
             </div>

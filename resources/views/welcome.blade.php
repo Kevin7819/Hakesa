@@ -31,11 +31,11 @@
                         Crea regalos inolvidables con diseños únicos hechos especialmente para vos.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="#catalogo" class="btn-hakesa shadow-xl">
+                        <a href="#catalogo" class="btn-gracia shadow-xl">
                             Ver Catálogo
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
-                        <a href="#contacto" class="btn-hakesa-outline border-white text-white hover:bg-gray-800 hover:text-gracia-primary">
+                        <a href="#contacto" class="btn-gracia-outline border-white text-white hover:bg-gray-800 hover:text-gracia-primary">
                             Hacer Pedido
                         </a>
                     </div>
@@ -78,7 +78,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Sublimación -->
-            <div class="card-hakesa p-8 text-center group">
+            <div class="card-gracia p-8 text-center group">
                 <div class="w-20 h-20 bg-gracia-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-gracia-primary/20 transition-colors">
                     <svg class="w-10 h-10 text-gracia-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -89,7 +89,7 @@
             </div>
 
             <!-- Corte Láser -->
-            <div class="card-hakesa p-8 text-center group">
+            <div class="card-gracia p-8 text-center group">
                 <div class="w-20 h-20 bg-gracia-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-gracia-secondary/20 transition-colors">
                     <svg class="w-10 h-10 text-gracia-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
@@ -100,7 +100,7 @@
             </div>
 
             <!-- Vinil -->
-            <div class="card-hakesa p-8 text-center group">
+            <div class="card-gracia p-8 text-center group">
                 <div class="w-20 h-20 bg-gracia-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-gracia-accent/20 transition-colors">
                     <svg class="w-10 h-10 text-gracia-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
@@ -111,7 +111,7 @@
             </div>
 
             <!-- Envíos -->
-            <div class="card-hakesa p-8 text-center group">
+            <div class="card-gracia p-8 text-center group">
                 <div class="w-20 h-20 bg-gracia-accent-dark/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-gracia-accent-dark/20 transition-colors">
                     <svg class="w-10 h-10 text-gracia-accent-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
@@ -144,7 +144,7 @@
                     <div class="carousel-slide px-4">
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
                             @foreach($chunk as $product)
-                            <div class="card-hakesa overflow-hidden w-full max-w-sm flex flex-col">
+                            <div class="card-gracia overflow-hidden w-full max-w-sm flex flex-col">
                                 <div class="relative aspect-square">
                                     @if($product->image)
                                         <div class="h-full bg-gray-700 overflow-hidden">
@@ -152,7 +152,7 @@
                                         </div>
                                     @else
                                         <div class="h-full overflow-hidden bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20 flex items-center justify-center">
-                                            <span class="text-5xl font-extrabold text-gracia-primary/40 select-none">H</span>
+                                            <span class="text-5xl font-extrabold text-gracia-primary/40 select-none">GC</span>
                                         </div>
                                     @endif
                                     @auth
@@ -173,7 +173,7 @@
                                     <p class="text-gray-400 text-sm mb-4 line-clamp-2 flex-grow">{{ $product->description }}</p>
                                     <div class="flex justify-between items-center mt-auto">
                                         <span class="text-2xl font-bold text-gracia-primary-dark">₡{{ number_format($product->price, 0, ',', '.') }}</span>
-                                        <a href="#contacto" class="btn-hakesa text-sm px-4 py-2">Consultar</a>
+                                        <a href="#contacto" class="btn-gracia text-sm px-4 py-2">Consultar</a>
                                     </div>
                                 </div>
                             </div>
@@ -211,7 +211,7 @@
             </div>
             <h3 class="text-2xl font-bold text-white mb-2">Próximamente más productos</h3>
             <p class="text-gray-400 mb-6">Estamos preparando nuestro catálogo. ¡Vuelve pronto!</p>
-            <a href="#contacto" class="btn-hakesa">Contáctanos</a>
+            <a href="#contacto" class="btn-gracia">Contáctanos</a>
         </div>
         @endif
     </div>
@@ -234,7 +234,7 @@
 
             <!-- Step 1 -->
             <div class="text-center relative">
-                <div class="w-32 h-32 gradient-hakesa rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-gracia-primary/20 relative z-10">
+                <div class="w-32 h-32 gradient-gracia rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-gracia-primary/20 relative z-10">
                     <span class="text-4xl font-extrabold text-white">1</span>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Elige tu Producto</h3>
@@ -282,7 +282,7 @@
 
         {{-- Comment form --}}
         @auth
-            <div class="card-hakesa p-8 mb-10 max-w-2xl mx-auto" x-data="commentForm('{{ route('comments.store') }}')">
+            <div class="card-gracia p-8 mb-10 max-w-2xl mx-auto" x-data="commentForm('{{ route('comments.store') }}')">
                 <h3 class="text-lg font-bold mb-4">Deja tu comentario</h3>
                 <div>
                     <textarea
@@ -294,7 +294,7 @@
                     ></textarea>
                     <p x-show="error" x-text="error" class="text-red-500 text-sm mt-1" x-cloak></p>
                     <div class="flex justify-end mt-3">
-                        <button type="button" @click="submit()" :disabled="loading || !content.trim()" class="btn-hakesa disabled:opacity-50">
+                        <button type="button" @click="submit()" :disabled="loading || !content.trim()" class="btn-gracia disabled:opacity-50">
                             <svg x-show="loading" x-cloak class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                             <span x-show="!loading">Publicar comentario</span>
                             <span x-show="loading" x-cloak>Enviando...</span>
@@ -305,7 +305,7 @@
         @else
             <div class="text-center mb-10">
                 <p class="text-gray-400 mb-3">¿Quieres compartir tu experiencia?</p>
-                <a href="{{ route('login') }}" class="btn-hakesa">Inicia sesión para comentar</a>
+                <a href="{{ route('login') }}" class="btn-gracia">Inicia sesión para comentar</a>
             </div>
         @endauth
 
@@ -326,7 +326,7 @@
                         <div class="w-full flex-shrink-0 px-2">
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach($chunk as $comment)
-                                    <div class="card-hakesa p-6 flex flex-col">
+                                    <div class="card-gracia p-6 flex flex-col">
                                         <p class="text-gray-400 mb-4 italic flex-grow">"{{ Str::limit($comment->content, 150) }}"</p>
                                         <div class="flex items-center gap-3 mt-auto">
                                             <div class="w-10 h-10 bg-gracia-primary/20 rounded-full flex items-center justify-center text-gracia-primary font-bold text-sm flex-shrink-0">

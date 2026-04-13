@@ -14,7 +14,7 @@
         @if($orders->count() > 0)
         <div class="space-y-4">
             @foreach($orders as $order)
-            <a href="{{ route('orders.show', $order) }}" class="card-hakesa p-5 block group">
+            <a href="{{ route('orders.show', $order) }}" class="card-gracia p-5 block group">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="font-mono font-bold text-white group-hover:text-gracia-primary transition-colors">{{ $order->order_number }}</p>
@@ -32,13 +32,13 @@
 
         <div class="mt-6">{{ $orders->links() }}</div>
         @else
-        <div class="card-hakesa text-center py-16">
+        <div class="card-gracia text-center py-16">
             <div class="w-24 h-24 bg-gracia-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg class="w-12 h-12 text-gracia-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             </div>
             <h3 class="text-2xl font-bold text-white mb-2">No tenés pedidos aún</h3>
             <p class="text-gray-400 mb-6">Hacé tu primer pedido desde nuestro catálogo</p>
-            <a href="{{ route('catalog.index') }}" class="btn-hakesa">Ver Catálogo</a>
+            <a href="{{ route('catalog.index') }}" class="btn-gracia">Ver Catálogo</a>
         </div>
         @endif
     </div>

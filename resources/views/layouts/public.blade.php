@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="@yield('meta-description', 'Arte y Diseño Gracia Creativa — Sublimación, corte láser y vinil personalizado en Costa Rica. Pedidos por WhatsApp. Envíos a todo el país.')">
-    <link rel="icon" type="image/png" href="/Gracia_Creativa_Logo.png">
-    <link rel="apple-touch-icon" href="/Gracia_Creativa_Logo.png">
+    <link rel="icon" type="image/png" href="/favicon-Gracia-Creativa.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-Gracia-Creativa.png" sizes="16x16">
+    <link rel="apple-touch-icon" sizes="180x180" href="/Gracia_Creativa_Logo_withou_background.png">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -35,8 +36,7 @@
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="/" class="flex items-center gap-3">
-                    <img src="{{ asset('Gracia_Creativa_Logo.png') }}" alt="Gracia Creativa" class="h-12 w-auto">
-                    <span class="text-2xl font-bold text-white">Gracia Creativa</span>
+                    <img src="{{ asset('Gracia_Creativa_Logo_withou_background.png') }}" alt="Gracia Creativa" width="220" height="64" class="h-16 w-auto">
                 </a>
 
                 <!-- Desktop Menu -->
@@ -71,7 +71,7 @@
                         </div>
                     @else
                         <a href="{{ route('login') }}" class="text-gray-400 hover:text-gracia-primary font-medium transition-colors">Iniciar Sesión</a>
-                        <a href="{{ route('register') }}" class="btn-hakesa text-sm">Registrarse</a>
+                        <a href="{{ route('register') }}" class="btn-gracia text-sm">Registrarse</a>
                     @endauth
                 </div>
 
@@ -103,7 +103,7 @@
                     </form>
                 @else
                     <a href="{{ route('login') }}" @click="open = false" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-gray-900 hover:text-gracia-primary font-medium">Iniciar Sesión</a>
-                    <a href="{{ route('register') }}" @click="open = false" class="block btn-hakesa text-center mt-2">Registrarse</a>
+                    <a href="{{ route('register') }}" @click="open = false" class="block btn-gracia text-center mt-2">Registrarse</a>
                 @endauth
             </div>
         </div>
@@ -121,7 +121,7 @@
                 <!-- Brand -->
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-3 mb-4">
-                        <img src="{{ asset('Gracia_Creativa_Logo.png') }}" alt="Gracia Creativa" width="43" height="40" class="h-10 w-auto">
+                        <img src="{{ asset('Gracia_Creativa_Logo_withou_background.png') }}" alt="Gracia Creativa" width="120" height="32" class="h-8 w-auto">
                     </div>
                     <p class="text-gray-400 max-w-md mb-6">
                         Personalización que deja huella. Sublimación, corte láser, vinil y más.
@@ -157,7 +157,7 @@
                     <ul class="space-y-3 text-gray-400">
                         <li class="flex items-center gap-2">
                             <svg class="w-5 h-5 text-gracia-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            <a href="mailto:hakesa2023@gmail.com" class="hover:text-gracia-primary transition-colors">hakesa2023@gmail.com</a>
+                            <a href="mailto:contact@graciacreativa.com" class="hover:text-gracia-primary transition-colors">contact@graciacreativa.com</a>
                         </li>
                         <li class="flex items-center gap-2">
                             <svg class="w-5 h-5 text-gracia-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>

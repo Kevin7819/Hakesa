@@ -1,6 +1,6 @@
 # Gracia Creativa
 
-[![CI Status](https://github.com/Kevin7819/Hakesa/actions/workflows/tests.yml/badge.svg)](https://github.com/Kevin7819/Hakesa/actions/workflows/tests.yml)
+[![CI Status](https://github.com/Kevin7819/Gracia-Creativa/actions/workflows/tests.yml/badge.svg)](https://github.com/Kevin7819/Gracia-Creativa/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20.svg)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4.svg)](https://php.net)
@@ -43,8 +43,8 @@
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Kevin7819/Hakesa.git
-cd Hakesa
+git clone https://github.com/Kevin7819/Gracia-Creativa.git
+cd Gracia-Creativa
 
 # 2. Install PHP dependencies
 composer install
@@ -70,7 +70,7 @@ After seeding:
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | `admin@hakesa.com` | `admin123` |
+| Admin | `admin@graciacreativa.com` | `admin123` |
 
 > **Change the default password immediately in production.**
 

@@ -59,14 +59,14 @@
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
-                @include('catalog._filter_fields')
+                @include('catalog._filter_fields', ['maxPrice' => $maxPrice])
             </div>
 
             {{-- Desktop Sidebar --}}
             <aside class="hidden lg:block w-72 flex-shrink-0">
-                <div class="sticky top-24 card-hakesa p-5">
+                <div class="sticky top-24 card-gracia p-5">
                     <h2 class="text-lg font-bold text-white mb-4">Filtros</h2>
-                    @include('catalog._filter_fields')
+                    @include('catalog._filter_fields', ['maxPrice' => $maxPrice])
                 </div>
             </aside>
 
@@ -76,18 +76,9 @@
                 <div id="results-info">
                     @if(request()->has('search') || request()->has('category') || request()->has('price_min') || request()->has('price_max'))
                         <p class="text-sm text-gray-400 mb-4">{{ $products->total() }} resultado(s) encontrado(s)</p>
+                    @else
+                        <p class="text-sm text-gray-400 mb-4">{{ $products->total() }} producto{{ $products->total() !== 1 ? 's' : '' }} disponible{{ $products->total() !== 1 ? 's' : '' }}</p>
                     @endif
-                </div>
-
-                <!-- Search bar (mobile + desktop, above grid) -->
-                <div class="mb-6">
-                    <div class="relative">
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar productos..."
-                            x-ref="searchInput"
-                            class="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary text-white placeholder-gray-400 text-sm"
-                            @input="debounceSubmit()">
-                    </div>
                 </div>
 
                 <!-- Products Grid (replaced via AJAX) -->

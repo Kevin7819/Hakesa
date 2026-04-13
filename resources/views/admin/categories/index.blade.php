@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-bold text-white">Gestión de Categorías</h1>
             <p class="text-gray-400 mt-1">Organiza tus productos por categorías</p>
         </div>
-        <a href="{{ route('admin.categories.create') }}" class="btn-hakesa text-sm">
+        <a href="{{ route('admin.categories.create') }}" class="btn-gracia text-sm">
             <i class="fas fa-plus"></i> Nueva Categoría
         </a>
     </div>

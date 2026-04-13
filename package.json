@@ -20,5 +20,6 @@
     },
     "dependencies": {
         "@alpinejs/collapse": "^3.15.9"
-    }
+    },
+    "version": "0.0.1"
 }

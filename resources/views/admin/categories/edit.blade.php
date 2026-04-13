@@ -32,7 +32,7 @@
             </div>
             <div class="flex justify-end gap-3">
                 <a href="{{ route('admin.categories.index') }}" class="px-6 py-2.5 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-200">Cancelar</a>
-                <button type="submit" class="btn-hakesa">Actualizar Categoría</button>
+                <button type="submit" class="btn-gracia">Actualizar Categoría</button>
             </div>
         </form>
     </div>
