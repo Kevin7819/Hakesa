@@ -11,7 +11,6 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -86,7 +85,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Create demo activity: orders, wishlists, cart items.
      *
-     * @param array<string, User> $users
+     * @param  array<string, User>  $users
      */
     protected function createDemoActivity(array $users): void
     {
@@ -98,6 +97,7 @@ class DatabaseSeeder extends Seeder
 
         if ($products->count() < 10) {
             $this->command->warn('⚠ No hay suficientes productos para crear actividad demo.');
+
             return;
         }
 
@@ -211,11 +211,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Create an order with items.
      *
-     * @param User $user
-     * @param string $orderNumber
-     * @param string $status
-     * @param array<array{product: ?Product, quantity: int, customization: ?string}> $items
-     * @param string|null $notes
+     * @param  array<array{product: ?Product, quantity: int, customization: ?string}>  $items
      */
     protected function createOrder(User $user, string $orderNumber, string $status, array $items, ?string $notes): void
     {
@@ -266,7 +262,9 @@ class DatabaseSeeder extends Seeder
      */
     protected function addToWishlist(User $user, ?Product $product): void
     {
-        if (! $product) return;
+        if (! $product) {
+            return;
+        }
 
         Wishlist::firstOrCreate(
             ['user_id' => $user->id, 'product_id' => $product->id]
@@ -278,7 +276,9 @@ class DatabaseSeeder extends Seeder
      */
     protected function addToCart(User $user, ?Product $product, int $quantity = 1, ?string $customization = null): void
     {
-        if (! $product) return;
+        if (! $product) {
+            return;
+        }
 
         $cart = Cart::getOrCreateForUser($user);
 
@@ -294,7 +294,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Create test comments for demo users.
      *
-     * @param array<string, User> $users
+     * @param  array<string, User>  $users
      */
     protected function createTestComments(array $users): void
     {
