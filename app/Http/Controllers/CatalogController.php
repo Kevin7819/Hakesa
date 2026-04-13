@@ -19,7 +19,7 @@ class CatalogController extends Controller
 
         // Búsqueda por nombre
         if ($request->filled('search')) {
-            $search = str_replace(['%', '_'], ['\%', '\_'], $request->search);
+            $search = addcslashes($request->search, '%_');
             $query->where('name', 'like', "%{$search}%");
         }
 

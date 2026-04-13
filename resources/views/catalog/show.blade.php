@@ -1,19 +1,19 @@
 @extends('layouts.public')
 
-@section('title', $product->name . ' - Hakesa')
-@section('meta-description', Str::limit(strip_tags($product->description ?? $product->name . ' — Producto personalizado de Hakesa Costa Rica.'), 160))
+@section('title', $product->name . ' - Gracia Creativa')
+@section('meta-description', Str::limit(strip_tags($product->description ?? $product->name . ' — Producto personalizado de Gracia Creativa Costa Rica.'), 160))
 
 @section('content')
-<section class="section-padding bg-white">
+<section class="section-padding bg-gray-800">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Breadcrumb -->
         <nav class="mb-8">
-            <ol class="flex items-center gap-2 text-sm text-gray-500">
-                <li><a href="/" class="hover:text-hakesa-pink">Inicio</a></li>
+            <ol class="flex items-center gap-2 text-sm text-gray-400">
+                <li><a href="/" class="hover:text-gracia-primary">Inicio</a></li>
                 <li>/</li>
-                <li><a href="{{ route('catalog.index') }}" class="hover:text-hakesa-pink">Catálogo</a></li>
+                <li><a href="{{ route('catalog.index') }}" class="hover:text-gracia-primary">Catálogo</a></li>
                 <li>/</li>
-                <li class="text-gray-900 font-medium">{{ $product->name }}</li>
+                <li class="text-white font-medium">{{ $product->name }}</li>
             </ol>
         </nav>
 
@@ -25,18 +25,18 @@
             <!-- Image -->
             <div class="relative min-h-[400px]">
                 @if($product->image)
-                    <div class="bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center min-h-[400px]">
+                    <div class="bg-gray-700 rounded-2xl overflow-hidden flex items-center justify-center min-h-[400px]">
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
                     </div>
                 @else
-                    <div class="bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20 rounded-2xl overflow-hidden flex items-center justify-center min-h-[400px]">
-                        <span class="text-8xl font-extrabold text-hakesa-pink/40 select-none">H</span>
+                    <div class="bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20 rounded-2xl overflow-hidden flex items-center justify-center min-h-[400px]">
+                        <span class="text-8xl font-extrabold text-gracia-primary/40 select-none">H</span>
                     </div>
                 @endif
                 @auth
                 <button x-data="wishlistToggle({{ $product->id }}, {{ $inWishlist ? 'true' : 'false' }})"
                     @click="toggle()" :disabled="loading"
-                    class="absolute top-4 right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-110 hover:bg-pink-50 transition-all duration-300 disabled:opacity-50 z-10"
+                    class="absolute top-4 right-4 w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center shadow-md hover:scale-110 hover:bg-pink-50 transition-all duration-300 disabled:opacity-50 z-10"
                     aria-label="Agregar a favoritos">
                     <svg class="w-6 h-6 transition-all duration-300" :fill="inWishlist ? '#F26BB5' : 'none'" stroke="#F26BB5" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                     <svg x-show="loading" x-cloak class="absolute w-5 h-5 animate-spin" fill="none" stroke="#F26BB5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -48,22 +48,22 @@
             <div>
                 @if($product->service_type)
                     <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full mb-3
-                        {{ $product->service_type === 'sublimacion' ? 'bg-hakesa-pink/10 text-hakesa-pink-dark' : '' }}
-                        {{ $product->service_type === 'laser' ? 'bg-hakesa-teal-light/30 text-teal-700' : '' }}
-                        {{ $product->service_type === 'vinil' ? 'bg-hakesa-yellow/10 text-yellow-700' : '' }}">
+                        {{ $product->service_type === 'sublimacion' ? 'bg-gracia-primary/10 text-gracia-primary-dark' : '' }}
+                        {{ $product->service_type === 'laser' ? 'bg-gracia-secondary-light/30 text-teal-700' : '' }}
+                        {{ $product->service_type === 'vinil' ? 'bg-gracia-accent/10 text-yellow-700' : '' }}">
                         {{ ucfirst($product->service_type) }}
                     </span>
                 @endif
 
-                <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $product->name }}</h1>
+                <h1 class="text-3xl font-bold text-white mb-4">{{ $product->name }}</h1>
 
-                <p class="text-4xl font-extrabold text-hakesa-pink mb-6">₡{{ number_format($product->price, 0, ',', '.') }}</p>
+                <p class="text-4xl font-extrabold text-gracia-primary mb-6">₡{{ number_format($product->price, 0, ',', '.') }}</p>
 
                 @if($product->description)
-                    <p class="text-gray-600 mb-6 leading-relaxed">{{ $product->description }}</p>
+                    <p class="text-gray-400 mb-6 leading-relaxed">{{ $product->description }}</p>
                 @endif
 
-                <div class="flex items-center gap-4 mb-8 text-sm text-gray-500">
+                <div class="flex items-center gap-4 mb-8 text-sm text-gray-400">
                     <span class="flex items-center gap-1">
                         <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                         {{ $product->stock }} disponibles
@@ -74,15 +74,15 @@
                 <form action="{{ route('cart.add', $product) }}" method="POST" class="space-y-4" x-data="addToCart('{{ route('cart.add', $product) }}')" @submit="submit($event)">
                     @csrf
                     <div>
-                        <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
+                        <label for="quantity" class="block text-sm font-medium text-gray-300 mb-1">Cantidad</label>
                         <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $product->stock }}"
-                            class="w-24 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink">
+                            class="w-24 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary">
                     </div>
 
                     <div>
-                        <label for="customization" class="block text-sm font-medium text-gray-700 mb-1">Personalización (opcional)</label>
+                        <label for="customization" class="block text-sm font-medium text-gray-300 mb-1">Personalización (opcional)</label>
                         <textarea name="customization" id="customization" rows="3"
-                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink"
+                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary"
                             placeholder="Describe cómo querés personalizar este producto (texto, diseño, colores, etc.)"></textarea>
                     </div>
 
@@ -99,22 +99,22 @@
         <!-- Related Products -->
         @if($related->count() > 0)
         <div class="mt-16">
-            <h2 class="text-2xl font-bold text-gray-900 mb-8">Productos Relacionados</h2>
+            <h2 class="text-2xl font-bold text-white mb-8">Productos Relacionados</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($related as $item)
                 <a href="{{ route('catalog.show', $item) }}" class="card-hakesa overflow-hidden group">
-                    <div class="h-40 bg-gray-100 overflow-hidden">
+                    <div class="h-40 bg-gray-700 overflow-hidden">
                         @if($item->image)
                             <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         @else
-                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
-                                <span class="text-2xl font-bold text-hakesa-pink/40">H</span>
+                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20">
+                                <span class="text-2xl font-bold text-gracia-primary/40">H</span>
                             </div>
                         @endif
                     </div>
                     <div class="p-4">
-                        <h3 class="font-bold text-gray-900 text-sm mb-1">{{ $item->name }}</h3>
-                        <p class="text-hakesa-pink-dark font-bold">₡{{ number_format($item->price, 0, ',', '.') }}</p>
+                        <h3 class="font-bold text-white text-sm mb-1">{{ $item->name }}</h3>
+                        <p class="text-gracia-primary-dark font-bold">₡{{ number_format($item->price, 0, ',', '.') }}</p>
                     </div>
                 </a>
                 @endforeach

@@ -9,7 +9,7 @@ describe('Public Pages', function () {
     it('can display the welcome page', function () {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('Hakesa');
+        $response->assertSee('Gracia Creativa');
     });
 
     it('shows active products on welcome page', function () {

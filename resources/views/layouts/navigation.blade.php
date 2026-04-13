@@ -1,4 +1,4 @@
-<nav x-data="{ mobileMenu: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ mobileMenu: false }" class="bg-gray-800 border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('catalog.index') }}">
-                        <img src="{{ asset('Hakesa_logo.webp') }}" alt="Hakesa" width="38" height="36" class="h-9 w-auto">
+                        <img src="{{ asset('Gracia_Creativa_Logo.png') }}" alt="Gracia Creativa" width="38" height="36" class="h-9 w-auto">
                     </a>
                 </div>
 
@@ -23,14 +23,14 @@
 
             <!-- Desktop User Links (no dropdown) -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 sm:space-x-4">
-                <a href="{{ route('profile.edit') }}" class="text-sm text-gray-500 hover:text-hakesa-pink transition-colors">
+                <a href="{{ route('profile.edit') }}" class="text-sm text-gray-400 hover:text-gracia-primary transition-colors">
                     {{ __('Perfil') }}
                 </a>
                 <span class="text-gray-300">|</span>
-                <span class="text-sm text-gray-700">{{ Auth::user()->name }}</span>
+                <span class="text-sm text-gray-300">{{ Auth::user()->name }}</span>
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
-                    <button type="submit" class="text-sm text-gray-500 hover:text-hakesa-pink transition-colors">
+                    <button type="submit" class="text-sm text-gray-400 hover:text-gracia-primary transition-colors">
                         {{ __('Cerrar Sesión') }}
                     </button>
                 </form>
@@ -38,7 +38,7 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="mobileMenu = ! mobileMenu" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-hakesa-pink hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-hakesa-pink transition duration-150 ease-in-out">
+                <button @click="mobileMenu = ! mobileMenu" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gracia-primary hover:bg-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gracia-primary transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': mobileMenu, 'inline-flex': ! mobileMenu }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! mobileMenu, 'inline-flex': mobileMenu }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -62,8 +62,8 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-100">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-400">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">

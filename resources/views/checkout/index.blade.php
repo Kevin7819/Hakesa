@@ -1,11 +1,11 @@
 @extends('layouts.public')
 
-@section('title', 'Checkout - Hakesa')
+@section('title', 'Checkout - Gracia Creativa')
 
 @section('content')
-<section class="section-padding bg-hakesa-light">
+<section class="section-padding bg-gray-900">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-8">Finalizar Pedido</h1>
+        <h1 class="text-3xl font-bold text-white mb-8">Finalizar Pedido</h1>
 
         @if(session('error'))
         <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-6 flex items-start gap-3" role="alert">
@@ -21,7 +21,7 @@
             <div class="lg:col-span-2 space-y-6">
                 <!-- Datos de contacto (read-only) -->
                 <div class="card-hakesa p-6">
-                    <h2 class="text-lg font-bold text-gray-900 mb-4">Datos de Contacto</h2>
+                    <h2 class="text-lg font-bold text-white mb-4">Datos de Contacto</h2>
                     <form action="{{ route('checkout.store') }}" method="POST" id="checkout-form">
                         @csrf
 
@@ -31,54 +31,64 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Nombre completo</label>
                                 <input type="text" value="{{ $user->name }}" readonly tabindex="-1"
-                                    class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-600 cursor-not-allowed">
+                                    class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-400 cursor-not-allowed">
                             </div>
 
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
                                 <input type="email" value="{{ $user->email }}" readonly tabindex="-1"
-                                    class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-600 cursor-not-allowed">
+                                    class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-400 cursor-not-allowed">
                             </div>
 
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
-                                <input type="tel" value="{{ $user->phone ?? 'No registrado' }}" readonly tabindex="-1"
-                                    class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-600 cursor-not-allowed">
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Teléfono</label>
+                                @if($user->phone)
+                                    <input type="tel" value="{{ $user->phone }}" readonly tabindex="-1"
+                                        class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-400 cursor-not-allowed">
+                                @else
+                                    <input type="tel" name="customer_phone" value="{{ old('customer_phone') }}" required
+                                        class="w-full px-4 py-2.5 bg-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gracia-primary {{ $errors->has('customer_phone') ? 'border-red-400' : '' }}"
+                                        placeholder="+506 8888 9999">
+                                    @if($errors->has('customer_phone'))
+                                        <p class="text-red-400 text-xs mt-1">{{ $errors->first('customer_phone') }}</p>
+                                    @endif
+                                    <p class="text-xs text-gracia-primary mt-1">Requerido para coordinar tu pedido por WhatsApp</p>
+                                @endif
                             </div>
                         </div>
 
                     <!-- Personalización por producto -->
                     @if($cart->items->count() > 0)
-                    <div class="mt-6 pt-6 border-t border-gray-100">
-                        <h3 class="text-base font-bold text-gray-900 mb-4">Personalización de Productos</h3>
+                    <div class="mt-6 pt-6 border-t border-gray-700">
+                        <h3 class="text-base font-bold text-white mb-4">Personalización de Productos</h3>
                         <div class="space-y-5">
                             @foreach($cart->items as $item)
-                            <div class="bg-gray-50 rounded-xl p-4">
+                            <div class="bg-gray-900 rounded-xl p-4">
                                 <div class="flex items-start gap-3 mb-3">
-                                    <div class="w-12 h-12 bg-white rounded-lg flex-shrink-0 overflow-hidden border border-gray-200">
+                                    <div class="w-12 h-12 bg-gray-800 rounded-lg flex-shrink-0 overflow-hidden border border-gray-600">
                                         @if($item->product->image)
                                             <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-full h-full object-cover">
                                         @else
-                                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20">
-                                                <span class="text-sm font-extrabold text-hakesa-pink/40 select-none">H</span>
+                                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20">
+                                                <span class="text-sm font-extrabold text-gracia-primary/40 select-none">H</span>
                                             </div>
                                         @endif
                                     </div>
                                     <div>
-                                        <p class="font-medium text-gray-900 text-sm">{{ $item->product->name }}</p>
-                                        <p class="text-xs text-gray-500">x{{ $item->quantity }} — ₡{{ number_format($item->subtotal, 0, ',', '.') }}</p>
+                                        <p class="font-medium text-white text-sm">{{ $item->product->name }}</p>
+                                        <p class="text-xs text-gray-400">x{{ $item->quantity }} — ₡{{ number_format($item->subtotal, 0, ',', '.') }}</p>
                                     </div>
                                 </div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                <label class="block text-sm font-medium text-gray-300 mb-1">
                                     <span class="inline-flex items-center gap-1">
-                                        <svg class="w-4 h-4 text-hakesa-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                                        <svg class="w-4 h-4 text-gracia-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
                                         ¿Deseas personalizar este producto?
                                     </span>
                                 </label>
                                 <textarea name="customizations[{{ $item->id }}]" rows="2"
-                                    class="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-hakesa-pink focus:border-transparent resize-none"
+                                    class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:border-transparent resize-none"
                                     placeholder="Describe tu personalización aquí...">{{ old('customizations.' . $item->id, $item->customization) }}</textarea>
                             </div>
                             @endforeach
@@ -87,16 +97,16 @@
                     @endif
 
                         <!-- Notas generales -->
-                        <div class="mt-6 pt-6 border-t border-gray-100">
-                            <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notas del pedido (opcional)</label>
+                        <div class="mt-6 pt-6 border-t border-gray-700">
+                            <label for="notes" class="block text-sm font-medium text-gray-300 mb-1">Notas del pedido (opcional)</label>
                             <textarea name="notes" id="notes" rows="2"
-                                class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-hakesa-pink"
+                                class="w-full px-4 py-2.5 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary"
                                 placeholder="Instrucciones especiales, preferencias, etc.">{{ old('notes') }}</textarea>
                         </div>
 
-                        <div class="bg-hakesa-teal/5 border border-hakesa-teal/20 rounded-xl p-4 mt-6 flex items-start gap-3">
-                            <svg class="w-5 h-5 text-hakesa-teal flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                            <p class="text-sm text-gray-600">Una vez realizado el pedido nos contactaremos por WhatsApp para coordinar el diseño y el pago 🇨🇷</p>
+                        <div class="bg-gracia-secondary/5 border border-gracia-secondary/20 rounded-xl p-4 mt-6 flex items-start gap-3">
+                            <svg class="w-5 h-5 text-gracia-secondary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <p class="text-sm text-gray-400">Una vez realizado el pedido nos contactaremos por WhatsApp para coordinar el diseño y el pago 🇨🇷</p>
                         </div>
 
                         <button type="submit" class="w-full btn-hakesa py-4 text-lg mt-4">
@@ -109,24 +119,24 @@
             <!-- Summary -->
             <div>
                 <div class="card-hakesa p-6 sticky top-24">
-                    <h2 class="text-lg font-bold text-gray-900 mb-4">Resumen del Pedido</h2>
+                    <h2 class="text-lg font-bold text-white mb-4">Resumen del Pedido</h2>
                     <div class="divide-y divide-gray-100">
                         @foreach($cart->items as $item)
                         <div class="py-3 flex justify-between items-start">
                             <div>
-                                <p class="font-medium text-gray-900 text-sm">{{ $item->product->name }}</p>
-                                <p class="text-xs text-gray-500">x{{ $item->quantity }}</p>
+                                <p class="font-medium text-white text-sm">{{ $item->product->name }}</p>
+                                <p class="text-xs text-gray-400">x{{ $item->quantity }}</p>
                             </div>
-                            <p class="font-semibold text-gray-900 text-sm">₡{{ number_format($item->subtotal, 0, ',', '.') }}</p>
+                            <p class="font-semibold text-white text-sm">₡{{ number_format($item->subtotal, 0, ',', '.') }}</p>
                         </div>
                         @endforeach
                     </div>
                     <hr class="my-4">
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-gray-900">Total</span>
-                        <span class="text-2xl font-extrabold text-hakesa-pink">₡{{ number_format($cart->total, 0, ',', '.') }}</span>
+                        <span class="font-bold text-white">Total</span>
+                        <span class="text-2xl font-extrabold text-gracia-primary">₡{{ number_format($cart->total, 0, ',', '.') }}</span>
                     </div>
-                    <a href="{{ route('cart.index') }}" class="block text-center text-sm text-hakesa-pink hover:text-hakesa-pink-dark mt-4">← Volver al carrito</a>
+                    <a href="{{ route('cart.index') }}" class="block text-center text-sm text-gracia-primary hover:text-gracia-primary-dark mt-4">← Volver al carrito</a>
                 </div>
             </div>
         </div>

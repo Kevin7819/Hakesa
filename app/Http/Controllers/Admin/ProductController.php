@@ -62,7 +62,7 @@ class ProductController extends Controller
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
+            if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
 
@@ -78,7 +78,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product): RedirectResponse
     {
-        if ($product->image && Storage::disk('public')->exists($product->image)) {
+        if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
 

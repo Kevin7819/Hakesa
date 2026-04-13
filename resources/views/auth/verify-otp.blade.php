@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
+    <div class="mb-4 text-sm text-gray-400">
         Ingresa el código de 6 dígitos que enviamos a tu correo electrónico.
     </div>
 
@@ -17,7 +17,7 @@
         </div>
 
         <div class="flex items-center justify-between mt-4">
-            <button type="button" onclick="document.getElementById('resend-form').submit()" class="text-sm text-hakesa-pink hover:underline">
+            <button type="button" onclick="document.getElementById('resend-form').submit()" class="text-sm text-gracia-primary hover:underline">
                 Reenviar código
             </button>
             <x-primary-button>

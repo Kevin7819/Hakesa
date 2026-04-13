@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckoutRequest;
-use App\Mail\OrderConfirmation;
 use App\Models\Cart;
-use App\Models\Order;
-use App\Models\Product;
+use App\Services\PlaceOrderService;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
+    public function __construct(
+        protected PlaceOrderService $placeOrderService,
+    ) {}
+
     public function index(): RedirectResponse|View
     {
         $cart = Cart::getOrCreateForUser(Auth::user());
@@ -49,63 +49,18 @@ class CheckoutController extends Controller
 
         $cart->load('items.product');
 
-        $subtotal = $cart->total;
-
         try {
-            $order = DB::transaction(function () use ($request, $cart, $subtotal) {
-                $user = Auth::user();
-
-                $order = Order::create([
-                    'order_number' => Order::generateOrderNumber(),
-                    'user_id' => $user->id,
-                    'customer_name' => $user->name,
-                    'customer_email' => $user->email,
-                    'customer_phone' => $user->phone ?? $request->customer_phone,
-                    'customer_address' => null,
-                    'subtotal' => $subtotal,
-                    'shipping_cost' => 0,
-                    'total' => $subtotal,
-                    'status' => 'pending',
-                    'notes' => $request->notes,
-                ]);
-
-                foreach ($cart->items as $item) {
-                    $product = Product::lockForUpdate()->find($item->product_id);
-
-                    if (! $product) {
-                        throw new Exception("El producto '{$item->product_id}' ya no está disponible.");
-                    }
-
-                    if ($product->stock < $item->quantity) {
-                        throw new Exception("Stock insuficiente para {$product->name}. Disponible: {$product->stock}");
-                    }
-
-                    $itemSubtotal = $product->price * $item->quantity;
-
-                    $order->items()->create([
-                        'product_id' => $item->product_id,
-                        'product_name' => $product->name,
-                        'price' => $product->price,
-                        'quantity' => $item->quantity,
-                        'subtotal' => $itemSubtotal,
-                        'customization' => $item->customization,
-                    ]);
-
-                    $product->decrement('stock', $item->quantity);
-                }
-
-                $cart->items()->delete();
-
-                return $order;
-            });
-
-            // Send order confirmation email
-            Mail::to($order->customer_email)->queue(new OrderConfirmation($order));
+            $order = $this->placeOrderService->execute($cart, Auth::user(), [
+                'customer_phone' => $request->customer_phone,
+                'notes' => $request->notes,
+            ]);
 
             return redirect()->route('orders.show', $order)
                 ->with('success', "🎉 ¡Pedido realizado exitosamente! Número: {$order->order_number}\n\nNos estaremos contactando vía WhatsApp al número registrado para coordinar tu pedido y personalización.");
         } catch (Exception $exception) {
-            return back()->with('error', $exception->getMessage());
+            $this->placeOrderService->logFailure(Auth::id(), $cart->id ?? null, $exception, 'Checkout');
+
+            return back()->with('error', 'Hubo un problema al procesar tu pedido. Por favor intentá de nuevo en unos momentos.');
         }
     }
 }

@@ -9,7 +9,7 @@ describe('Admin Authentication', function () {
     it('can display the admin login page', function () {
         $response = $this->get('/admin/login');
         $response->assertStatus(200);
-        $response->assertSee('Hakesa Admin');
+        $response->assertSee('Gracia Creativa Admin');
         $response->assertSee('Panel de Administración');
     });
 

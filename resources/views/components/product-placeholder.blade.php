@@ -9,7 +9,7 @@
     $s = $sizes[$size] ?? $sizes['default'];
 @endphp
 
-<div class="{{ $s['container'] }} relative overflow-hidden bg-gradient-to-br from-hakesa-pink via-hakesa-teal to-hakesa-yellow animate-gradient">
+<div class="{{ $s['container'] }} relative overflow-hidden bg-gradient-to-br from-gracia-primary via-gracia-secondary to-gracia-accent animate-gradient">
     <!-- Decorative circles -->
     <div class="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-sm"></div>
     <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-white/10 rounded-full blur-sm"></div>

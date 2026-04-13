@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Arte y Diseño Hakesa - Personalización en Costa Rica')
+@section('title', 'Arte y Diseño Gracia Creativa - Personalización en Costa Rica')
 
 @section('content')
 
@@ -11,31 +11,31 @@
     <div class="gradient-hero min-h-[90vh] flex items-center">
         <!-- Decorative shapes -->
         <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-hakesa-yellow/20 rounded-full blur-3xl"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-3xl"></div>
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-gray-800/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-gracia-accent/20 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gray-800/5 rounded-full blur-3xl"></div>
         </div>
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <!-- Text -->
                 <div class="text-white animate-fade-in-up">
-                    <span class="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
+                    <span class="inline-block px-4 py-2 bg-gray-800/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
                         Tu taller de confianza en Costa Rica
                     </span>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
                         Personalización<br>
-                        que deja <span class="text-hakesa-yellow">huella</span>
+                        que deja <span class="text-gracia-accent">huella</span>
                     </h1>
                     <p class="text-xl text-white/80 mb-8 max-w-lg">
                         Crea regalos inolvidables con diseños únicos hechos especialmente para vos.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="#catalogo" class="btn-hakesa bg-white text-hakesa-pink hover:bg-gray-100 shadow-xl">
+                        <a href="#catalogo" class="btn-hakesa shadow-xl">
                             Ver Catálogo
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
-                        <a href="#contacto" class="btn-hakesa-outline border-white text-white hover:bg-white hover:text-hakesa-pink">
+                        <a href="#contacto" class="btn-hakesa-outline border-white text-white hover:bg-gray-800 hover:text-gracia-primary">
                             Hacer Pedido
                         </a>
                     </div>
@@ -44,11 +44,11 @@
                 <!-- Hero image / logo -->
                 <div class="hidden lg:flex justify-center items-center">
                     <div class="relative">
-                        <div class="w-80 h-80 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center animate-float">
-                            <img src="{{ asset('Hakesa_without_background.png') }}" alt="Hakesa Logo" class="w-64 h-64 object-contain">
+                        <div class="w-80 h-80 bg-gray-800/10 backdrop-blur-sm rounded-3xl flex items-center justify-center animate-float">
+                            <img src="{{ asset('Gracia_Creativa_Logo.png') }}" alt="Gracia Creativa Logo" class="w-64 h-64 object-contain">
                         </div>
                         <!-- Floating badges -->
-                        <div class="absolute -top-4 -right-4 bg-hakesa-yellow text-gray-900 px-4 py-2 rounded-xl font-bold text-sm shadow-lg">
+                        <div class="absolute -top-4 -right-4 bg-gracia-accent text-white px-4 py-2 rounded-xl font-bold text-sm shadow-lg">
                             Costa Rica
                         </div>
                     </div>
@@ -60,7 +60,7 @@
     <!-- Wave separator -->
     <div class="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#1f2937"/>
         </svg>
     </div>
 </section>
@@ -68,57 +68,57 @@
 <!-- ═══════════════════════════════════════════════════════════════
      SERVICES SECTION
      ═══════════════════════════════════════════════════════════════ -->
-<section id="servicios" class="section-padding bg-white">
+<section id="servicios" class="section-padding bg-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="inline-block px-4 py-1.5 bg-hakesa-pink/10 text-hakesa-pink rounded-full text-sm font-semibold mb-4">Nuestros Servicios</span>
-            <h2 class="section-title text-hakesa-pink">¿Qué podemos crear para ti?</h2>
+            <span class="inline-block px-4 py-1.5 bg-gracia-primary/10 text-gracia-primary rounded-full text-sm font-semibold mb-4">Nuestros Servicios</span>
+            <h2 class="section-title text-gracia-primary">¿Qué podemos crear para ti?</h2>
             <p class="section-subtitle">Descubre todas las posibilidades de personalización que ofrecemos</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Sublimación -->
             <div class="card-hakesa p-8 text-center group">
-                <div class="w-20 h-20 bg-hakesa-pink/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-hakesa-pink/20 transition-colors">
-                    <svg class="w-10 h-10 text-hakesa-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-20 h-20 bg-gracia-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-gracia-primary/20 transition-colors">
+                    <svg class="w-10 h-10 text-gracia-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Sublimación</h3>
-                <p class="text-gray-500">Tazas, camisas, termos, alfombras y más. Tu diseño único en cualquier producto.</p>
+                <p class="text-gray-400">Tazas, camisas, termos, alfombras y más. Tu diseño único en cualquier producto.</p>
             </div>
 
             <!-- Corte Láser -->
             <div class="card-hakesa p-8 text-center group">
-                <div class="w-20 h-20 bg-hakesa-teal/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-hakesa-teal/20 transition-colors">
-                    <svg class="w-10 h-10 text-hakesa-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-20 h-20 bg-gracia-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-gracia-secondary/20 transition-colors">
+                    <svg class="w-10 h-10 text-gracia-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Corte Láser</h3>
-                <p class="text-gray-500">Corte preciso en madera, acrílico y metal. Decoración personalizada de alta calidad.</p>
+                <p class="text-gray-400">Corte preciso en madera, acrílico y metal. Decoración personalizada de alta calidad.</p>
             </div>
 
             <!-- Vinil -->
             <div class="card-hakesa p-8 text-center group">
-                <div class="w-20 h-20 bg-hakesa-yellow/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-hakesa-yellow/20 transition-colors">
-                    <svg class="w-10 h-10 text-hakesa-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-20 h-20 bg-gracia-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-gracia-accent/20 transition-colors">
+                    <svg class="w-10 h-10 text-gracia-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Vinil</h3>
-                <p class="text-gray-500">Stickers personalizados, calcomanías y gráficos de alta calidad duradera.</p>
+                <p class="text-gray-400">Stickers personalizados, calcomanías y gráficos de alta calidad duradera.</p>
             </div>
 
             <!-- Envíos -->
             <div class="card-hakesa p-8 text-center group">
-                <div class="w-20 h-20 bg-hakesa-gold/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-hakesa-gold/20 transition-colors">
-                    <svg class="w-10 h-10 text-hakesa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-20 h-20 bg-gracia-accent-dark/10 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-gracia-accent-dark/20 transition-colors">
+                    <svg class="w-10 h-10 text-gracia-accent-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Envíos CR</h3>
-                <p class="text-gray-500">Te enviamos tu pedido a cualquier lugar del país mediante Correos de Costa Rica.</p>
+                <p class="text-gray-400">Te enviamos tu pedido a cualquier lugar del país mediante Correos de Costa Rica.</p>
             </div>
         </div>
     </div>
@@ -127,11 +127,11 @@
 <!-- ═══════════════════════════════════════════════════════════════
      CAROUSEL / CATÁLOGO SECTION
      ═══════════════════════════════════════════════════════════════ -->
-<section id="catalogo" class="section-padding bg-hakesa-light">
+<section id="catalogo" class="section-padding bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="inline-block px-4 py-1.5 bg-hakesa-teal-light/30 text-teal-700 rounded-full text-sm font-semibold mb-4">Catálogo</span>
-            <h2 class="section-title text-hakesa-pink">Productos Destacados</h2>
+            <span class="inline-block px-4 py-1.5 bg-gracia-secondary-light/30 text-teal-700 rounded-full text-sm font-semibold mb-4">Catálogo</span>
+            <h2 class="section-title text-gracia-primary">Productos Destacados</h2>
             <p class="section-subtitle">Explora algunos de nuestros productos más populares</p>
         </div>
 
@@ -147,18 +147,18 @@
                             <div class="card-hakesa overflow-hidden w-full max-w-sm flex flex-col">
                                 <div class="relative aspect-square">
                                     @if($product->image)
-                                        <div class="h-full bg-gray-100 overflow-hidden">
+                                        <div class="h-full bg-gray-700 overflow-hidden">
                                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
                                         </div>
                                     @else
-                                        <div class="h-full overflow-hidden bg-gradient-to-br from-hakesa-pink/20 to-hakesa-teal/20 flex items-center justify-center">
-                                            <span class="text-5xl font-extrabold text-hakesa-pink/40 select-none">H</span>
+                                        <div class="h-full overflow-hidden bg-gradient-to-br from-gracia-primary/20 to-gracia-secondary/20 flex items-center justify-center">
+                                            <span class="text-5xl font-extrabold text-gracia-primary/40 select-none">H</span>
                                         </div>
                                     @endif
                                     @auth
                                     <button x-data="wishlistToggle({{ $product->id }}, {{ in_array($product->id, $wishlistIds) ? 'true' : 'false' }})"
                                         @click="toggle()" :disabled="loading"
-                                        class="absolute top-3 right-3 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:scale-110 hover:bg-pink-50 transition-all duration-300 disabled:opacity-50 z-10"
+                                        class="absolute top-3 right-3 w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center shadow-md hover:scale-110 hover:bg-gracia-primary/20 transition-all duration-300 disabled:opacity-50 z-10"
                                         aria-label="Agregar a favoritos">
                                         <svg class="w-5 h-5 transition-all duration-300" :fill="inWishlist ? '#F26BB5' : 'none'" stroke="#F26BB5" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                                         <svg x-show="loading" x-cloak class="absolute w-4 h-4 animate-spin" fill="none" stroke="#F26BB5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -167,12 +167,12 @@
                                 </div>
                                 <div class="p-6 flex flex-col flex-grow">
                                     @if($product->category)
-                                        <span class="inline-block px-2.5 py-1 bg-hakesa-teal-light/30 text-teal-700 text-xs font-semibold rounded-full mb-3">{{ $product->category->name }}</span>
+                                        <span class="inline-block px-2.5 py-1 bg-gracia-secondary/20 text-gracia-secondary-light text-xs font-semibold rounded-full mb-3">{{ $product->category->name }}</span>
                                     @endif
                                     <h3 class="text-lg font-bold mb-2">{{ $product->name }}</h3>
-                                    <p class="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">{{ $product->description }}</p>
+                                    <p class="text-gray-400 text-sm mb-4 line-clamp-2 flex-grow">{{ $product->description }}</p>
                                     <div class="flex justify-between items-center mt-auto">
-                                        <span class="text-2xl font-bold text-hakesa-pink-dark">₡{{ number_format($product->price, 0, ',', '.') }}</span>
+                                        <span class="text-2xl font-bold text-gracia-primary-dark">₡{{ number_format($product->price, 0, ',', '.') }}</span>
                                         <a href="#contacto" class="btn-hakesa text-sm px-4 py-2">Consultar</a>
                                     </div>
                                 </div>
@@ -186,17 +186,17 @@
 
             <!-- Navigation arrows -->
             @if($products->count() > 4)
-            <button @click="prev()" aria-label="Producto anterior" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
+            <button @click="prev()" aria-label="Producto anterior" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:bg-gracia-primary hover:text-white transition-colors z-10">
                 <svg aria-hidden="true" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <button @click="next()" aria-label="Siguiente producto" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
+            <button @click="next()" aria-label="Siguiente producto" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:bg-gracia-primary hover:text-white transition-colors z-10">
                 <svg aria-hidden="true" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
 
             <!-- Dots -->
             <div class="flex justify-center gap-2 mt-8">
                 <template x-for="i in total" :key="i">
-                    <button @click="goTo(i - 1)" :aria-label="'Ir al slide ' + i" :class="current === i - 1 ? 'bg-hakesa-pink w-8' : 'bg-gray-300 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
+                    <button @click="goTo(i - 1)" :aria-label="'Ir al slide ' + i" :class="current === i - 1 ? 'bg-gracia-primary w-8' : 'bg-gray-300 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
                 </template>
             </div>
             @endif
@@ -204,13 +204,13 @@
         @else
         <!-- Empty state -->
         <div class="text-center py-20">
-            <div class="w-24 h-24 bg-hakesa-pink/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-12 h-12 text-hakesa-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-24 h-24 bg-gracia-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-gracia-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                 </svg>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Próximamente más productos</h3>
-            <p class="text-gray-500 mb-6">Estamos preparando nuestro catálogo. ¡Vuelve pronto!</p>
+            <h3 class="text-2xl font-bold text-white mb-2">Próximamente más productos</h3>
+            <p class="text-gray-400 mb-6">Estamos preparando nuestro catálogo. ¡Vuelve pronto!</p>
             <a href="#contacto" class="btn-hakesa">Contáctanos</a>
         </div>
         @endif
@@ -220,43 +220,43 @@
 <!-- ═══════════════════════════════════════════════════════════════
      CÓMO FUNCIONA SECTION
      ═══════════════════════════════════════════════════════════════ -->
-<section class="section-padding bg-white">
+<section class="section-padding bg-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="inline-block px-4 py-1.5 bg-hakesa-gold/10 text-yellow-700 rounded-full text-sm font-semibold mb-4">Proceso</span>
-            <h2 class="section-title text-hakesa-pink">¿Cómo Funciona?</h2>
+            <span class="inline-block px-4 py-1.5 bg-gracia-accent-dark/10 text-yellow-700 rounded-full text-sm font-semibold mb-4">Proceso</span>
+            <h2 class="section-title text-gracia-primary">¿Cómo Funciona?</h2>
             <p class="section-subtitle">En solo 3 pasos tienes tu producto personalizado</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             <!-- Connection line (desktop) -->
-            <div class="hidden md:block absolute top-16 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-hakesa-pink via-hakesa-teal to-hakesa-yellow"></div>
+            <div class="hidden md:block absolute top-16 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-gracia-primary via-gracia-secondary to-gracia-accent"></div>
 
             <!-- Step 1 -->
             <div class="text-center relative">
-                <div class="w-32 h-32 gradient-hakesa rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-hakesa-pink/20 relative z-10">
+                <div class="w-32 h-32 gradient-hakesa rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-gracia-primary/20 relative z-10">
                     <span class="text-4xl font-extrabold text-white">1</span>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Elige tu Producto</h3>
-                <p class="text-gray-500">Explora nuestro catálogo y selecciona el producto que más te gusta.</p>
+                <p class="text-gray-400">Explora nuestro catálogo y selecciona el producto que más te gusta.</p>
             </div>
 
             <!-- Step 2 -->
             <div class="text-center relative">
-                <div class="w-32 h-32 bg-hakesa-teal rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-hakesa-teal/20 relative z-10">
+                <div class="w-32 h-32 bg-gracia-secondary rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-gracia-secondary/20 relative z-10">
                     <span class="text-4xl font-extrabold text-white">2</span>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Personalízalo</h3>
-                <p class="text-gray-500">Envíanos tu diseño, texto o idea y lo personalizamos a tu gusto.</p>
+                <p class="text-gray-400">Envíanos tu diseño, texto o idea y lo personalizamos a tu gusto.</p>
             </div>
 
             <!-- Step 3 -->
             <div class="text-center relative">
-                <div class="w-32 h-32 bg-hakesa-yellow rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-hakesa-yellow/30 relative z-10">
-                    <span class="text-4xl font-extrabold text-gray-900">3</span>
+                <div class="w-32 h-32 bg-gracia-accent rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-gracia-accent/30 relative z-10">
+                    <span class="text-4xl font-extrabold text-white">3</span>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Lo recibes en casa</h3>
-                <p class="text-gray-500">Te lo enviamos a cualquier lugar de Costa Rica con Correos.</p>
+                <p class="text-gray-400">Te lo enviamos a cualquier lugar de Costa Rica con Correos.</p>
             </div>
         </div>
     </div>
@@ -265,12 +265,12 @@
 <!-- ═══════════════════════════════════════════════════════════════
      COMENTARIOS SECTION
      ═══════════════════════════════════════════════════════════════ -->
-<section id="testimonios" class="section-padding bg-hakesa-light">
+<section id="testimonios" class="section-padding bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <span class="inline-block px-4 py-1.5 bg-hakesa-pink/10 text-hakesa-pink rounded-full text-sm font-semibold mb-4">Testimonios</span>
-            <h2 class="section-title text-hakesa-pink">Lo que dicen nuestros clientes</h2>
-            <p class="section-subtitle">Comparte tu experiencia y lee lo que otros dicen sobre Hakesa</p>
+            <span class="inline-block px-4 py-1.5 bg-gracia-primary/10 text-gracia-primary rounded-full text-sm font-semibold mb-4">Testimonios</span>
+            <h2 class="section-title text-gracia-primary">Lo que dicen nuestros clientes</h2>
+            <p class="section-subtitle">Comparte tu experiencia y lee lo que otros dicen sobre Gracia Creativa</p>
         </div>
 
         {{-- Success message --}}
@@ -288,9 +288,9 @@
                     <textarea
                         x-model="content"
                         rows="3"
-                        placeholder="Escribe tu experiencia con Hakesa..."
-                        :class="error ? 'border-red-400' : 'border-gray-200'"
-                        class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-hakesa-pink focus:border-transparent resize-none transition"
+                        placeholder="Escribe tu experiencia con Gracia Creativa..."
+                        :class="error ? 'border-red-400' : 'border-gray-600'"
+                        class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-gracia-primary focus:border-transparent resize-none transition"
                     ></textarea>
                     <p x-show="error" x-text="error" class="text-red-500 text-sm mt-1" x-cloak></p>
                     <div class="flex justify-end mt-3">
@@ -304,7 +304,7 @@
             </div>
         @else
             <div class="text-center mb-10">
-                <p class="text-gray-600 mb-3">¿Quieres compartir tu experiencia?</p>
+                <p class="text-gray-400 mb-3">¿Quieres compartir tu experiencia?</p>
                 <a href="{{ route('login') }}" class="btn-hakesa">Inicia sesión para comentar</a>
             </div>
         @endauth
@@ -327,9 +327,9 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 @foreach($chunk as $comment)
                                     <div class="card-hakesa p-6 flex flex-col">
-                                        <p class="text-gray-600 mb-4 italic flex-grow">"{{ Str::limit($comment->content, 150) }}"</p>
+                                        <p class="text-gray-400 mb-4 italic flex-grow">"{{ Str::limit($comment->content, 150) }}"</p>
                                         <div class="flex items-center gap-3 mt-auto">
-                                            <div class="w-10 h-10 bg-hakesa-pink/20 rounded-full flex items-center justify-center text-hakesa-pink font-bold text-sm flex-shrink-0">
+                                            <div class="w-10 h-10 bg-gracia-primary/20 rounded-full flex items-center justify-center text-gracia-primary font-bold text-sm flex-shrink-0">
                                                 {{ strtoupper(substr($comment->user?->name ?? 'XX', 0, 2)) }}
                                             </div>
                                             <div class="min-w-0">
@@ -347,30 +347,30 @@
 
                 {{-- Navigation arrows --}}
                 @if($comments->count() > 3)
-                <button @click="prev()" aria-label="Comentarios anteriores" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
+                <button @click="prev()" aria-label="Comentarios anteriores" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 w-10 h-10 bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:bg-gracia-primary hover:text-white transition-colors z-10">
                     <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
-                <button @click="next()" aria-label="Siguientes comentarios" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-hakesa-pink hover:text-white transition-colors z-10">
+                <button @click="next()" aria-label="Siguientes comentarios" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 w-10 h-10 bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:bg-gracia-primary hover:text-white transition-colors z-10">
                     <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </button>
 
                 {{-- Dots --}}
                 <div class="flex justify-center gap-2 mt-6">
                     <template x-for="i in pages" :key="i">
-                        <button @click="goTo(i - 1)" :class="current === i - 1 ? 'bg-hakesa-pink w-8' : 'bg-gray-300 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
+                        <button @click="goTo(i - 1)" :class="current === i - 1 ? 'bg-gracia-primary w-8' : 'bg-gray-300 w-3'" class="h-3 rounded-full transition-all duration-300"></button>
                     </template>
                 </div>
                 @endif
             </div>
         @else
             <div id="comments-empty" class="text-center py-12">
-                <div class="w-20 h-20 bg-hakesa-teal/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-10 h-10 text-hakesa-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-20 h-20 bg-gracia-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-gracia-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Aún no hay comentarios</h3>
-                <p class="text-gray-500">¡Sé el primero en compartir tu experiencia con Hakesa!</p>
+                <h3 class="text-xl font-bold text-white mb-2">Aún no hay comentarios</h3>
+                <p class="text-gray-400">¡Sé el primero en compartir tu experiencia con Gracia Creativa!</p>
             </div>
             <div id="comments-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         @endif
@@ -383,8 +383,8 @@
 <section id="contacto" class="gradient-hero section-padding relative overflow-hidden">
     <!-- Decorative -->
     <div class="absolute inset-0">
-        <div class="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-20 -left-20 w-60 h-60 bg-hakesa-yellow/20 rounded-full blur-3xl"></div>
+        <div class="absolute -top-20 -right-20 w-80 h-80 bg-gray-800/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 -left-20 w-60 h-60 bg-gracia-accent/20 rounded-full blur-3xl"></div>
     </div>
 
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">

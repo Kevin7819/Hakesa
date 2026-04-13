@@ -24,6 +24,19 @@ class Order extends Model
         ];
     }
 
+    public function getStatusLabelAttribute(): string
+    {
+        return match ($this->status) {
+            'pending' => 'Pendiente',
+            'confirmed' => 'Confirmado',
+            'in_progress' => 'En proceso',
+            'completed' => 'Completado',
+            'sent' => 'Enviado',
+            'cancelled' => 'Cancelado',
+            default => ucfirst($this->status),
+        };
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -36,7 +49,7 @@ class Order extends Model
 
     public static function generateOrderNumber(): string
     {
-        $prefix = 'HAK-';
+        $prefix = 'GC-';
         $date = now()->format('Ymd');
         $random = strtoupper(substr(Str::uuid()->toString(), 0, 8));
 

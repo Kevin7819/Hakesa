@@ -5,16 +5,17 @@
 [x-cloak] { display: none !important; }
 
 /* ═══════════════════════════════════════════════════════════
-   HAKESA - Custom Styles
+   GRACIA CREATIVA - Custom Styles (2026)
    ═══════════════════════════════════════════════════════════ */
 
 @layer base {
     :root {
-        --hakesa-pink: #F26BB5;
-        --hakesa-pink-dark: #D94E9B;
-        --hakesa-teal: #04BFBF;
-        --hakesa-yellow: #F2CB05;
-        --hakesa-gold: #F2B705;
+        --gracia-primary: #BF5098;
+        --gracia-primary-dark: #A84385;
+        --gracia-secondary: #7D5A8C;
+        --gracia-accent: #B6D936;
+        --gracia-accent-dark: #A1BF36;
+        --gracia-base: #0D0D0D;
     }
 
     html {
@@ -22,7 +23,7 @@
     }
 
     body {
-        @apply font-sans text-gray-800 antialiased;
+        @apply font-sans text-gray-100 antialiased bg-gray-900;
     }
 }
 
@@ -30,34 +31,34 @@
     /* ── Buttons ── */
     .btn-hakesa {
         @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
-               text-white bg-hakesa-pink hover:bg-hakesa-pink-dark
-               transition-all duration-300 shadow-lg shadow-hakesa-pink/25
-               hover:shadow-xl hover:shadow-hakesa-pink/30 hover:-translate-y-0.5;
+               text-white bg-gracia-primary hover:bg-gracia-primary-dark
+               transition-all duration-300 shadow-lg shadow-gracia-primary/25
+               hover:shadow-xl hover:shadow-gracia-primary/30 hover:-translate-y-0.5;
     }
 
     .btn-hakesa-outline {
         @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
-               text-hakesa-pink border-2 border-hakesa-pink
-               hover:bg-hakesa-pink hover:text-white
+               text-gracia-primary border-2 border-gracia-primary
+               hover:bg-gracia-primary hover:text-white
                transition-all duration-300;
     }
 
     .btn-teal {
         @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
-               text-white bg-hakesa-teal hover:bg-hakesa-teal-dark
-               transition-all duration-300 shadow-lg shadow-hakesa-teal/25;
+               text-white bg-gracia-secondary hover:bg-gracia-secondary-dark
+               transition-all duration-300 shadow-lg shadow-gracia-secondary/25;
     }
 
     .btn-dark {
         @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
-               text-white bg-gray-900 hover:bg-gray-800
+               text-white bg-gray-700 hover:bg-gray-600
                transition-all duration-300;
     }
 
-    /* ── Cards ── */
+    /* ── Cards - Dark Theme ── */
     .card-hakesa {
-        @apply bg-white rounded-2xl shadow-md hover:shadow-xl
-               transition-all duration-300 hover:-translate-y-1;
+        @apply bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl
+               transition-all duration-300 hover:-translate-y-1 border border-gray-700;
     }
 
     .card-dark {
@@ -70,11 +71,11 @@
     }
 
     .section-title {
-        @apply text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4;
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4;
     }
 
     .section-subtitle {
-        @apply text-gray-500 text-lg max-w-2xl mx-auto;
+        @apply text-gray-400 text-lg max-w-2xl mx-auto;
     }
 
     /* ── Admin ── */
@@ -86,13 +87,13 @@
 
     .admin-sidebar-link-active {
         @apply flex items-center gap-3 px-4 py-3 rounded-lg
-               bg-hakesa-pink text-white shadow-lg shadow-hakesa-pink/20;
+               bg-gracia-primary text-white shadow-lg shadow-gracia-primary/20;
     }
 
     .admin-input {
         @apply w-full px-4 py-2.5 bg-gray-700 border border-gray-600 rounded-lg
                text-white placeholder-gray-400
-               focus:outline-none focus:ring-2 focus:ring-hakesa-pink focus:border-transparent
+               focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:border-transparent
                transition-all duration-200;
     }
 
@@ -104,25 +105,25 @@
 @layer utilities {
     /* ── Gradients ── */
     .gradient-hakesa {
-        background: linear-gradient(135deg, var(--hakesa-pink) 0%, var(--hakesa-teal) 100%);
+        background: linear-gradient(135deg, var(--gracia-primary) 0%, var(--gracia-secondary) 100%);
     }
 
     .gradient-hakesa-warm {
-        background: linear-gradient(135deg, var(--hakesa-pink) 0%, var(--hakesa-gold) 100%);
+        background: linear-gradient(135deg, var(--gracia-primary) 0%, var(--gracia-accent) 100%);
     }
 
     .gradient-hakesa-cool {
-        background: linear-gradient(135deg, var(--hakesa-teal) 0%, var(--hakesa-yellow) 100%);
+        background: linear-gradient(135deg, var(--gracia-secondary) 0%, var(--gracia-accent) 100%);
     }
 
     .gradient-hero {
-        background: linear-gradient(135deg, var(--hakesa-pink) 0%, var(--hakesa-pink-dark) 40%, var(--hakesa-teal) 100%);
+        background: linear-gradient(135deg, var(--gracia-primary) 0%, var(--gracia-primary-dark) 40%, var(--gracia-secondary) 100%);
     }
 
     /* ── Text gradients ── */
     .text-gradient {
         @apply bg-clip-text text-transparent;
-        background-image: linear-gradient(135deg, var(--hakesa-pink), var(--hakesa-teal));
+        background-image: linear-gradient(135deg, var(--gracia-primary), var(--gracia-secondary));
     }
 }
 
@@ -178,21 +179,21 @@
     animation: cartBounce 0.5s ease-in-out;
 }
 
-/* ── Scrollbar custom ── */
+/* ── Scrollbar custom - Dark Theme ── */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #F2F2F2;
+    background: #1f2937;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #F26BB5;
+    background: #BF5098;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #D94E9B;
+    background: #A84385;
 }

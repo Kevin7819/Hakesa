@@ -23,7 +23,7 @@ class CommentController extends Controller
         Comment::create([
             'user_id' => Auth::id(),
             'content' => $request->input('content'),
-            'status' => 'pendiente',
+            'status' => Comment::STATUS_PENDING,
         ]);
 
         $message = 'Tu comentario está pendiente de aprobación.';

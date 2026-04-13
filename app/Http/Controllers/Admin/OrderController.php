@@ -30,6 +30,21 @@ class OrderController extends Controller
             'status' => ['required', 'in:pending,confirmed,in_progress,completed,sent,cancelled'],
         ]);
 
+        // Validate status transition
+        $validTransitions = [
+            'pending' => ['confirmed', 'in_progress', 'cancelled'],
+            'confirmed' => ['in_progress', 'cancelled'],
+            'in_progress' => ['completed', 'sent'],
+            'completed' => ['sent'],
+            'sent' => [],
+            'cancelled' => [],
+        ];
+
+        $allowedNext = $validTransitions[$order->status] ?? [];
+        if (! in_array($validated['status'], $allowedNext) && $order->status !== $validated['status']) {
+            return back()->with('error', "No se puede cambiar el estado de '{$order->status_label}' a '{$validated['status']}'.");
+        }
+
         $order->update(['status' => $validated['status']]);
 
         return redirect()->route('admin.orders.index')
