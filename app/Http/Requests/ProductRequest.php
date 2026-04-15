@@ -24,7 +24,7 @@ class ProductRequest extends FormRequest
             'service_type' => ['nullable', 'string', 'max:100'],
             'stock' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp,avif', 'max:5120'],
         ];
     }
 
@@ -40,7 +40,7 @@ class ProductRequest extends FormRequest
             'stock.min' => 'El stock no puede ser negativo.',
             'category_id.exists' => 'La categoría seleccionada no existe.',
             'image.image' => 'El archivo debe ser una imagen.',
-            'image.max' => 'La imagen no puede pesar más de 2MB.',
+            'image.max' => 'La imagen no puede pesar más de 5MB.',
         ];
     }
 }
