@@ -10,15 +10,15 @@
     </div>
 
     @if(session('success'))
-        <div class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl">
+        <div class="bg-green-900/30 border border-green-700/50 text-green-400 p-4 rounded-xl">
             <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
         </div>
     @endif
 
     {{-- Comentarios Pendientes --}}
     <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 overflow-hidden">
-        <div class="px-6 py-4 bg-yellow-50 border-b border-yellow-100">
-            <h2 class="text-lg font-semibold text-yellow-800">
+        <div class="px-6 py-4 bg-yellow-900/30 border-b border-yellow-700/50">
+            <h2 class="text-lg font-semibold text-yellow-400">
                 <i class="fas fa-clock mr-2"></i>Pendientes ({{ $pending->total() }})
             </h2>
         </div>
@@ -41,9 +41,12 @@
                         <form action="{{ route('admin.comments.approve', $comment) }}" method="POST">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="px-3 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition text-sm font-medium" title="Aprobar">
-                                <i class="fas fa-check mr-1"></i>Aprobar
-                            </button>
+                        <button type="submit" class="px-3 py-2 bg-green-900/30 text-green-400 border border-green-700/50 rounded-lg hover:bg-green-900/50 transition text-sm font-medium" title="Aprobar">
+                            <i class="fas fa-check mr-1"></i>Aprobar
+                        </button>
+                        <button type="submit" class="px-3 py-2 bg-red-900/30 text-red-400 border border-red-700/50 rounded-lg hover:bg-red-900/50 transition text-sm font-medium" title="Rechazar">
+                            <i class="fas fa-times mr-1"></i>Rechazar
+                        </button>
                         </form>
                         <form action="{{ route('admin.comments.reject', $comment) }}" method="POST">
                             @csrf
@@ -68,8 +71,8 @@
 
     {{-- Comentarios Aprobados --}}
     <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 overflow-hidden">
-        <div class="px-6 py-4 bg-green-50 border-b border-green-100">
-            <h2 class="text-lg font-semibold text-green-800">
+        <div class="px-6 py-4 bg-green-900/30 border-b border-green-700/50">
+            <h2 class="text-lg font-semibold text-green-400">
                 <i class="fas fa-check-circle mr-2"></i>Aprobados ({{ $approved->total() }})
             </h2>
         </div>
@@ -107,8 +110,8 @@
 
     {{-- Comentarios Rechazados --}}
     <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 overflow-hidden">
-        <div class="px-6 py-4 bg-red-50 border-b border-red-100">
-            <h2 class="text-lg font-semibold text-red-800">
+        <div class="px-6 py-4 bg-red-900/30 border-b border-red-700/50">
+            <h2 class="text-lg font-semibold text-red-400">
                 <i class="fas fa-times-circle mr-2"></i>Rechazados ({{ $rejected->total() }})
             </h2>
         </div>

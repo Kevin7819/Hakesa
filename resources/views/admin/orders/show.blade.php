@@ -5,7 +5,7 @@
 @section('content')
 <div class="max-w-5xl space-y-6">
     <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center gap-2 text-gracia-primary hover:text-gracia-primary-dark"><i class="fas fa-arrow-left"></i> Volver</a>
-    @if(session('success'))<div class="bg-green-50 border border-green-200 text-green-700 p-4 rounded-xl"><i class="fas fa-check-circle mr-2"></i>{{ session('success') }}</div>@endif
+    @if(session('success'))<div class="bg-green-900/30 border border-green-700/50 text-green-400 p-4 rounded-xl"><i class="fas fa-check-circle mr-2"></i>{{ session('success') }}</div>@endif
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
             <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 p-6">
@@ -31,7 +31,7 @@
             <div class="bg-gray-800 rounded-2xl shadow-sm border border-gray-700 p-6">
                 <h2 class="text-lg font-bold text-white mb-4">Actualizar Estado</h2>
                 <form action="{{ route('admin.orders.update-status', $order) }}" method="POST">@csrf @method('PATCH')
-                    <select name="status" class="w-full px-4 py-2.5 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary mb-4">
+                    <select name="status" class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:border-transparent mb-4">
                         <option value="pending" {{ $order->status==='pending'?'selected':'' }}>Pendiente</option>
                         <option value="confirmed" {{ $order->status==='confirmed'?'selected':'' }}>Confirmado</option>
                         <option value="in_progress" {{ $order->status==='in_progress'?'selected':'' }}>En Proceso</option>
