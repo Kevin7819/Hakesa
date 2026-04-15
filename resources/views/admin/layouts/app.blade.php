@@ -19,7 +19,7 @@
         >
             <!-- Logo -->
             <div class="h-20 flex items-center gap-3 px-6 border-b border-gray-700">
-                <img src="{{ asset('Gracia_Creativa_Logo_withou_background.png') }}" alt="Gracia Creativa" width="120" height="32" class="h-8 w-auto">
+                <img src="{{ asset('Gracia_Creativa_Logo_withou_background.png') }}" alt="Gracia Creativa" width="180" height="48" class="h-12 w-auto">
                 <div>
                     <span class="block text-xs text-gray-400">Panel de Administración</span>
                 </div>
