@@ -111,19 +111,40 @@
         color: #111827;
     }
 
-    /* Dark theme inputs */
+    /* Dark theme inputs — covers bg-gray-700, bg-gray-800, bg-gray-900 */
     .bg-gray-700 input[type="text"],
     .bg-gray-700 input[type="email"],
     .bg-gray-700 input[type="password"],
     .bg-gray-700 input[type="number"],
     .bg-gray-700 input[type="search"],
+    .bg-gray-700 input[type="tel"],
     .bg-gray-700 textarea,
-    .bg-gray-700 select {
+    .bg-gray-700 select,
+    .bg-gray-800 input[type="text"],
+    .bg-gray-800 input[type="email"],
+    .bg-gray-800 input[type="password"],
+    .bg-gray-800 input[type="number"],
+    .bg-gray-800 input[type="search"],
+    .bg-gray-800 input[type="tel"],
+    .bg-gray-800 textarea,
+    .bg-gray-800 select,
+    .bg-gray-900 input[type="text"],
+    .bg-gray-900 input[type="email"],
+    .bg-gray-900 input[type="password"],
+    .bg-gray-900 input[type="number"],
+    .bg-gray-900 input[type="search"],
+    .bg-gray-900 input[type="tel"],
+    .bg-gray-900 textarea,
+    .bg-gray-900 select {
         color: #f9fafb;
     }
 
     .bg-gray-700 input::placeholder,
-    .bg-gray-700 textarea::placeholder {
+    .bg-gray-800 input::placeholder,
+    .bg-gray-900 input::placeholder,
+    .bg-gray-700 textarea::placeholder,
+    .bg-gray-800 textarea::placeholder,
+    .bg-gray-900 textarea::placeholder {
         color: #9ca3af;
     }
 
