@@ -47,7 +47,7 @@
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 mt-6">
             <x-primary-button>Guardar</x-primary-button>
 
             @if (session('status') === 'profile-updated')

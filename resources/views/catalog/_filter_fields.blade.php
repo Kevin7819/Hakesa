@@ -24,10 +24,10 @@
 
     <!-- Price Range with Dual Slider -->
     <div x-data="priceRangeSlider(
-        {{ request('price_min', $minPrice ?? 0) }},
-        {{ request('price_max', $maxPrice ?? 15000) }},
-        {{ $minPrice ?? 0 }},
-        {{ $maxPrice ?? 15000 }}
+        {{ request('price_min', 0) }},
+        {{ request('price_max', $maxPrice) }},
+        0,
+        {{ $maxPrice }}
     )">
         <label class="block text-xs font-medium text-gray-400 mb-1">Precio (₡)</label>
 
