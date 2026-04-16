@@ -35,17 +35,23 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['nullable', 'string', 'regex:/^(?=.*\d)[\+]?[\d\s\-]{7,20}$/', 'max:20'],
+            'phone' => ['nullable', 'string', 'regex:/^\d{8}$/', 'max:20'],
             'birthday' => ['nullable', 'date', 'before:today'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ], [
-            'phone.regex' => 'El teléfono solo puede contener números, espacios, guiones y el signo +.',
+            'phone.regex' => 'El teléfono debe tener exactamente 8 dígitos.',
         ]);
+
+        // Add +506 prefix to phone number if provided
+        $phone = $request->phone;
+        if ($phone) {
+            $phone = '+506'.preg_replace('/^\+?506?/', '', $phone);
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
+            'phone' => $phone,
             'birthday' => $request->birthday,
             'password' => Hash::make($request->password),
         ]);

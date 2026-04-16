@@ -33,26 +33,26 @@
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-300 mb-1">Nombre completo</label>
                                 <input type="text" value="{{ $user->name }}" readonly tabindex="-1"
-                                    class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-400 cursor-not-allowed">
+                                    class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-300 cursor-not-allowed">
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
                                 <input type="email" value="{{ $user->email }}" readonly tabindex="-1"
-                                    class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-400 cursor-not-allowed">
+                                    class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-300 cursor-not-allowed">
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-1">Teléfono</label>
-                                @if($user->phone)
+                                    @if($user->phone)
                                     <input type="tel" value="{{ $user->phone }}" readonly tabindex="-1"
-                                        class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-400 cursor-not-allowed">
+                                        class="w-full px-4 py-2.5 bg-gray-900 border border-gray-600 rounded-xl text-gray-300 cursor-not-allowed">
                                 @else
                                     <input type="tel" name="customer_phone" value="{{ old('customer_phone') }}" required
-                                        class="w-full px-4 py-2.5 bg-gray-800 border border-gray-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-gracia-primary {{ $errors->has('customer_phone') ? 'border-red-400' : '' }}"
+                                        class="w-full px-4 py-2.5 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-300/70 focus:outline-none focus:ring-2 focus:ring-gracia-primary {{ $errors->has('customer_phone') ? 'border-red-400' : '' }}"
                                         placeholder="+506 8888 9999">
                                     @if($errors->has('customer_phone'))
-                                        <p class="text-red-400 text-xs mt-1">{{ $errors->first('customer_phone') }}</p>
+                                        <p class="text-red-300 text-xs mt-1 font-medium">{{ $errors->first('customer_phone') }}</p>
                                     @endif
                                     <p class="text-xs text-gracia-primary mt-1">Requerido para coordinar tu pedido por WhatsApp</p>
                                 @endif
@@ -88,7 +88,7 @@
                                     </span>
                                 </label>
                                 <textarea name="customizations[{{ $item->id }}]" rows="2"
-                                    class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:border-transparent resize-none"
+                                    class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-300/70 focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:border-transparent resize-none"
                                     placeholder="Describe tu personalización aquí...">{{ old('customizations.' . $item->id, $item->customization) }}</textarea>
                             </div>
                             @endforeach
@@ -100,7 +100,7 @@
                         <div class="mt-6 pt-6 border-t border-gray-700">
                             <label for="notes" class="block text-sm font-medium text-gray-300 mb-1">Notas del pedido (opcional)</label>
                             <textarea name="notes" id="notes" rows="2"
-                                class="w-full px-4 py-2.5 border border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary"
+                                class="w-full px-4 py-2.5 bg-gray-800 border border-gray-600 rounded-xl text-white placeholder-gray-300/70 focus:outline-none focus:ring-2 focus:ring-gracia-primary resize-none"
                                 placeholder="Instrucciones especiales, preferencias, etc.">{{ old('notes') }}</textarea>
                         </div>
 

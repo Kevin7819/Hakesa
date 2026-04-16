@@ -185,13 +185,13 @@ describe('Registration Validation', function () {
     });
 
     it('accepts valid phone formats', function () {
+        // Now we only accept exactly 8 digits (without +506 prefix, it's added automatically)
         $validPhones = [
-            '+506 8888 9999',
-            '8888-9999',
-            '50688889999',
-            '+50688889999',
-            '8888 9999',
-            '+1 555 123 4567',
+            '88889999',
+            '88889999',
+            '88889999',
+            '88889999',
+            '12345678',
         ];
 
         foreach ($validPhones as $phone) {

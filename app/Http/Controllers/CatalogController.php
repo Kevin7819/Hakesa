@@ -55,16 +55,14 @@ class CatalogController extends Controller
             ? auth()->user()->wishlists()->pluck('product_id')->toArray()
             : [];
 
-        // Calculate dynamic min/max price for slider (rounded to nearest 1000)
-        $rawMin = Product::active()->min('price');
+        // Calculate dynamic max price for slider (rounded to nearest 1000)
         $rawMax = Product::active()->max('price');
-        $minPrice = $rawMin !== null ? (int) floor($rawMin / 1000) * 1000 : 0;
+        $minPrice = 0;
         $maxPrice = $rawMax !== null ? (int) ceil($rawMax / 1000) * 1000 : 50000;
 
         // Ensure min/max have at least 500 gap
-        if ($maxPrice - $minPrice < 500) {
-            $minPrice = max(0, $minPrice - 500);
-            $maxPrice = $maxPrice + 500;
+        if ($maxPrice < 500) {
+            $maxPrice = 500;
         }
 
         // AJAX: return JSON with rendered HTML

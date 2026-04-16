@@ -44,8 +44,8 @@
                 <!-- Hero image / logo -->
                 <div class="hidden lg:flex justify-center items-center">
                     <div class="relative">
-                        <div class="w-80 h-80 bg-gray-800/10 backdrop-blur-sm rounded-3xl flex items-center justify-center animate-float">
-                            <img src="{{ asset('Gracia_Creativa_Logo.png') }}" alt="Gracia Creativa Logo" class="w-64 h-64 object-contain">
+                        <div class="w-96 h-96 bg-gray-800/10 backdrop-blur-sm rounded-3xl flex items-center justify-center animate-float">
+                            <img src="{{ asset('Gracia_Creativa_Logo.png') }}" alt="Gracia Creativa Logo" class="w-80 h-80 object-contain">
                         </div>
                         <!-- Floating badges -->
                         <div class="absolute -top-4 -right-4 bg-gracia-accent text-white px-4 py-2 rounded-xl font-bold text-sm shadow-lg">
@@ -289,10 +289,10 @@
                         x-model="content"
                         rows="3"
                         placeholder="Escribe tu experiencia con Gracia Creativa..."
-                        :class="error ? 'border-red-400' : 'border-gray-600'"
+                        :class="error ? 'border-red-400 bg-gray-800 text-white placeholder-gray-300/70' : 'border-gray-600 bg-gray-800 text-white placeholder-gray-300/70'"
                         class="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-gracia-primary focus:border-transparent resize-none transition"
                     ></textarea>
-                    <p x-show="error" x-text="error" class="text-red-500 text-sm mt-1" x-cloak></p>
+                    <p x-show="error" x-text="error" class="text-red-400 text-sm mt-1 font-medium" x-cloak></p>
                     <div class="flex justify-end mt-3">
                         <button type="button" @click="submit()" :disabled="loading || !content.trim()" class="btn-gracia disabled:opacity-50">
                             <svg x-show="loading" x-cloak class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
