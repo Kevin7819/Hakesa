@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class ProductController extends Controller
 {
@@ -90,12 +92,47 @@ class ProductController extends Controller
 
     private function storeProductImage($file, array $validated): string
     {
-        $extension = $file->extension();
+        // Validación adicional de seguridad (defensa en profundidad)
+        $allowedMimes = ['jpeg', 'png', 'jpg', 'gif', 'webp', 'avif'];
+        $extension = strtolower($file->extension());
+
+        if (! in_array($extension, $allowedMimes)) {
+            abort(422, 'Tipo de archivo no permitido.');
+        }
+
+        // Verificar que el MIME real coincida con la extensión
+        $realMime = $file->getMimeType();
+        $allowedMimetypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
+
+        if (! in_array($realMime, $allowedMimetypes)) {
+            abort(422, 'El archivo no es una imagen válida.');
+        }
+
+        // Validar tamaño máximo (5MB)
+        if ($file->getSize() > 5 * 1024 * 1024) {
+            abort(422, 'La imagen no puede exceder 5MB.');
+        }
+
+        // Generar nombre seguro (siempre .webp)
         $categoryName = Category::find($validated['category_id'] ?? null)?->name ?? 'sin-categoria';
         $productName = Str::slug($validated['name']);
         $uniqueId = Str::uuid();
-        $filename = Str::slug($categoryName)."-{$productName}-{$uniqueId}.{$extension}";
+        $filename = Str::slug($categoryName)."-{$productName}-{$uniqueId}.webp";
 
-        return $file->storeAs('products', $filename, 'public');
+        // Procesar imagen: comprimir, redimensionar, convertir a WebP
+        $manager = new ImageManager(new Driver);
+        $image = $manager->decode($file);
+
+        // Redimensionar solo si es más grande que 1920px (mantener proporción)
+        $image->scaleDown(width: 1920);
+
+        // Guardar como WebP con 85% calidad
+        $storagePath = Storage::disk('public')->path('products');
+        if (! is_dir($storagePath)) {
+            mkdir($storagePath, 0755, true);
+        }
+        $image->save(Storage::disk('public')->path("products/{$filename}"), quality: 85);
+
+        return "products/{$filename}";
     }
 }
