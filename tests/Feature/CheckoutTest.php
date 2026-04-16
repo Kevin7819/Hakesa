@@ -10,7 +10,7 @@ uses(RefreshDatabase::class);
 describe('Checkout', function () {
     beforeEach(function () {
         $this->user = User::factory()->create();
-        $this->product = Product::factory()->create(['stock' => 10, 'price' => 5000]);
+        $this->product = Product::factory()->create(['price' => 5000]);
     });
 
     it('guest cannot access checkout', function () {
@@ -78,21 +78,6 @@ describe('Checkout', function () {
         expect($order->order_number)->toStartWith('GC-');
     });
 
-    it('checkout decrements product stock', function () {
-        $this->actingAs($this->user)
-            ->post("/carrito/agregar/{$this->product->id}", ['quantity' => 3]);
-
-        $this->actingAs($this->user)
-            ->post('/checkout', [
-                'customer_name' => $this->user->name,
-                'customer_email' => $this->user->email,
-                'customer_phone' => '+506 8888 9999',
-            ]);
-
-        $this->product->refresh();
-        expect($this->product->stock)->toBe(7);
-    });
-
     it('checkout calculates correct order total', function () {
         $this->actingAs($this->user)
             ->post("/carrito/agregar/{$this->product->id}", ['quantity' => 3]);
@@ -147,23 +132,6 @@ describe('Checkout', function () {
 
         $order = Order::where('user_id', $this->user->id)->first();
         expect($order->items->first()->customization)->toBe('Grabar nombre actualizado');
-    });
-
-    it('rejects checkout with insufficient stock', function () {
-        $lowStock = Product::factory()->create(['stock' => 1, 'price' => 3000]);
-
-        $this->actingAs($this->user)
-            ->post("/carrito/agregar/{$lowStock->id}", ['quantity' => 5]);
-
-        $response = $this->actingAs($this->user)
-            ->post('/checkout', [
-                'customer_name' => $this->user->name,
-                'customer_email' => $this->user->email,
-                'customer_phone' => '+506 8888 9999',
-            ]);
-
-        $response->assertSessionHas('error');
-        $this->assertDatabaseMissing('orders', ['user_id' => $this->user->id]);
     });
 
     it('checkout requires customer_name', function () {
@@ -226,41 +194,6 @@ describe('Checkout', function () {
         $order = Order::where('user_id', $otherUser->id)->first();
         $response = $this->actingAs($this->user)->get("/mis-pedidos/{$order->id}");
         $response->assertForbidden();
-    });
-
-    it('rejects checkout when product stock is zero', function () {
-        $zeroStock = Product::factory()->create(['stock' => 0, 'price' => 3000]);
-
-        $this->actingAs($this->user)
-            ->post("/carrito/agregar/{$zeroStock->id}", ['quantity' => 1]);
-
-        $response = $this->actingAs($this->user)
-            ->post('/checkout', [
-                'customer_name' => $this->user->name,
-                'customer_email' => $this->user->email,
-                'customer_phone' => '+506 8888 9999',
-            ]);
-
-        $response->assertSessionHas('error');
-        $this->assertDatabaseMissing('orders', ['user_id' => $this->user->id]);
-    });
-
-    it('displays error message on checkout failure', function () {
-        $lowStock = Product::factory()->create(['stock' => 1, 'price' => 3000]);
-
-        $this->actingAs($this->user)
-            ->post("/carrito/agregar/{$lowStock->id}", ['quantity' => 5]);
-
-        $response = $this->actingAs($this->user)
-            ->post('/checkout', [
-                'customer_name' => $this->user->name,
-                'customer_email' => $this->user->email,
-                'customer_phone' => '+506 8888 9999',
-            ]);
-
-        $response->assertRedirect();
-        $response->assertSessionHas('error');
-        $this->assertDatabaseMissing('orders', ['user_id' => $this->user->id]);
     });
 
     it('checkout requires customer_phone validation', function () {

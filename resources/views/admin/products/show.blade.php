@@ -19,7 +19,6 @@
                 @if($product->description)<p class="text-gray-400 mb-6">{{ $product->description }}</p>@endif
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div class="bg-gray-900 p-4 rounded-xl"><p class="text-gray-400 text-sm">Precio</p><p class="text-2xl font-bold text-gracia-primary-dark">₡{{ number_format($product->price, 0, ',', '.') }}</p></div>
-                    <div class="bg-gray-900 p-4 rounded-xl"><p class="text-gray-400 text-sm">Stock</p><p class="text-2xl font-bold text-white">{{ $product->stock }} <span class="text-sm font-normal text-gray-400">uds</span></p></div>
                 </div>
                 <div class="flex gap-3">
                     <a href="{{ route('admin.products.edit', $product) }}" class="btn-gracia text-sm"><i class="fas fa-edit mr-2"></i>Editar</a>

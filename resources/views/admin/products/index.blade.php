@@ -16,7 +16,6 @@
                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Nombre</th>
                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Categoría</th>
                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Precio</th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Stock</th>
                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Estado</th>
                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase">Acciones</th>
             </tr></thead>
@@ -27,7 +26,6 @@
                     <td class="px-6 py-4 text-white font-medium">{{ $product->name }}</td>
                     <td class="px-6 py-4 text-gray-400">{{ $product->category?->name ?? '—' }}</td>
                     <td class="px-6 py-4 text-white font-semibold">₡{{ number_format($product->price, 0, ',', '.') }}</td>
-                    <td class="px-6 py-4 text-gray-400">{{ $product->stock }}</td>
                     <td class="px-6 py-4">@if($product->is_active)<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">Activo</span>@else<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">Inactivo</span>@endif</td>
                     <td class="px-6 py-4"><div class="flex items-center gap-2">
                         <a href="{{ route('admin.products.show', $product) }}" class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-500 hover:bg-blue-100"><i class="fas fa-eye text-sm"></i></a>

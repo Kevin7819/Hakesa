@@ -63,19 +63,12 @@
                     <p class="text-gray-400 mb-6 leading-relaxed">{{ $product->description }}</p>
                 @endif
 
-                <div class="flex items-center gap-4 mb-8 text-sm text-gray-400">
-                    <span class="flex items-center gap-1">
-                        <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                        {{ $product->stock }} disponibles
-                    </span>
-                </div>
-
                 <!-- Add to Cart Form (AJAX) -->
                 <form action="{{ route('cart.add', $product) }}" method="POST" class="space-y-4" x-data="addToCart('{{ route('cart.add', $product) }}')" @submit="submit($event)">
                     @csrf
                     <div>
-                        <label for="quantity" class="block text-sm font-medium text-gray-300 mb-1">Cantidad</label>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ $product->stock }}"
+                        <label for="quantity" class="block text-sm font-medium text-gray-300 mb-1">Cantidad (máx. 10)</label>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="10"
                             class="w-24 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary">
                     </div>
 

@@ -121,7 +121,7 @@
                 <!-- Brand -->
                 <div class="md:col-span-2">
                     <div class="flex items-center gap-3 mb-4">
-                        <img src="{{ asset('Gracia_Creativa_Logo_withou_background.png') }}" alt="Gracia Creativa" width="275" height="80" class="h-20 w-auto">
+<img src="{{ asset('Gracia_Creativa_Logo_withou_background.png') }}" alt="Gracia Creativa" width="275" height="80" class="h-20 w-auto">
                     </div>
                     <p class="text-gray-400 max-w-md mb-6">
                         Personalización que deja huella. Sublimación, corte láser, vinil y más.

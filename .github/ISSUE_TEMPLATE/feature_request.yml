@@ -1,0 +1,63 @@
+name: Feature Request
+description: Solicitar una nueva funcionalidad o mejora
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Pre-flight Checks
+  - type: checkboxes
+    attributes:
+      options:
+        - label: "He buscado issues existentes y este no es duplicado"
+          required: true
+        - label: "Entiendo que este issue necesita status:approved antes de abrir un PR"
+          required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Problema que resuelve
+  - type: textarea
+    attributes:
+      placeholder: "Cuál es el dolor que esta funcionalidad resuelve..."
+      description: "El problema o dolor que esta característica resuelve"
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Solución Propuesta
+  - type: textarea
+    attributes:
+      placeholder: "Cómo debería funcionar desde la perspectiva del usuario..."
+      description: "Cómo debería funcionar desde la perspectiva del usuario"
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Área Afectada
+  - type: dropdown
+    attributes:
+      label: "Área"
+      options:
+        - Frontend (UI/Vistas)
+        - Backend (API/Modelos)
+        - Base de datos
+        - Testing
+        - Documentación
+        - Otro
+      multiple: false
+  - type: markdown
+    attributes:
+      value: |
+        ### Alternativas Consideradas
+  - type: textarea
+    attributes:
+      placeholder: "Otras aproximaciones consideradas..."
+  - type: markdown
+    attributes:
+      value: |
+        ### Contexto Adicional
+  - type: textarea
+    attributes:
+      placeholder: "Mockups, ejemplos, referencias..."

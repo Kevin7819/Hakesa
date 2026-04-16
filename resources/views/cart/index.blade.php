@@ -37,7 +37,7 @@
                     <div class="flex items-center gap-3 flex-shrink-0"
                          x-data="cartItem('{{ route('cart.update', $item) }}', '{{ route('cart.remove', $item) }}')">
                         <div class="flex items-center gap-2">
-                            <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="{{ $item->product->stock }}"
+                            <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="10"
                                 @input="autoUpdate($event)"
                                 @change="autoUpdate($event)"
                                 class="w-16 px-3 py-1.5 bg-gray-800 border border-gray-600 rounded-lg text-center text-sm text-white focus:outline-none focus:ring-2 focus:ring-gracia-primary transition-shadow">
