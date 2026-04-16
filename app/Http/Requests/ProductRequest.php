@@ -22,7 +22,6 @@ class ProductRequest extends FormRequest
             'price' => ['required', 'numeric', 'min:0'],
             'category_id' => ['nullable', 'exists:categories,id'],
             'service_type' => ['nullable', 'string', 'max:100'],
-            'stock' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp,avif', 'max:5120'],
         ];
@@ -36,8 +35,6 @@ class ProductRequest extends FormRequest
             'name.unique' => 'Ya existe un producto con ese nombre.',
             'price.required' => 'El precio es obligatorio.',
             'price.min' => 'El precio no puede ser negativo.',
-            'stock.required' => 'El stock es obligatorio.',
-            'stock.min' => 'El stock no puede ser negativo.',
             'category_id.exists' => 'La categoría seleccionada no existe.',
             'image.image' => 'El archivo debe ser una imagen.',
             'image.max' => 'La imagen no puede pesar más de 5MB.',

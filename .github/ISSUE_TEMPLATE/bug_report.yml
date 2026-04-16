@@ -1,0 +1,62 @@
+name: Bug Report
+description: Reportar un error o comportamiento inesperado
+title: "fix: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Pre-flight Checks
+  - type: checkboxes
+    attributes:
+      options:
+        - label: "He buscado issues existentes y este no es duplicado"
+          required: true
+        - label: "Entiendo que este issue necesita status:approved antes de abrir un PR"
+          required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Descripción del Bug
+  - type: textarea
+    attributes:
+      placeholder: "Describe el bug claramente..."
+      description: "Descripción clara del error"
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Pasos para Reproducir
+  - type: textarea
+    attributes:
+      placeholder: "1. Paso 1\n2. Paso 2\n3. Paso 3"
+      description: "Pasos para reproducir el bug"
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Comportamiento Esperado
+  - type: textarea
+    attributes:
+      placeholder: "Qué debería pasar..."
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Comportamiento Actual
+  - type: textarea
+    attributes:
+      placeholder: "Qué pasó en su lugar..."
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### Información Adicional
+  - type: input
+    attributes:
+      placeholder: "macOS, Windows, Linux..."
+      label: "Sistema Operativo"
+  - type: input
+    attributes:
+      placeholder: "OpenCode, Cursor, VS Code..."
+      label: "Editor / Cliente"

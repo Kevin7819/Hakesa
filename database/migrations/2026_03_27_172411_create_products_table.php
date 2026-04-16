@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('service_type')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->integer('stock')->default(0);
             $table->timestamps();
         });
     }

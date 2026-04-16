@@ -25,7 +25,7 @@ class CartController extends Controller
     public function add(Request $request, Product $product): JsonResponse|RedirectResponse
     {
         $request->validate([
-            'quantity' => ['nullable', 'integer', 'min:1', 'max:99'],
+            'quantity' => ['nullable', 'integer', 'min:1', 'max:10'],
             'customization' => ['nullable', 'string', 'max:500'],
         ]);
 
@@ -40,13 +40,6 @@ class CartController extends Controller
         $customization = $request->input('customization');
 
         $result = DB::transaction(function () use ($cart, $product, $requestedQty, $customization) {
-            // Re-fetch product with lock for update to ensure fresh stock data
-            $lockedProduct = Product::lockForUpdate()->find($product->id);
-
-            if ($requestedQty > $lockedProduct->stock) {
-                return "Stock insuficiente. Disponible: {$lockedProduct->stock}";
-            }
-
             $existingQuery = $cart->items()
                 ->where('product_id', $product->id);
 
@@ -60,11 +53,6 @@ class CartController extends Controller
 
             if ($existing) {
                 $newQty = $existing->quantity + $requestedQty;
-
-                if ($newQty > $lockedProduct->stock) {
-                    return "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$lockedProduct->stock}";
-                }
-
                 $existing->update(['quantity' => $newQty]);
             } else {
                 $cart->items()->create([
@@ -100,22 +88,12 @@ class CartController extends Controller
     public function update(Request $request, CartItem $item): JsonResponse|RedirectResponse
     {
         $request->validate([
-            'quantity' => ['required', 'integer', 'min:1', 'max:99'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
 
         // Ownership check via Eloquent relationship
         if ($item->cart->user_id !== Auth::id()) {
             abort(403);
-        }
-
-        $product = $item->product;
-
-        if ($request->quantity > $product->stock) {
-            $msg = "Stock insuficiente. Disponible: {$product->stock}";
-
-            return $request->wantsJson()
-                ? response()->json(['message' => $msg], 422)
-                : back()->with('error', $msg);
         }
 
         $item->update(['quantity' => $request->quantity]);
@@ -124,6 +102,7 @@ class CartController extends Controller
             $cart = $item->cart;
             $cart->load('items.product');
 
+            $product = $item->product;
             $cartTotal = $cart->total;
             $itemSubtotal = $product->price * $request->quantity;
             $cartCount = $cart->items->sum('quantity');

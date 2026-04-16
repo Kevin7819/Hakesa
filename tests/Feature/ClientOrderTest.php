@@ -10,7 +10,7 @@ uses(RefreshDatabase::class);
 describe('Client Orders', function () {
     beforeEach(function () {
         $this->user = User::factory()->create();
-        $this->product = Product::factory()->create(['stock' => 10, 'price' => 5000]);
+        $this->product = Product::factory()->create(['price' => 5000]);
     });
 
     it('guest cannot access orders', function () {

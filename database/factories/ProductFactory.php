@@ -24,7 +24,6 @@ class ProductFactory extends Factory
             'category_id' => Category::factory(),
             'service_type' => fake()->randomElement($serviceTypes),
             'is_active' => true,
-            'stock' => fake()->numberBetween(0, 100),
         ];
     }
 

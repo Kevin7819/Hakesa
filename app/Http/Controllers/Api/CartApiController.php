@@ -28,7 +28,7 @@ class CartApiController extends Controller
     public function add(Request $request, Product $product): JsonResponse
     {
         $request->validate([
-            'quantity' => ['nullable', 'integer', 'min:1', 'max:99'],
+            'quantity' => ['nullable', 'integer', 'min:1', 'max:10'],
             'customization' => ['nullable', 'string', 'max:500'],
         ]);
 
@@ -41,12 +41,6 @@ class CartApiController extends Controller
         $customization = $request->input('customization');
 
         $result = DB::transaction(function () use ($cart, $product, $requestedQty, $customization) {
-            $product->lockForUpdate()->refresh();
-
-            if ($requestedQty > $product->stock) {
-                return "Stock insuficiente. Disponible: {$product->stock}";
-            }
-
             $existingQuery = $cart->items()
                 ->where('product_id', $product->id);
 
@@ -60,11 +54,6 @@ class CartApiController extends Controller
 
             if ($existing) {
                 $newQty = $existing->quantity + $requestedQty;
-
-                if ($newQty > $product->stock) {
-                    return "Stock insuficiente. Ya tenés {$existing->quantity} en el carrito, disponible: {$product->stock}";
-                }
-
                 $existing->update(['quantity' => $newQty]);
             } else {
                 $cart->items()->create([
@@ -92,17 +81,11 @@ class CartApiController extends Controller
     public function update(Request $request, CartItem $item): JsonResponse
     {
         $request->validate([
-            'quantity' => ['required', 'integer', 'min:1', 'max:99'],
+            'quantity' => ['required', 'integer', 'min:1', 'max:10'],
         ]);
 
         if ($item->cart->user_id !== Auth::id()) {
             return response()->json(['message' => 'No autorizado.'], 403);
-        }
-
-        $product = $item->product;
-
-        if ($request->quantity > $product->stock) {
-            return response()->json(['message' => "Stock insuficiente. Disponible: {$product->stock}"], 422);
         }
 
         $item->update(['quantity' => $request->quantity]);

@@ -20,7 +20,6 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'price' => $this->price,
             'currency' => 'CRC',
-            'stock' => $this->stock,
             'is_active' => $this->is_active,
             'image_url' => $this->image ? asset("storage/{$this->image}") : null,
             'service_type' => $this->service_type,
