@@ -89,14 +89,14 @@ describe('Security — CSRF Enforcement', function () {
         $this->actingAs($user)->get('/perfil')->assertSee('_token');
 
         // Checkout requires items in cart
-        $product = Product::factory()->create(['stock' => 5, 'is_active' => true]);
+        $product = Product::factory()->create(['is_active' => true]);
         $this->actingAs($user)->post("/carrito/agregar/{$product->id}", ['quantity' => 1]);
         $this->actingAs($user)->get('/checkout')->assertSee('_token');
     });
 
     it('POST without CSRF token is rejected with 419', function () {
         $user = User::factory()->create();
-        $product = Product::factory()->create(['stock' => 5, 'is_active' => true]);
+        $product = Product::factory()->create(['is_active' => true]);
 
         // Add item to cart first
         $this->actingAs($user)->post("/carrito/agregar/{$product->id}", ['quantity' => 1]);
@@ -140,7 +140,6 @@ describe('Security — XSS Protection', function () {
         $this->actingAs($admin, 'admin')->post('/admin/products', [
             'name' => '<script>alert("xss")</script>Taza',
             'price' => 5000,
-            'stock' => 10,
             'is_active' => true,
         ]);
 
@@ -228,7 +227,7 @@ describe('Security — Authorization Isolation', function () {
     it('order belongs to correct user and cannot be accessed by others', function () {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
-        $product = Product::factory()->create(['stock' => 10, 'price' => 5000]);
+        $product = Product::factory()->create(['price' => 5000]);
 
         // User 1 creates order
         $this->actingAs($user1)->post("/carrito/agregar/{$product->id}", ['quantity' => 1]);
@@ -252,7 +251,7 @@ describe('Security — Authorization Isolation', function () {
     it('cart item cannot be modified by another user', function () {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
-        $product = Product::factory()->create(['stock' => 10]);
+        $product = Product::factory()->create();
 
         $this->actingAs($user1)->post("/carrito/agregar/{$product->id}", ['quantity' => 1]);
         $cartItem = $user1->cart->items->first();
@@ -265,7 +264,7 @@ describe('Security — Authorization Isolation', function () {
     it('cart item cannot be deleted by another user', function () {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
-        $product = Product::factory()->create(['stock' => 10]);
+        $product = Product::factory()->create();
 
         $this->actingAs($user1)->post("/carrito/agregar/{$product->id}", ['quantity' => 1]);
         $cartItem = $user1->cart->items->first();
@@ -279,7 +278,7 @@ describe('Security — Authorization Isolation', function () {
 
     it('inactive product cannot be added to cart', function () {
         $user = User::factory()->create();
-        $inactive = Product::factory()->inactive()->create(['stock' => 10]);
+        $inactive = Product::factory()->inactive()->create();
 
         $response = $this->actingAs($user)->postJson("/carrito/agregar/{$inactive->id}", ['quantity' => 1]);
         $response->assertUnprocessable();

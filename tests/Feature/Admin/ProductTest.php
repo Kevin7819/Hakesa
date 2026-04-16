@@ -95,8 +95,8 @@ describe('Admin Products CRUD', function () {
         $response->assertRedirect('/admin/products');
         $this->assertDatabaseHas('products', [
             'id' => $product->id,
-            'name' => 'Updated Name',
-            'price' => 7500,
+            'name' => 'Taza Actualizada',
+            'price' => 7000,
         ]);
     });
 
