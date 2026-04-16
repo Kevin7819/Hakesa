@@ -1,0 +1,11 @@
+refactor: remove stock management and add quantity limits
+
+- Drop stock column from products table (migration)
+- Remove stock validation from ProductRequest, CartController, CartApiController, PlaceOrderService
+- Change quantity max from stock to 10 (fixed limit)
+- Remove stock UI from product detail, catalog, cart, and admin forms
+- Update ProductSeeder and factory to not include stock
+- Update ProductResource API to not expose stock
+- Fix tests to use new quantity limits instead of stock checks
+
+Implements: #68, #69, #70

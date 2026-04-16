@@ -53,7 +53,7 @@ describe('Email sending in checkout flow', function () {
         Mail::fake();
 
         $user = User::factory()->create();
-        $product = Product::factory()->create(['stock' => 10, 'price' => 5000, 'is_active' => true]);
+        $product = Product::factory()->create(['price' => 5000, 'is_active' => true]);
 
         $this->actingAs($user)
             ->post("/carrito/agregar/{$product->id}", ['quantity' => 1]);
@@ -78,7 +78,7 @@ describe('Email sending in checkout flow', function () {
         Mail::shouldReceive('queue')->andThrow(new Exception('Queue connection failed'));
 
         $user = User::factory()->create();
-        $product = Product::factory()->create(['stock' => 10, 'price' => 5000, 'is_active' => true]);
+        $product = Product::factory()->create(['price' => 5000, 'is_active' => true]);
 
         $this->actingAs($user)
             ->post("/carrito/agregar/{$product->id}", ['quantity' => 1]);

@@ -10,7 +10,7 @@ uses(RefreshDatabase::class);
 describe('Wishlist', function () {
     beforeEach(function () {
         $this->user = User::factory()->create();
-        $this->product = Product::factory()->create(['price' => 1000, 'stock' => 5]);
+        $this->product = Product::factory()->create(['price' => 1000]);
     });
 
     it('guest cannot access wishlist page', function () {

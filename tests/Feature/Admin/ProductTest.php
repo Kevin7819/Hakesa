@@ -34,7 +34,6 @@ describe('Admin Products CRUD', function () {
             'description' => 'Taza de cerámica con diseño personalizado',
             'price' => 5000,
             'service_type' => 'sublimacion',
-            'stock' => 10,
             'is_active' => true,
         ]);
 
@@ -51,7 +50,6 @@ describe('Admin Products CRUD', function () {
         $response = $this->actingAs($this->admin, 'admin')->post('/admin/products', [
             'name' => 'Taza con Imagen',
             'price' => 6000,
-            'stock' => 5,
             'is_active' => true,
             'image' => $image,
         ]);
@@ -66,7 +64,7 @@ describe('Admin Products CRUD', function () {
     it('validates required fields when creating product', function () {
         $response = $this->actingAs($this->admin, 'admin')->post('/admin/products', []);
 
-        $response->assertSessionHasErrors(['name', 'price', 'stock']);
+        $response->assertSessionHasErrors(['name', 'price']);
     });
 
     it('can show a product', function () {
@@ -86,12 +84,11 @@ describe('Admin Products CRUD', function () {
     });
 
     it('can update a product', function () {
-        $product = Product::factory()->create(['name' => 'Old Name']);
+        $product = Product::factory()->create();
 
         $response = $this->actingAs($this->admin, 'admin')->put("/admin/products/{$product->id}", [
-            'name' => 'Updated Name',
-            'price' => 7500,
-            'stock' => 15,
+            'name' => 'Taza Actualizada',
+            'price' => 7000,
             'is_active' => true,
         ]);
 
