@@ -6,57 +6,71 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class CatalogController extends Controller
 {
     public function index(Request $request): View|JsonResponse
     {
-        $query = Product::query()
-            ->where('is_active', true)
-            ->select(['id', 'name', 'description', 'price', 'image', 'category_id', 'service_type'])
-            ->with('category:id,name');
+        // Cache key basada en query params para evitar cachear búsquedas diferentes juntas
+        $cacheKey = 'catalog-products:'.md5(serialize($request->query()));
 
-        // Búsqueda por nombre
-        if ($request->filled('search')) {
-            $search = addcslashes($request->search, '%_');
-            $query->where('name', 'like', "%{$search}%");
-        }
+        $products = Cache::remember($cacheKey, now()->addMinutes(10), function () use ($request) {
+            $query = Product::query()
+                ->where('is_active', true)
+                ->select(['id', 'name', 'description', 'price', 'image', 'category_id', 'service_type'])
+                ->with('category:id,name');
 
-        // Filtro por categoría
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
-        }
+            // Búsqueda por nombre
+            if ($request->filled('search')) {
+                $search = addcslashes($request->search, '%_');
+                $query->where('name', 'like', "%{$search}%");
+            }
 
-        // Filtro por precio
-        if ($request->filled('price_min')) {
-            $query->where('price', '>=', $request->price_min);
-        }
-        if ($request->filled('price_max')) {
-            $query->where('price', '<=', $request->price_max);
-        }
+            // Filtro por categoría
+            if ($request->filled('category')) {
+                $query->where('category_id', $request->category);
+            }
 
-        // Orden
-        $sort = $request->input('sort', 'latest');
-        match ($sort) {
-            'price_asc' => $query->orderBy('price', 'asc'),
-            'price_desc' => $query->orderBy('price', 'desc'),
-            'name' => $query->orderBy('name', 'asc'),
-            default => $query->orderByDesc('id'),
-        };
+            // Filtro por precio
+            if ($request->filled('price_min')) {
+                $query->where('price', '>=', $request->price_min);
+            }
+            if ($request->filled('price_max')) {
+                $query->where('price', '<=', $request->price_max);
+            }
 
-        $products = $query->paginate(12)->withQueryString();
-        $categories = Category::where('is_active', true)
-            ->select(['id', 'name', 'slug', 'sort_order'])
-            ->orderBy('sort_order')
-            ->get();
+            // Orden
+            $sort = $request->input('sort', 'latest');
+            match ($sort) {
+                'price_asc' => $query->orderBy('price', 'asc'),
+                'price_desc' => $query->orderBy('price', 'desc'),
+                'name' => $query->orderBy('name', 'asc'),
+                default => $query->orderByDesc('id'),
+            };
+
+            return $query->paginate(12)->withQueryString();
+        });
+
+        // Categorías cacheadas por 15 min (rara vez cambian)
+        $categories = Cache::remember('active-categories', now()->addMinutes(15), function () {
+            return Category::where('is_active', true)
+                ->select(['id', 'name', 'slug', 'sort_order'])
+                ->orderBy('sort_order')
+                ->get();
+        });
 
         $wishlistIds = auth()->check()
             ? auth()->user()->wishlists()->pluck('product_id')->toArray()
             : [];
 
-        // Calculate dynamic max price for slider (rounded to nearest 1000)
-        $rawMax = Product::active()->max('price');
+        // Max price cacheado 5 min (para el slider)
+        $maxPriceCacheKey = 'catalog-max-price';
+        $rawMax = Cache::remember($maxPriceCacheKey, now()->addMinutes(5), function () {
+            return Product::active()->max('price');
+        });
+
         $minPrice = 0;
         $maxPrice = $rawMax !== null ? (int) ceil($rawMax / 1000) * 1000 : 50000;
 
