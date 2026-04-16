@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="@yield('meta-description', 'Arte y Diseño Gracia Creativa — Sublimación, corte láser y vinil personalizado en Costa Rica. Pedidos por WhatsApp. Envíos a todo el país.')">
+    <link rel="canonical" href="{{ url()->current() }}">
     <link rel="icon" type="image/png" href="/favicon-Gracia-Creativa.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-Gracia-Creativa.png" sizes="16x16">
     <link rel="apple-touch-icon" sizes="180x180" href="/Gracia_Creativa_Logo_withou_background.png">
@@ -209,5 +210,6 @@
             </div>
         </template>
     </div>
+    @stack('scripts')
 </body>
 </html>
