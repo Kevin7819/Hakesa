@@ -279,7 +279,7 @@ describe('Admin Announcement', function () {
             $announcement = Announcement::factory()->create();
 
             $response = $this->actingAs($this->admin, 'admin')
-                ->delete(route('admin.announcements.update', $announcement));
+                ->delete(route('admin.announcements.destroy', $announcement));
 
             $response->assertRedirect(route('admin.announcements.index'));
             $response->assertSessionHas('success');

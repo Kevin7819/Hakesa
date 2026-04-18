@@ -16,7 +16,7 @@ class AnnouncementFactory extends Factory
 
     public function definition(): array
     {
-        $titles = [
+        static $titles = [
             'Gran Fiesta de Fin de Año',
             'Taller de Sublimación',
             'Evento Especial de Precios',
@@ -28,7 +28,7 @@ class AnnouncementFactory extends Factory
         ];
 
         return [
-            'title' => array_shift($titles) ?? 'Anuncio #' . $this->sequence,
+            'title' => array_shift($titles) ?: 'Anuncio #' . uniqid(),
             'description' => 'Descripción del evento especial con todos los detalles.',
             'event_date' => Carbon::now()->addWeek(),
             'location' => 'San José, Costa Rica',

@@ -17,13 +17,13 @@ use Illuminate\Support\Facades\Date;
  * @property string $title
  * @property string $description
  * @property string|null $image
- * @property \Illuminate\Support\Date|Carbon $event_date
+ * @property \Carbon\Carbon $event_date
  * @property string|null $location
  * @property string|null $link
  * @property bool $is_active
- * @property \Illuminate\Support\Date|Carbon|null $expires_at
- * @property \Illuminate\Support\Date|Carbon $created_at
- * @property \Illuminate\Support\Date|Carbon $updated_at
+ * @property \Carbon\Carbon|null $expires_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 #[Fillable(['title', 'description', 'image', 'event_date', 'location', 'link', 'is_active', 'expires_at'])]
 #[Hidden(['created_at', 'updated_at'])]

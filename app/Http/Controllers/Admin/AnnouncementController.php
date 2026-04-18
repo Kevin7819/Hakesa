@@ -86,7 +86,7 @@ class AnnouncementController extends Controller
             'link' => ['nullable', 'url'],
             'image' => ['nullable', 'image', 'mimes:jpeg,jpg,png,gif,webp', 'max:5120'],
             'is_active' => ['boolean'],
-            'expires_at' => ['nullable', 'date'],
+            'expires_at' => ['nullable', 'date', 'after:event_date'],
         ]);
 
         // Eliminar imagen si está marcado el checkbox
