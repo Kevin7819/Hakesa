@@ -28,7 +28,7 @@ class AnnouncementFactory extends Factory
         ];
 
         return [
-            'title' => array_shift($titles) ?: 'Anuncio #' . uniqid(),
+            'title' => array_shift($titles) ?: 'Anuncio #'.uniqid(),
             'description' => 'Descripción del evento especial con todos los detalles.',
             'event_date' => Carbon::now()->addWeek(),
             'location' => 'San José, Costa Rica',
@@ -56,7 +56,7 @@ class AnnouncementFactory extends Factory
     public function withImage(): static
     {
         return $this->state(fn (array $attributes) => [
-            'image' => 'announcements/test-' . Str::uuid() . '.webp',
+            'image' => 'announcements/test-'.Str::uuid().'.webp',
         ]);
     }
 }
