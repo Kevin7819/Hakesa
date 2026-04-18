@@ -3,6 +3,34 @@
 @section('title', $product->name . ' - Gracia Creativa')
 @section('meta-description', Str::limit(strip_tags($product->description ?? $product->name . ' — Producto personalizado de Gracia Creativa Costa Rica.'), 160))
 
+{{-- Schema.org JSON-LD para producto --}}
+@php
+$jsonLd = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Product',
+    'name' => $product->name,
+    'description' => Str::limit(strip_tags($product->description ?? ''), 160),
+    'offers' => [
+        '@type' => 'Offer',
+        'priceCurrency' => 'CRC',
+        'price' => (string) $product->price,
+        'availability' => $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        'seller' => [
+            '@type' => 'Organization',
+            'name' => 'Gracia Creativa'
+        ]
+    ],
+    'brand' => [
+        '@type' => 'Brand',
+        'name' => 'Gracia Creativa'
+    ]
+];
+if ($product->image) {
+    $jsonLd['image'] = asset('storage/' . $product->image);
+}
+@endphp
+<script type="application/ld+json">{{ json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) }}</script>
+
 @section('content')
 <section class="section-padding bg-gray-800">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController as AdminCommentController;
@@ -73,8 +74,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+        // ── Productos, categorías, anuncios ──
         Route::resource('products', ProductController::class);
         Route::resource('categories', CategoryController::class)->except(['show']);
+        Route::resource('announcements', AnnouncementController::class);
+        Route::patch('announcements/{announcement}/toggle', [AnnouncementController::class, 'toggle'])->name('announcements.toggle');
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
         Route::patch('orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
 

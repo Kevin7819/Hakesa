@@ -23,7 +23,14 @@ class ProductRequest extends FormRequest
             'category_id' => ['nullable', 'exists:categories,id'],
             'service_type' => ['nullable', 'string', 'max:100'],
             'is_active' => ['boolean'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp,avif', 'max:5120'],
+            'image' => [
+                'nullable',
+                'image',
+                'mimetypes:image/jpeg,image/png,image/gif,image/webp,image/avif',
+                'max:5120',
+                // Dimensiones maximas para prevenir DoS
+                'dimensions:max_width=4096,max_height=4096',
+            ],
         ];
     }
 
@@ -37,7 +44,9 @@ class ProductRequest extends FormRequest
             'price.min' => 'El precio no puede ser negativo.',
             'category_id.exists' => 'La categoría seleccionada no existe.',
             'image.image' => 'El archivo debe ser una imagen.',
+            'image.mimetypes' => 'Solo se permiten imágenes JPEG, PNG, GIF, WebP o AVIF.',
             'image.max' => 'La imagen no puede pesar más de 5MB.',
+            'image.dimensions' => 'La imagen no puede exceder 4096x4096 píxeles.',
         ];
     }
 }
