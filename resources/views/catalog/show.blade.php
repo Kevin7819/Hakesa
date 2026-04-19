@@ -14,7 +14,7 @@ $jsonLd = [
         '@type' => 'Offer',
         'priceCurrency' => 'CRC',
         'price' => (string) $product->price,
-        'availability' => $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        'availability' => 'https://schema.org/InStock',
         'seller' => [
             '@type' => 'Organization',
             'name' => 'Gracia Creativa'
@@ -97,13 +97,13 @@ if ($product->image) {
                     <div>
                         <label for="quantity" class="block text-sm font-medium text-gray-300 mb-1">Cantidad (máx. 10)</label>
                         <input type="number" name="quantity" id="quantity" value="1" min="1" max="10"
-                            class="w-24 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary">
+                            class="w-24 px-4 py-2.5 bg-gray-700 border border-gray-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:border-gracia-primary">
                     </div>
 
                     <div>
                         <label for="customization" class="block text-sm font-medium text-gray-300 mb-1">Personalización (opcional)</label>
                         <textarea name="customization" id="customization" rows="3"
-                            class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary"
+                            class="w-full px-4 py-2.5 bg-gray-700 border border-gray-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-gracia-primary focus:border-gracia-primary placeholder-gray-400"
                             placeholder="Describe cómo querés personalizar este producto (texto, diseño, colores, etc.)"></textarea>
                     </div>
 

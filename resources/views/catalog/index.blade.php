@@ -59,14 +59,14 @@
                         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                     </button>
                 </div>
-                @include('catalog._filter_fields', ['maxPrice' => $maxPrice])
+                @include('catalog._filter_fields', ['categories' => $categories, 'maxPrice' => $maxPrice])
             </div>
 
             {{-- Desktop Sidebar --}}
             <aside class="hidden lg:block w-72 flex-shrink-0">
                 <div class="sticky top-24 card-gracia p-5">
                     <h2 class="text-lg font-bold text-white mb-4">Filtros</h2>
-                    @include('catalog._filter_fields', ['maxPrice' => $maxPrice])
+                    @include('catalog._filter_fields', ['categories' => $categories, 'maxPrice' => $maxPrice])
                 </div>
             </aside>
 
