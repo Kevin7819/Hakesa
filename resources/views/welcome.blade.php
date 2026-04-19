@@ -124,6 +124,9 @@
     </div>
 </section>
 
+{{-- Announcements: después de servicios, antes del catálogo --}}
+@include('partials.announcements')
+
 <!-- ═══════════════════════════════════════════════════════════════
      CAROUSEL / CATÁLOGO SECTION
      ═══════════════════════════════════════════════════════════════ -->

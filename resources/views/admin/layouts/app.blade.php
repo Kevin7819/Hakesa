@@ -57,6 +57,12 @@
                     <span>Comentarios</span>
                 </a>
 
+                <a href="{{ route('admin.announcements.index') }}" 
+                   class="{{ request()->routeIs('admin.announcements.*') ? 'bg-gracia-primary/10 text-gracia-primary font-semibold' : 'text-gray-400 hover:bg-gray-900 hover:text-white' }} flex items-center gap-3 px-4 py-3 rounded-xl transition-colors">
+                    <i class="fas fa-bullhorn w-5 text-center"></i>
+                    <span>Anuncios</span>
+                </a>
+
                 <div class="pt-4 mt-4 border-t border-gray-700">
                     <a href="/" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-gray-900 hover:text-gray-300 transition-colors">
                         <i class="fas fa-external-link-alt w-5 text-center"></i>
